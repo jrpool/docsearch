@@ -3,6 +3,14 @@ const {renderError} = require('../utils')
 
 const router = require('express').Router()
 
+router.get('/', (request, response) => {
+  DbContacts.getContacts()
+    .then((contacts) => {
+      response.render('index', { contacts })
+    })
+    .catch( err => console.log('err', err) )
+})
+
 router.get('/new', (request, response) => {
   response.render('new')
 })

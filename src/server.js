@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const dbContacts = require('./db/contacts')
 const app = express()
 const {renderError} = require('./server/utils')
-const routes = require('./server/routes');
+const routes = require('./server/routes/home');
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views')

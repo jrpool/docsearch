@@ -3,7 +3,7 @@ const db = require('./db')
 const createContact = function(contact){
   return db.query(`
     INSERT INTO
-      contacts (first_name, last_name)
+      contact (first_name, last_name)
     VALUES
       ($1::text, $2::text)
     RETURNING
@@ -21,14 +21,14 @@ const getContacts = function(){
     SELECT
       *
     FROM
-      contacts
+      contact
     `, [])
     .catch(error => error);
 }
 
 const getContact = function(contactId){
   return db.one(`
-    SELECT * FROM contacts WHERE id=$1::int LIMIT 1
+    SELECT * FROM contact WHERE id=$1::int LIMIT 1
     `,
     [contactId])
     .catch(error => error);
@@ -37,7 +37,7 @@ const getContact = function(contactId){
 const deleteContact = function(contactId){
   return db.query(`
     DELETE FROM
-      contacts
+      contact
     WHERE
       id=$1::int
     `,
@@ -50,7 +50,7 @@ const searchForContact = function(searchQuery){
     SELECT
       *
     FROM
-      contacts
+      contact
     WHERE
       lower(first_name || ' ' || last_name) LIKE $1::text
     `,

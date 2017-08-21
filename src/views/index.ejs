@@ -1,16 +1,12 @@
 <%- include header.ejs %>
 
-  <h1>Contacts</h1>
+  <h1>Contact Manager</h1>
 
-  <div class="contact-list">
-    <% contacts.forEach(function(contact){ %>
-      <div class="contact-list-member">
-        <a class="contact-link" href="/contacts/<%= contact.id %>">
-          <%= contact.first_name %>&nbsp;<%= contact.last_name %>
-        </a>
-        <a class="delete-contact" href="/contacts/<%= contact.id %>/delete" tabindex="-1">X</a>
-      </div>
-    <% }) %>
+  <div>
+    <h3>Welcome to Contact Manager</h3>
+    <h4>Use of Contact Manager is limited to registered users.</h4>
+    <p>Not yet registered? <a href="/signup">Sign up</a>.</p>
+    <p>Already registered? <a href="/login">Log in</a>.</p>
   </div>
 
 <%- include footer.ejs %>

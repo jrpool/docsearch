@@ -1,0 +1,24 @@
+<%- include header.ejs %>
+
+  <h1>Sign up</h1>
+
+  <p>Already signed up? <span class="link"><a href="/login">Log in</a></span></p>
+
+  <form method="post" action="/signup" class="signup-form">
+    <pre class="signup-form-errors"></pre>
+    <label>
+      <span>Username:</span>
+      <input type="text" name="username" />
+    </label>
+    <label>
+      <span>Create new password:</span>
+      <input type="password" name="password1" />
+    </label>
+    <label>
+      <span>Retype password to confirm:</span>
+      <input type="password" name="password2" />
+    </label>
+    <input type="submit" value="Sign up">
+  </form>
+
+<%- include footer.ejs %>

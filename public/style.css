@@ -80,20 +80,28 @@ nav .search-form input {
   text-align: right;
 }
 
+.login-form label,
+.signup-form label,
 .new-contact-form label {
   display: block;
   margin-bottom: 1em;
 }
 
+.login-form label > span,
+.signup-form label > span,
 .new-contact-form label > span {
   display: inline-block;
   min-width: 8em;
 }
 
+.login-form input[type="submit"],
+.signup-form input[type="submit"],
 .new-contact-form input[type="submit"] {
   margin-top: 1em;
 }
 
+.login-form-errors,
+.signup-form-errors,
 .new-contact-form-errors {
   color: red;
   font-weight: bold;

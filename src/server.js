@@ -3,7 +3,9 @@ const bodyParser = require('body-parser')
 const dbContacts = require('./db/contacts')
 const app = express()
 const {renderError} = require('./server/utils')
-const routes = require('./server/routes/home');
+const home_route = require('./server/routes/home');
+const user_route = require('./server/routes/users');
+const contact_route = require('./server/routes/contacts');
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views')
@@ -15,7 +17,9 @@ app.use((request, response, next) => {
   next()
 })
 
-app.use('/', routes)
+app.use('/', home_route)
+app.use('/users', user_route)
+app.use('/contacts', contact_route)
 
 app.use((request, response) => {
   response.render('not_found')

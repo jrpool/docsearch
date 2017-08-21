@@ -1,0 +1,18 @@
+<%- include header.ejs %>
+
+  <h1>New Contact</h1>
+
+  <form method="post" action="/contacts" class="new-contact-form">
+    <pre class="new-contact-form-errors"></pre>
+    <label>
+      <span>First name:</span>
+      <input type="text" name="first_name" />
+    </label>
+    <label>
+      <span>Last name:</span>
+      <input type="text" name="last_name" />
+    </label>
+    <input type="submit" value="Add Contact">
+  </form>
+
+<%- include footer.ejs %>

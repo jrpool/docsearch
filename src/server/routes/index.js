@@ -4,7 +4,9 @@ const DbContacts = require('../../db/contacts');
 
 router.get('/', (request, response) => {
   DbContacts.getContacts()
-    .then((contacts) => {response.render('index', { contacts })})
+    .then((contacts) => {
+      response.render('index', { contacts })
+    })
     .catch( err => console.log('err', err) )
 })
 

@@ -23,6 +23,15 @@ const createUser = user => {
     .catch(error => error);
 }
 
+const validateUser = user => {
+  return db.oneOrNone(
+    `SELECT * FROM member
+    WHERE username = '${user.username}'
+    AND hashed_password = '${user.password}'`
+  )
+  .catch(error => error);
+}
+
 // const getContacts = function(){
 //   return db.query(`
 //     SELECT
@@ -67,5 +76,6 @@ const createUser = user => {
 //
 module.exports = {
   checkUser,
-  createUser
+  createUser,
+  validateUser
 }

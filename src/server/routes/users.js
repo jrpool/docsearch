@@ -7,6 +7,25 @@ router.get('/login', (request, response) => {
   response.render('login')
 })
 
+router.post('/login', (request, response, next) => {
+  if (!request.body.username.length || !request.body.password.length) {
+    response.send('Your username or password was missing!')
+    return
+  }
+  DbUsers.validateUser(request.body)
+  .then(user => {
+    if (user !== null) {
+      response.redirect('../contacts')
+      return ''
+    }
+    else {
+      response.send('Your username or password was invalid!')
+      return ''
+    }
+  })
+  .catch( error => renderError(error, response, response) )
+})
+
 router.get('/signup', (request, response) => {
   response.render('signup')
 })

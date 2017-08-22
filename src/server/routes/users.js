@@ -1,3 +1,4 @@
+const DbContacts = require('../../db/contacts')
 const DbUsers = require('../../db/users')
 const {renderError} = require('../utils')
 
@@ -14,16 +15,48 @@ router.get('/login', (request, response) => {
   response.render('login')
 })
 
+// router.post('/login', (request, response, next) => {
+//   if (!request.body.username.length || !request.body.password.length) {
+//     response.send('Your username or password was missing!')
+//     return
+//   }
+//   DbUsers.validateUser(request.body)
+//   .then(user => {
+//     if (user !== null) {
+//       response.redirect('../contacts')
+//       return ''
+//     }
+//     else {
+//       response.send('Your username or password was invalid!')
+//       return ''
+//     }
+//   })
+//   .catch( error => renderError(error, response, response) )
+// })
+//
+// router.get('/signup', (request, response) => {
+//   response.render('signup')
+// })
+//
 router.post('/login', (request, response, next) => {
   if (!request.body.username.length || !request.body.password.length) {
     response.send('Your username or password was missing!')
     return
   }
-  DbUsers.validateUser(request.body)
+  DbUsers.getLoginUser(request.body.username)
   .then(user => {
     if (user !== null) {
-      response.redirect('../contacts')
-      return ''
+      const storedPassword = user.hashed_password;
+      if (bcrypt.compareSync(request.body.password, storedPassword)) {
+        response.render(
+          'contacts', {id: user.id, username: user.username, admin: user.admin}
+        )
+        return ''
+      }
+      else {
+        response.send('Your username or password was invalid!')
+        return ''
+      }
     }
     else {
       response.send('Your username or password was invalid!')
@@ -51,13 +84,12 @@ router.post('/signup', (request, response, next) => {
       return ''
     }
     else {
-      return DbUsers.createUser(request.body)
-    }
-  })
-  .then(user => {
-    if (user) {
-      return response.redirect('../contacts')
-      next()
+      const user = DbUsers.createUser(request.body)
+      const contacts = DbContacts.getContacts()
+      Promise.all([user, contacts])
+      .then(values => {
+        response.render('contacts', {contacts: values[1], user: values[0]})
+      })
     }
   })
   .catch( error => renderError(error, response, response) )

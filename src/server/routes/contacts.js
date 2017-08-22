@@ -4,11 +4,7 @@ const {renderError} = require('../utils')
 const router = require('express').Router()
 
 router.get('/', (request, response) => {
-  DbContacts.getContacts()
-    .then((contacts) => {
-      response.render('contacts', { contacts })
-    })
-    .catch( err => console.log('err', err) )
+  response.redirect('/')
 })
 
 router.get('/new', (request, response) => {

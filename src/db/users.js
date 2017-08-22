@@ -23,11 +23,19 @@ const createUser = user => {
     .catch(error => error);
 }
 
-const validateUser = user => {
+// const validateUser = user => {
+//   return db.oneOrNone(
+//     `SELECT * FROM member
+//     WHERE username = '${user.username}'
+//     AND hashed_password = '${user.password}'`
+//   )
+//   .catch(error => error);
+// }
+//
+const getLoginUser = loginUserName => {
   return db.oneOrNone(
     `SELECT * FROM member
-    WHERE username = '${user.username}'
-    AND hashed_password = '${user.password}'`
+    WHERE username = '${loginUserName}'`
   )
   .catch(error => error);
 }
@@ -77,5 +85,5 @@ const validateUser = user => {
 module.exports = {
   checkUser,
   createUser,
-  validateUser
+  getLoginUser
 }

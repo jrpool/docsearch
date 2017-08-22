@@ -6,7 +6,7 @@ const router = require('express').Router()
 router.get('/', (request, response) => {
   DbContacts.getContacts()
     .then((contacts) => {
-      response.render('index', { contacts })
+      response.render('contacts', { contacts })
     })
     .catch( err => console.log('err', err) )
 })

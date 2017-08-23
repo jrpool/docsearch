@@ -12,7 +12,12 @@ const hash_password = password => {
   return bcrypt.hashSync(password, salt);
 };
 
-
+/*
+  Consider adding to this options object:
+  name: auth_snapshot
+  resave: false
+  saveUninitialized: false
+*/
 router.use(session({
   resave: false,
   saveUninitialized: true,

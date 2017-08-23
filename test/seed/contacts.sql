@@ -1,5 +1,7 @@
+\copy contact(first_name, last_name) FROM './test/seed/random_contacts.txt' DELIMITER ',' CSV HEADER;
+
 INSERT INTO
-  contacts (first_name, last_name)
+  contact (first_name, last_name)
 VALUES
   ('Jared', 'Grippe'),
   ('Tanner', 'Welsh'),

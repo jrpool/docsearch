@@ -1,3 +1,4 @@
+const env = require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const dbContacts = require('./db/contacts')

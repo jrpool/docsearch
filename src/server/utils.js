@@ -5,20 +5,22 @@ const renderError = function(error, request, response) {
 function isLoggedIn(request, response, next) {
   if(!request.session || !request.session.user) {
     response.render('login');
+  } else {
+    next();
   }
-  next();
 }
 
 const mustBeAdmin = {
   viewContacts: false,
   viewContact: false,
-  createContact: true,
-  deleteContact: true
+  "/new": true,
+  `/:contactId/delete`: true
 };
 
-const userHasAccess = (user, action) => {
-  const isAdmin = user.admin;
-  return isAdmin || !mustBeAdmin[action];
+const userHasAccess = (request, response, next) => {
+  const isAdmin = request.session.user.admin;
+  const path = request.route.path;
+  return isAdmin || !mustBeAdmin[path];
 };
 
 module.exports = {

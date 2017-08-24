@@ -13,12 +13,12 @@ const hash_password = password => {
   return bcrypt.hashSync(password, salt);
 };
 
-router.use(session({
-  name: 'auth_snapshot',
-  resave: false,
-  saveUninitialized: false,
-  secret: process.env.SECRET
-}));
+// router.use(session({
+//   name: 'auth_snapshot',
+//   resave: false,
+//   saveUninitialized: false,
+//   secret: process.env.SECRET
+// }));
 
 router.get('/login', (request, response) => {
   response.render('login')
@@ -36,8 +36,6 @@ router.post('/login', (request, response, next) => {
     let user = value[0]
     let contacts = value[1]
     request.session.user = {username: user.username, admin: user.admin}
-    console.log(request)
-    console.log( "request.sessionID:", request.sessionID )
     if (user !== null) {
       const storedPassword = user.hashed_password;
       if (bcrypt.compareSync(request.body.password, storedPassword)) {

@@ -5,13 +5,16 @@ const {renderError,
        userHasAccess} = require('../utils');
 const session = require('express-session');
 
-const userSession = () =>
+const userSession = (request, response, next) => {
   session({
     name: 'auth_snapshot',
     resave: false,
     saveUninitialized: false,
     secret: process.env.SECRET
   });
+  next();
+}
+
 
 
 router.get('/', isLoggedIn, (request, response) => {
@@ -19,7 +22,7 @@ router.get('/', isLoggedIn, (request, response) => {
 });
 
 router.get('/new', userSession, isLoggedIn, (request, response) => {
-  console.log(request);
+    console.log(request)
   if(userHasAccess(request.session.user, 'createContact')) {
     response.render('new');
   } else {
@@ -48,7 +51,7 @@ router.get('/:contactId', (request, response, next) => {
 });
 
 
-router.get('/:contactId/delete', (request, response, next) => {
+router.get('/:contactId/delete',(request, response, next) => {
   const contactId = request.params.contactId;
   DbContacts.deleteContact(contactId)
   .then(function(contact) {

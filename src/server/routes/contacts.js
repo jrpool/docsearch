@@ -1,16 +1,29 @@
 const DbContacts = require('../../db/contacts')
-const {renderError, isLoggedIn} = require('../utils')
-
 const router = require('express').Router()
+const {renderError,
+       isLoggedIn,
+       userHasAccess} = require('../utils')
+const session = require('express-session')
 
-router.use(isLoggedIn)
+const userSession = session( () => {
+  name: 'auth_snapshot',
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.SECRET
+});
 
-router.get('/', (request, response) => {
-  response.redirect('/')
+
+router.get('/', isLoggedIn, (request, response) => {
+  response.render('contacts')
 })
 
-router.get('/new', (request, response) => {
-  response.render('new')
+router.get('/new', isLoggedIn, (request, response) => {
+  console.log(request)
+  if(userHasAccess(request.session.user, 'createContact')) {
+    response.render('new')
+  } else {
+    response.status(401).send('You are not authorized to access this page')
+  }
 })
 
 router.post('/', (request, response, next) => {

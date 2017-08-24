@@ -1,10 +1,11 @@
 const DbContacts = require('../../db/contacts')
 const DbUsers = require('../../db/users')
-const {renderError} = require('../utils')
+const {renderError,
+       isLoggedIn,
+       userHasAccess} = require('../utils')
 const router = require('express').Router()
 const session = require('express-session')
 const morgan = require('morgan')
-const {isLoggedIn} = require('../utils')
 const bcrypt = require('bcrypt');
 
 const hash_password = password => {

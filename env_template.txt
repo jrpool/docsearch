@@ -1,0 +1,3 @@
+const CAPABILITY_ROLES = {
+  viewContacts
+}

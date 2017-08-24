@@ -1,7 +1,9 @@
 const DbContacts = require('../../db/contacts')
-const {renderError} = require('../utils')
+const {renderError, isLoggedIn} = require('../utils')
 
 const router = require('express').Router()
+
+router.use(isLoggedIn)
 
 router.get('/', (request, response) => {
   response.redirect('/')

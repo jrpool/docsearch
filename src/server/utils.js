@@ -4,7 +4,7 @@ const renderError = function(error, response, response){
 
 function isLoggedIn(request, response, next) {
   if(!request.session.user) {
-    response.redirect('/login')
+    response.render('login')
   }
   next()
 }

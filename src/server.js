@@ -1,9 +1,7 @@
-const env = require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const dbContacts = require('./db/contacts');
 const app = express();
-const {renderError} = require('./server/utils');
 const home_route = require('./server/routes/home');
 const user_route = require('./server/routes/users');
 const contact_route = require('./server/routes/contacts');

@@ -1,12 +1,12 @@
-const renderError = function(error, response, response){
-  response.send(`ERROR: ${error.message}\n\n${error.stack}`)
-}
+const renderError = function(error, request, response) {
+  response.send(`ERROR: ${error.message}\n\n${error.stack}`);
+};
 
 function isLoggedIn(request, response, next) {
   if(!request.session.user) {
-    response.render('login')
+    response.render('login');
   }
-  next()
+  next();
 }
 
 const mustBeAdmin = {
@@ -14,16 +14,15 @@ const mustBeAdmin = {
   viewContact: false,
   createContact: true,
   deleteContact: true
-}
+};
 
-const userHasAccess = ( user, action ) => {
-  const role = user.admin
-  const allActions = Object.keys( mustBeAdmin )
-  return role || !mustBeAdmin[action]
-}
+const userHasAccess = (user, action) => {
+  const isAdmin = user.admin;
+  return isAdmin || !mustBeAdmin[action];
+};
 
 module.exports = {
   renderError,
   isLoggedIn,
   userHasAccess
-}
+};

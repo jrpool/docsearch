@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session')
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
@@ -11,7 +11,7 @@ const contact_route = require('./server/routes/contacts');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-// app.use(morgan('tiny'));
+app.use(morgan('tiny'));
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use((request, response, next) => {

@@ -10,21 +10,7 @@ function isLoggedIn(request, response, next) {
   }
 }
 
-const mustBeAdmin = {
-  viewContacts: false,
-  viewContact: false,
-  "/new": true,
-  `/:contactId/delete`: true
-};
-
-const userHasAccess = (request, response, next) => {
-  const isAdmin = request.session.user.admin;
-  const path = request.route.path;
-  return isAdmin || !mustBeAdmin[path];
-};
-
 module.exports = {
   renderError,
   isLoggedIn,
-  userHasAccess
 };

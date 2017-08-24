@@ -1,32 +1,21 @@
 const DbContacts = require('../../db/contacts');
 const router = require('express').Router();
 const {renderError,
-       isLoggedIn,
-       userHasAccess} = require('../utils');
-const session = require('express-session');
-
-const userSession = (request, response, next) => {
-  session({
-    name: 'auth_snapshot',
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.SECRET
-  });
-  next();
-}
-
-
+       isLoggedIn} = require('../utils');
 
 router.get('/', isLoggedIn, (request, response) => {
-  response.render('contacts');
+  DbContacts.getContacts()
+  .then(contacts => {
+    const user = request.session.user;
+    response.render('contacts', {id: user.id, username: user.username, admin: user.admin, contacts: contacts});
+  });
 });
 
-router.get('/new', userSession, isLoggedIn, (request, response) => {
-    console.log(request)
-  if(userHasAccess(request.session.user, 'createContact')) {
+router.get('/new', isLoggedIn, (request, response) => {
+  if(request.session.user.admin) {
     response.render('new');
   } else {
-    response.status(401).send('You are not authorized to access this page');
+    response.status(403).send('You are not authorized to access this page');
   }
 });
 
@@ -50,15 +39,18 @@ router.get('/:contactId', (request, response, next) => {
   .catch(error => renderError(error, response, response));
 });
 
-
 router.get('/:contactId/delete',(request, response, next) => {
-  const contactId = request.params.contactId;
-  DbContacts.deleteContact(contactId)
-  .then(function(contact) {
-    if (contact) return response.redirect('/');
-    next();
-  })
-  .catch(error => renderError(error, response, response));
+  if(request.session.user.admin) {
+    const contactId = request.params.contactId;
+    DbContacts.deleteContact(contactId)
+    .then(function(contact) {
+      if (contact) return response.redirect('/contacts');
+      next();
+    })
+    .catch(error => renderError(error, response, response));
+  } else {
+    response.status(403).send('You are not authorized to access this page');
+  }
 });
 
 router.get('/search', (request, response, next) => {

@@ -106,3 +106,9 @@ nav .search-form input {
   color: red;
   font-weight: bold;
 }
+
+.logout {
+  float:right;
+  margin: auto 1%;
+
+}

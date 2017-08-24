@@ -1,14 +1,14 @@
-  const db = require('./db')
+  const db = require('./db');
 
-const checkUser = user => {
-  return db.oneOrNone(
+  const checkUser = user => {
+    return db.oneOrNone(
     `SELECT * FROM member WHERE username = '${user.username}'`
   )
-  .catch(error => error);
-}
+    .catch(error => error);
+  };
 
-const createUser = user => {
-  return db.oneOrNone(`
+  const createUser = user => {
+    return db.oneOrNone(`
     INSERT INTO
       member (username, hashed_password)
     VALUES
@@ -16,12 +16,12 @@ const createUser = user => {
     RETURNING
       *
     `,
-    [
-      user.username,
-      user.password1,
-    ])
+      [
+        user.username,
+        user.password1,
+      ])
     .catch(error => error);
-}
+  };
 
 // const validateUser = user => {
 //   return db.oneOrNone(
@@ -32,13 +32,13 @@ const createUser = user => {
 //   .catch(error => error);
 // }
 //
-const getLoginUser = loginUserName => {
-  return db.oneOrNone(
+  const getLoginUser = loginUserName => {
+    return db.oneOrNone(
     `SELECT * FROM member
     WHERE username = '${loginUserName}'`
   )
-  .catch(error => error);
-}
+    .catch(error => error);
+  };
 
 // const getContacts = function(){
 //   return db.query(`
@@ -82,8 +82,8 @@ const getLoginUser = loginUserName => {
 //     .catch(error => error);
 // }
 //
-module.exports = {
-  checkUser,
-  createUser,
-  getLoginUser
-}
+  module.exports = {
+    checkUser,
+    createUser,
+    getLoginUser
+  };

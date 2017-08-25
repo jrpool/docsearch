@@ -1,6 +1,6 @@
 const DbContacts = require('../../db/contacts');
 const DbUsers = require('../../db/users');
-const {isLoggedIn, renderError} = require('../utils');
+const {renderError} = require('../utils');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 
@@ -27,12 +27,11 @@ router.post('/login', (request, response) => {
     giveReport(missingReport);
     return;
   }
-  userPromise = DbUsers.getLoginUser(formData.username);
-  contactsPromise = DbContacts.getContacts();
+  const userPromise = DbUsers.getLoginUser(formData.username);
+  const contactsPromise = DbContacts.getContacts();
   Promise.all([userPromise, contactsPromise])
   .then(valueArray => {
     const user = valueArray[0];
-    const contacts = valueArray[1];
     if (user === null) {
       giveReport(wrongReport);
       return '';
@@ -69,7 +68,7 @@ router.post('/signup', (request, response) => {
     else {
       const userPromise = DbUsers.createUser(formData);
       const contactsPromise = DbContacts.getContacts();
-      Promise.all([userValue, contactsValue])
+      Promise.all([userPromise, contactsPromise])
       .then(valueArray => {
         request.session.user = {
           username: valueArray[0].username, admin: valueArray[0].admin

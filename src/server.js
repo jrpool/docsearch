@@ -26,9 +26,11 @@ app.use((request, response, next) => {
 
 app.use(session({
   name: 'auth_snapshot',
+  store: new (require('connect-pg-simple')(session))(),
   resave: false,
   saveUninitialized: false,
-  secret: process.env.SECRET
+  secret: process.env.SECRET,
+  cookie: {maxAge: 60 * 60 * 1000}
 }));
 
 app.use('/', home_route);

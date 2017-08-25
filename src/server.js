@@ -7,7 +7,7 @@ const app = express();
 const home_route = require('./server/routes/home');
 const user_route = require('./server/routes/users');
 const contact_route = require('./server/routes/contacts');
-const {processSession} = require('/server/utils');
+const {processSession} = require('./server/utils');
 
 app.set('view engine', 'ejs');
 app.set(

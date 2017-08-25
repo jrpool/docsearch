@@ -83,10 +83,13 @@ router.post('/signup', (request, response) => {
   .catch(error => renderError(error, request, response));
 });
 
-router.get('/logout', (request, response) => {
+router.get('/logout', (request, response, next) => {
   request.session.user = {};
-  request.sessionID = '';
-  response.redirect('/');
+  DbUsers.killSession(request.sessionID)
+  .then(() => {
+    request.sessionID = '';
+    response.redirect('/');
+  })
 });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const DbUsers = require('../../db/users');
+const DbUsers = require('../db/users');
 
 const isLoggedIn = (request, response, next) => {
   if(!request.session.user) {
@@ -17,10 +17,8 @@ const processSession = (request, response, next) => {
     else {
       request.session.user = user;
       DbUsers.recordSession(request.sessionID, request.session.user.id);
+      next();
     }
-  })
-  .then(() => {
-    next();
   })
 };
 

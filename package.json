@@ -4,8 +4,7 @@
   "description": "Contact management demonstration with authentication and role-based authorization",
   "main": "src/server.js",
   "scripts": {
-    "db_reset":
-      "dropdb contacts_development && createdb contacts_development && npm run load_schema",
+    "db_reset": "dropdb contacts_development && createdb contacts_development && npm run load_schema",
     "lint": "eslint public/*.js src/**; exit 0",
     "lint_fix": "eslint --fix public/*.js src/**; exit 0",
     "load_schema": "psql -d contacts_development < src/db/schema/schema.sql",
@@ -20,6 +19,7 @@
   "dependencies": {
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
+    "connect-pg-simple": "^4.2.1",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",
     "express": "^4.15.2",

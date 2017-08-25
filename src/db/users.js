@@ -32,6 +32,9 @@ const getLoginUser = loginUserName => {
   .catch(error => error);
 };
 
+// const updateSessionId = sessionID => {
+//   return db.
+// }
 module.exports = {
   checkUser,
   createUser,

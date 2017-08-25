@@ -10,6 +10,7 @@ const hash_password = password => {
 };
 
 router.get('/login', (request, response) => {
+      console.log("========>",request.sessionID)
   if (request.session && request.session.user) {
     response.redirect('/contacts');
   }

@@ -9,42 +9,42 @@ const hash_password = password => {
   return bcrypt.hashSync(password, salt);
 };
 
-
 router.get('/login', (request, response) => {
-  response.render('login');
+  if (request.session && request.session.user) {
+    response.redirect('/contacts');
+  }
+  else {
+    response.render('login');
+  }
 });
 
 router.post('/login', (request, response) => {
-  if (!request.body.username.length || !request.body.password.length) {
-    response.send('Your username or password was missing!');
+  const missingReport = 'Your username or password was missing!';
+  const wrongReport = 'Your username or password was invalid!';
+  const giveReport = report => {response.send(report);};
+  const formData = request.body;
+  if (!formData.username.length || !formData.password.length) {
+    giveReport(missingReport);
     return;
   }
-  const user = DbUsers.getLoginUser(request.body.username);
-  const contacts = DbContacts.getContacts();
-  Promise.all([user, contacts])
-  .then((value) => {
-    const user = value[0];
-    const contacts = value[1];
-    request.session.user = {username: user.username, admin: user.admin};
-    if (user !== null) {
-      const storedPassword = user.hashed_password;
-      if (bcrypt.compareSync(request.body.password, storedPassword)) {
-        response.render(
-          'contacts', {id: user.id, username: user.username, admin: user.admin, contacts: contacts}
-        );
-        return '';
-      }
-      else {
-        response.send('Your username or password was invalid!');
-        return '';
-      }
-    }
-    else {
-      response.send('Your username or password was invalid!');
+  const userPromise = DbUsers.getLoginUser(formData.username);
+  const contactsPromise = DbContacts.getContacts();
+  Promise.all([userPromise, contactsPromise])
+  .then(valueArray => {
+    const user = valueArray[0];
+    if (user === null) {
+      giveReport(wrongReport);
       return '';
     }
+    const storedPassword = user.hashed_password;
+    if (!bcrypt.compareSync(formData.password, storedPassword)) {
+      giveReport(wrongReport);
+      return '';
+    }
+    request.session.user = {username: user.username, admin: user.admin};
+    response.redirect('/contacts');
   })
-  .catch(error => renderError(error, response, response));
+  .catch(error => renderError(error, request, response));
 });
 
 router.get('/signup', (request, response) => {
@@ -52,34 +52,38 @@ router.get('/signup', (request, response) => {
 });
 
 router.post('/signup', (request, response) => {
-  if (request.body.password2 !== request.body.password1) {
+  const formData = request.body;
+  if (formData.password2 !== formData.password1) {
     response.send('Your passwords are not identical!');
     return;
   }
-  request.body.password1 = hash_password(request.body.password1);
-  request.body.password2 = '';
-  DbUsers.checkUser(request.body)
+  formData.password1 = hash_password(formData.password1);
+  formData.password2 = '';
+  DbUsers.checkUser(formData)
   .then(user => {
     if (user !== null) {
       response.send('Somebody with that username is already registered!');
       return '';
     }
     else {
-      const user = DbUsers.createUser(request.body);
-      const contacts = DbContacts.getContacts();
-      Promise.all([user, contacts])
-      .then(values => {
-        response.render('contacts', {contacts: values[1], user: values[0]});
+      const userPromise = DbUsers.createUser(formData);
+      const contactsPromise = DbContacts.getContacts();
+      Promise.all([userPromise, contactsPromise])
+      .then(valueArray => {
+        request.session.user = {
+          username: valueArray[0].username, admin: valueArray[0].admin
+        };
+        response.redirect('/contacts');
       });
     }
   })
-  .catch(error => renderError(error, response, response));
+  .catch(error => renderError(error, request, response));
 });
 
 router.get('/logout', (request, response) => {
   request.session.user = {};
   request.sessionID = '';
-  response.render('login');
+  response.redirect('/login');
 });
 
 module.exports = router;

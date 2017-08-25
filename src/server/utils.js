@@ -4,13 +4,10 @@ const renderError = function(error, request, response) {
 
 function isLoggedIn(request, response, next) {
   if(!request.session || !request.session.user) {
-    response.render('login');
+    response.redirect('/');
   } else {
     next();
   }
 }
 
-module.exports = {
-  renderError,
-  isLoggedIn,
-};
+module.exports = {renderError, isLoggedIn};

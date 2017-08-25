@@ -9,7 +9,12 @@ const user_route = require('./server/routes/users');
 const contact_route = require('./server/routes/contacts');
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set(
+  'views',
+  ['contacts', 'home', 'users', 'utils'].map(
+    value => __dirname + '/views/' + value
+  )
+);
 
 app.use(morgan('tiny'));
 app.use(express.static('public'));
@@ -21,9 +26,11 @@ app.use((request, response, next) => {
 
 app.use(session({
   name: 'auth_snapshot',
+  store: new (require('connect-pg-simple')(session))(),
   resave: false,
   saveUninitialized: false,
-  secret: process.env.SECRET
+  secret: process.env.SECRET,
+  cookie: {maxAge: 60 * 60 * 1000}
 }));
 
 app.use('/', home_route);

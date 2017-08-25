@@ -1,13 +1,19 @@
 const DbContacts = require('../../db/contacts');
 const router = require('express').Router();
-const {renderError,
-       isLoggedIn} = require('../utils');
+const {isLoggedIn, renderError} = require('../utils');
 
 router.get('/', isLoggedIn, (request, response) => {
   DbContacts.getContacts()
   .then(contacts => {
     const user = request.session.user;
-    response.render('contacts', {id: user.id, username: user.username, admin: user.admin, contacts: contacts});
+    response.render(
+      'contacts', {
+        id: user.id,
+        username: user.username,
+        admin: user.admin,
+        contacts: contacts
+      }
+    );
   });
 });
 

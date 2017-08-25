@@ -13,6 +13,6 @@ CREATE TABLE member (
 );
 CREATE TABLE session (
   sid text primary key,
-  sess json NOT NULL,
-  expire timestamp(6) NOT NULL
+  member integer references member(id),
+  last_visit date NOT NULL
 );

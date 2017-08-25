@@ -10,15 +10,16 @@ const checkUser = user => {
 const createUser = user => {
   return db.oneOrNone(`
     INSERT INTO
-      member (username, hashed_password)
+      member (username, hashed_password, admin)
     VALUES
-      ($1::text, $2::text)
+      ($1::text, $2::text, $3::boolean)
     RETURNING
       *
     `,
     [
       user.username,
       user.password1,
+      user.admin
     ])
   .catch(error => error);
 };

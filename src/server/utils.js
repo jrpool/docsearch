@@ -10,7 +10,4 @@ function isLoggedIn(request, response, next) {
   }
 }
 
-module.exports = {
-  renderError,
-  isLoggedIn,
-};
+module.exports = {renderError, isLoggedIn};

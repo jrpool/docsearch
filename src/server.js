@@ -9,7 +9,12 @@ const user_route = require('./server/routes/users');
 const contact_route = require('./server/routes/contacts');
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set(
+  'views',
+  ['contacts', 'home', 'users', 'utils'].map(
+    value => __dirname + '/views/' + value
+  )
+);
 
 app.use(morgan('tiny'));
 app.use(express.static('public'));

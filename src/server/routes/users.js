@@ -9,7 +9,6 @@ const hash_password = password => {
   return bcrypt.hashSync(password, salt);
 };
 
-
 router.get('/login', (request, response) => {
   response.render('login');
 });

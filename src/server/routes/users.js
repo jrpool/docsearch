@@ -10,8 +10,7 @@ const hash_password = password => {
 };
 
 router.get('/login', (request, response) => {
-      console.log("========>",request.sessionID)
-  if (request.session && request.session.user) {
+  if (request.session.user) {
     response.redirect('/contacts');
   }
   else {
@@ -60,6 +59,9 @@ router.post('/signup', (request, response) => {
   }
   formData.password1 = hash_password(formData.password1);
   formData.password2 = '';
+  if (!formData.admin) {
+    formData.admin = false;
+  }
   DbUsers.checkUser(formData)
   .then(user => {
     if (user !== null) {
@@ -84,7 +86,7 @@ router.post('/signup', (request, response) => {
 router.get('/logout', (request, response) => {
   request.session.user = {};
   request.sessionID = '';
-  response.redirect('/login');
+  response.redirect('/');
 });
 
 module.exports = router;

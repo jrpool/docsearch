@@ -1,5 +1,3 @@
-const DbUsers = require('../db/users');
-
 const isLoggedIn = (request, response, next) => {
   if(!request.session.user) {
     response.redirect('/');
@@ -22,7 +20,7 @@ const renderMessage = function(messageType, response) {
     missing3Credentials: 'A username and duplicate passwords are required.',
     otherwise: 'Something was wrong with the inputs.'
   };
-  response.send(messageTypes[messageType] || messageTypes[otherwise]);
+  response.send(messageTypes[messageType] || messageTypes.otherwise);
 };
 
 module.exports = {isLoggedIn, renderError, renderMessage};

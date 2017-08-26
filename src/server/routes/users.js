@@ -84,7 +84,7 @@ router.post('/signup', (request, response) => {
   .catch(error => renderError(error, request, response));
 });
 
-router.get('/logout', (request, response, next) => {
+router.get('/logout', (request, response) => {
   delete request.session.user;
   delete request.session.id;
   response.redirect('/');

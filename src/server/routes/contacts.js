@@ -56,7 +56,6 @@ router.get('/:contactId', (request, response, next) => {
           admin: user.admin
         }
       );
-      next();
     }
   })
   .catch(error => renderError(error, response, response));

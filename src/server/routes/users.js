@@ -1,6 +1,6 @@
 const DbContacts = require('../../db/contacts');
 const DbUsers = require('../../db/users');
-const {renderError} = require('../utils');
+const {renderError, renderMessage} = require('../utils');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 
@@ -50,6 +50,10 @@ router.get('/signup', (request, response) => {
 
 router.post('/signup', (request, response) => {
   const formData = request.body;
+  if (!formData.username || !formData.password1 || !formData.password2) {
+    renderMessage('missing3Credentials', response);
+    return;
+  }
   if (formData.password2 !== formData.password1) {
     renderMessage('passwordsDiffer', response);
     return;

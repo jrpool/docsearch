@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS contact, member, session;
+DROP TABLE IF EXISTS contact, member;
 
 CREATE TABLE contact (
   id serial primary key,
@@ -10,9 +10,4 @@ CREATE TABLE member (
   username varchar(255) NOT NULL UNIQUE,
   hashed_password varchar(255) NOT NULL,
   admin boolean default false not null
-);
-CREATE TABLE session (
-  sid text primary key,
-  member integer references member(id),
-  last_visit date NOT NULL
 );

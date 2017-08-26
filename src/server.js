@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
@@ -27,13 +28,14 @@ app.use((request, response, next) => {
 
 app.use(session({
   name: 'auth_snapshot',
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   secret: process.env.SECRET,
-  cookie: {maxAge: 60 * 60 * 1000}
+  cookie: {maxAge: 30 * 24 * 60 * 60 * 1000},
+  store: new FileStore()
 }));
 
-app.use(processSession);
+// app.use(processSession);
 
 app.use('/', home_route);
 app.use('/users', user_route);

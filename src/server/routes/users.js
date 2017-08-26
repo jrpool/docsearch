@@ -19,29 +19,26 @@ router.get('/login', (request, response) => {
 });
 
 router.post('/login', (request, response) => {
-  const missingReport = 'Your username or password was missing!';
-  const wrongReport = 'Your username or password was invalid!';
-  const giveReport = report => {response.send(report);};
   const formData = request.body;
   if (!formData.username.length || !formData.password.length) {
-    giveReport(missingReport);
+    renderMessage('missing2Credentials', response);
     return;
   }
-  const userPromise = DbUsers.getLoginUser(formData.username);
-  const contactsPromise = DbContacts.getContacts();
-  Promise.all([userPromise, contactsPromise])
-  .then(valueArray => {
-    const user = valueArray[0];
+  DbUsers.getLoginUser(formData.username)
+  .then(user => {
     if (user === null) {
-      giveReport(wrongReport);
+      renderMessage('badLogin', response);
       return '';
     }
     const storedPassword = user.hashed_password;
     if (!bcrypt.compareSync(formData.password, storedPassword)) {
-      giveReport(wrongReport);
+      renderMessage('badLogin', response);
       return '';
     }
-    request.session.user = {username: user.username, admin: user.admin};
+    delete user.hashed_password;
+    request.session.user = user;
+  })
+  .then(() => {
     response.redirect('/contacts');
   })
   .catch(error => renderError(error, request, response));
@@ -54,7 +51,7 @@ router.get('/signup', (request, response) => {
 router.post('/signup', (request, response) => {
   const formData = request.body;
   if (formData.password2 !== formData.password1) {
-    response.send('Your passwords are not identical!');
+    renderMessage('passwordsDiffer', response);
     return;
   }
   formData.password1 = hash_password(formData.password1);
@@ -65,7 +62,7 @@ router.post('/signup', (request, response) => {
   DbUsers.checkUser(formData)
   .then(user => {
     if (user !== null) {
-      response.send('Somebody with that username is already registered!');
+      renderMessage('alreadyUser', response);
       return '';
     }
     else {
@@ -84,12 +81,9 @@ router.post('/signup', (request, response) => {
 });
 
 router.get('/logout', (request, response, next) => {
-  request.session.user = {};
-  DbUsers.killSession(request.sessionID)
-  .then(() => {
-    request.sessionID = '';
-    response.redirect('/');
-  })
+  delete request.session.user;
+  delete request.session.id;
+  response.redirect('/');
 });
 
 module.exports = router;

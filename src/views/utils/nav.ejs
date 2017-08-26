@@ -1,9 +1,19 @@
 <nav>
-  <a href="/">Home</a>
+  <a class="buttonish" href="/">Home</a>
+  <a class="buttonish" href="/contacts">List Contacts</a>
   <form method="get" action="/contacts/search" class="search-form">
-    <input name="q" type="search" placeholder="search" value="<%= query %>" autofocus/>
+    <input
+      name="q"
+      type="search"
+      placeholder="name part"
+      value="<%= query %>"
+      autofocus
+      size="15"
+    />
     <input type="submit" style="display: none" />
   </form>
-  <a href="/contacts/new">New Contact</a>
-  <a class="logout" href="/users/logout">Log Out</a>
+  <a class="buttonish" href="/contacts/new">Add Contact</a>
+
+  <a class="buttonish logout"
+    href="/users/logout">Log Out as <%= username %></a>
 </nav>

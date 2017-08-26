@@ -3,8 +3,14 @@ body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  background-color: darkgrey;
+  background-color: darkgray;
   font-size: 16px;
+}
+
+.buttonish {
+  background-color: darkgray;
+  border-radius: 5px;
+  padding: 0 3px;
 }
 
 html,
@@ -20,7 +26,7 @@ textarea {
 nav {
   background-color: black;
   color: white;
-  padding: 0.3em 0.5em;
+  padding: 0.5em 0.5em;
 }
 
 nav a {
@@ -35,7 +41,7 @@ nav .search-form {
 nav .search-form input {
   border-radius: 5px;
   border: none;
-  padding: 0.3em 0.5em;
+  padding: 0 0.5em;
 }
 
 
@@ -109,7 +115,7 @@ nav .search-form input {
 }
 
 .logout {
-  float:right;
-  margin: auto 1%;
+  float: right;
+  margin-right: 1%;
 
 }

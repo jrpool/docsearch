@@ -1,20 +1,21 @@
 {
-  "name": "auth-snapshot",
+  "name": "docsearch",
   "version": "1.0.0",
-  "description": "Contact management demonstration with authentication and role-based authorization",
+  "description": "Website offering search of a repository of documents",
   "main": "src/server.js",
   "scripts": {
-    "db_reset": "dropdb contacts_development && createdb contacts_development && npm run load_schema",
+    "db_reset":
+      "dropdb docsearch && createdb docsearch && npm run load_schema",
     "lint": "eslint public/*.js src/**; exit 0",
     "lint_fix": "eslint --fix public/*.js src/**; exit 0",
-    "load_schema": "psql -d contacts_development < src/db/schema/schema.sql",
-    "load_contacts": "psql -d contacts_development < test/seed/contacts.sql",
+    "load_schema": "psql -d docsearch < src/db/schema/schema.sql",
+    "load_test_data": "psql -d docsearch < test/seed/data.sql",
     "start": "node src/server.js",
     "start_dev": "nodemon src/server.js",
     "test": "echo 'Error: no test specified' && exit 1"
   },
   "keywords": [],
-  "author": "Eugene Baah and Jonathan Pool",
+  "author": "Jonathan Pool",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^1.0.2",
@@ -34,12 +35,12 @@
     "eslint": "^4.0.0"
   },
   "bugs": {
-    "url": "https://github.com/jrpool/auth.git/issues"
+    "url": "https://github.com/jrpool/docsearch.git/issues"
   },
-  "homepage": "https://github.com/jrpool/auth.git/index.html",
+  "homepage": "https://github.com/jrpool/docsearch.git/index.html",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jrpool/auth.git"
+    "url": "https://github.com/jrpool/docsearch.git"
   },
   "babel": {
     "presets": [

@@ -26,7 +26,7 @@ app.use((request, response, next) => {
 });
 
 app.use(session({
-  name: 'auth_snapshot',
+  name: 'docsearch',
   resave: true,
   saveUninitialized: true,
   secret: process.env.SECRET || 'cookiesecret',

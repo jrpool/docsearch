@@ -6,13 +6,13 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
 const home_route = require('./server/routes/home');
-const user_route = require('./server/routes/users');
-const contact_route = require('./server/routes/contacts');
+const user_route = require('./server/routes/user');
+const doc_route = require('./server/routes/docs');
 
 app.set('view engine', 'ejs');
 app.set(
   'views',
-  ['contacts', 'home', 'users', 'utils'].map(
+  ['docs', 'home', 'user', 'util'].map(
     value => __dirname + '/views/' + value
   )
 );
@@ -37,8 +37,8 @@ app.use(session({
 // app.use(processSession);
 
 app.use('/', home_route);
-app.use('/users', user_route);
-app.use('/contacts', contact_route);
+app.use('/user', user_route);
+app.use('/docs', doc_route);
 
 app.use((request, response) => {
   response.render('not_found');

@@ -1,0 +1,19 @@
+<%- include head.ejs %>
+
+    <h1>Prospect Registration</h1>
+
+    <p>If you are a prospective BTH member and not yet registered, you can register here.</p>
+
+    <p><span class="link"><a href="/">No, this does not apply to me.</a></span></p>
+
+    <form method="post" action="/user/register/prospect" class="form">
+
+      <pre class="form-error"></pre>
+
+      <%- include registration-data.ejs %>
+
+      <input type="submit" value="Request registration as a prospective member">
+
+    </form>
+
+<%- include footer.ejs %>

@@ -1,0 +1,27 @@
+<%- include head.ejs %>
+
+    <h1>Manager Registration</h1>
+
+    <p>If you are a current BTH manager and not yet registered, you can register here.</p>
+
+    <p><span class="link"><a href="/">No, this does not apply to me.</a></span></p>
+
+    <form method="post" action="/user/register/manager" class="form">
+
+      <pre class="form-error"></pre>
+
+      <label>
+        <span>Your title:</span>
+        <input required
+          type="text" name="title" autofocus
+          size="30" minlength="7" maxlength="30"
+        >
+      </label>
+
+      <%- include registration-data.ejs %>
+
+      <input type="submit" value="Request registration as a manager">
+
+    </form>
+
+<%- include footer.ejs %>

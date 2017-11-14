@@ -1,0 +1,22 @@
+<%- include head.ejs %>
+
+    <h1>Login</h1>
+
+    <p>If you are already registered, you can log in here.</p>
+
+    <p><span class="link"><a href="/">No, I’m not registered yet.</a></span></p>
+
+    <form method="post" action="/user/login" class="form">
+      <pre class="form-error"></pre>
+      <label>
+        <span>Unit or other ID:</span>
+        <input required autofocus type="text" name="id" />
+      </label>
+      <label>
+        <span>Password:</span>
+        <input type="password" name="password" />
+      </label>
+      <input type="submit" value="Log in">
+    </form>
+
+<%- include foot.ejs %>

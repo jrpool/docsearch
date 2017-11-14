@@ -1,0 +1,30 @@
+<%- include head.ejs %>
+
+    <h1>Registration</h1>
+
+    <p>If you are not yet registered, you can register here.</p>
+
+    <p><span class="link"><a href="/user/login">
+      No, I’m already registered.
+    </a></span></p>
+
+    <p>In what capacity are you registering?</p>
+
+    <form method="post" action="/user/register/role" class="form">
+      <pre class="form-error"></pre>
+      <label>
+        <span>I am a current member of BTH.</span>
+        <input type="radio" name="role" value="member">
+      </label>
+      <label>
+        <span>I am a prospective member of BTH.</span>
+        <input type="radio" name="role" value="prospect">
+      </label>
+      <label>
+        <span>I am a manager of BTH.</span>
+        <input type="radio" name="role" value="mgr">
+      </label>
+      <input type="submit" value="Continue">
+    </form>
+
+<%- include footer.ejs %>

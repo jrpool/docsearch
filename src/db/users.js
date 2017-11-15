@@ -1,8 +1,15 @@
 const db = require('./db');
 
-const checkUser = user => {
+const getEmailUser = email => {
   return db.oneOrNone(
-    `SELECT * FROM member WHERE username = '${user.username}'`
+    `SELECT * FROM users WHERE email = '${email}'`
+  )
+  .catch(error => error);
+};
+
+const getUserUser = user => {
+  return db.oneOrNone(
+    `SELECT * FROM users WHERE email = '${user.email}'`
   )
   .catch(error => error);
 };
@@ -10,30 +17,32 @@ const checkUser = user => {
 const createUser = user => {
   return db.oneOrNone(`
     INSERT INTO
-      member (username, hashed_password, admin)
+      users (pwdhash, name, email, role, unit, title)
     VALUES
-      ($1::text, $2::text, $3::boolean)
+      (
+        $1::VARCHAR(255),
+        $2::VARCHAR(40),
+        $3::VARCHAR(50),
+        $4::SMALLINT,
+        $5::VARCHAR(3),
+        $6::VARCHAR(30)
+      )
     RETURNING
       *
     `,
     [
-      user.username,
-      user.password1,
-      user.admin
+      user.pwdhash,
+      user.name,
+      user.email,
+      user.role,
+      user.unit,
+      user.title
     ])
   .catch(error => error);
 };
 
-const getLoginUser = loginUserName => {
-  return db.oneOrNone(
-    `SELECT * FROM member
-    WHERE username = '${loginUserName}'`
-  )
-  .catch(error => error);
-};
-
 module.exports = {
-  checkUser,
-  createUser,
-  getLoginUser
+  getEmailUser,
+  getUserUser,
+  createUser
 };

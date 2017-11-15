@@ -11,9 +11,10 @@ CREATE TABLE users (
 );
 
 COMMENT ON TABLE user IS 'registered users';
-COMMENT ON COLUMN user.id IS 'ID (unit if member, resident, or prospect)';
+COMMENT ON COLUMN user.id IS 'ID';
 COMMENT ON COLUMN user.pwdhash IS 'hash of password';
 COMMENT ON COLUMN user.name IS 'Full name';
 COMMENT ON COLUMN user.email IS 'Email address, lower-cased';
 COMMENT ON COLUMN user.role IS '0=member, 1=resident, 2=mgr, 3=prospect';
-COMMENT ON COLUMN user.unit IS 'unit (if member, resident, or prospect)'
+COMMENT ON COLUMN user.unit IS 'unit (if member, resident, or prospect)';
+COMMENT ON COLUMN user.title  IS 'title (if manager)';

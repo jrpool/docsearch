@@ -1,23 +1,19 @@
-const DbContacts = require('../../db/contacts');
 const router = require('express').Router();
-const {isLoggedIn, renderError, renderMessage} = require('../utils');
+const {getRole, renderError, renderMessage} = require('../util');
 
-router.get('/', isLoggedIn, (request, response) => {
-  DbContacts.getContacts()
-  .then(contacts => {
-    const user = request.session.user;
-    response.render(
-      'contacts', {
-        id: user.id,
-        username: user.username,
-        admin: user.admin,
-        contacts: contacts || []
-      }
-    );
-  });
+router.get('/', getRole, (request, response) => {
+  const user = request.session.user;
+  response.render(
+    'contacts', {
+      id: user.id,
+      username: user.username,
+      admin: user.admin,
+      contacts: contacts || []
+    }
+  );
 });
 
-router.get('/new', isLoggedIn, (request, response) => {
+router.get('/add', getRole, (request, response) => {
   if(request.session.user.admin) {
     const user = request.session.user;
     response.render(

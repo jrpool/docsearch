@@ -1,4 +1,4 @@
-const isLoggedIn = (request, response, next) => {
+const getRole = (request, response, next) => {
   if(!request.session.user) {
     response.redirect('/');
   } else {

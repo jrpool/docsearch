@@ -1,9 +1,9 @@
 html,
 body {
-  margin: 0;
+  margin: 3%;
   padding: 0;
-  width: 100vw;
-  background-color: darkgray;
+  width: 88vw;
+  background-color: oldlace;
   font-size: 16px;
 }
 
@@ -11,51 +11,6 @@ body {
   background-color: darkgray;
   border-radius: 5px;
   padding: 0 3px;
-}
-
-html,
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: monospace;
-}
-
-
-nav {
-  background-color: black;
-  color: white;
-  padding: 0.5em 0.5em;
-}
-
-nav a {
-  text-decoration: none;
-  color: inherit;
-}
-
-nav .search-form {
-  display: inline-block;
-}
-
-nav .search-form input {
-  border-radius: 5px;
-  border: none;
-  padding: 0 0.5em;
-}
-
-
-.page-column {
-  width: 700px;
-  margin: 0 auto;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-  background-color: white;
-  min-height: 100vh;
-}
-
-.page-column-content{
-  padding: 1em;
 }
 
 .contact-list{
@@ -87,29 +42,21 @@ nav .search-form input {
   text-align: right;
 }
 
-.login-form label,
-.signup-form label,
-.new-contact-form label {
-  display: block;
-  margin-bottom: 1em;
+.form input[type="submit"] {
+  margin-top: 1em;
 }
 
-.login-form label > span,
-.signup-form label > span,
-.new-contact-form label > span {
+.form label {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.form label > span {
   display: inline-block;
   min-width: 8em;
 }
 
-.login-form input[type="submit"],
-.signup-form input[type="submit"],
-.new-contact-form input[type="submit"] {
-  margin-top: 1em;
-}
-
-.login-form-errors,
-.signup-form-errors,
-.new-contact-form-errors {
+.form-errors {
   color: red;
   font-weight: bold;
 }
@@ -117,5 +64,47 @@ nav .search-form input {
 .logout {
   float: right;
   margin-right: 1%;
+}
 
+html,
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: serif;
+}
+
+nav {
+  background-color: black;
+  color: white;
+  padding: 0.5em 0.5em;
+}
+
+nav a {
+  text-decoration: none;
+  color: inherit;
+}
+
+nav .search-form {
+  display: inline-block;
+}
+
+nav .search-form input {
+  border-radius: 5px;
+  border: none;
+  padding: 0 0.5em;
+}
+
+.page-column {
+  width: 700px;
+  margin: 0 auto;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  background-color: white;
+  min-height: 100vh;
+}
+
+.page-column-content{
+  padding: 1em;
 }

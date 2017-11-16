@@ -10,12 +10,7 @@ const user_route = require('./server/routes/user');
 const doc_route = require('./server/routes/docs');
 
 app.set('view engine', 'ejs');
-app.set(
-  'views',
-  ['docs', 'home', 'user', 'util'].map(
-    value => __dirname + '/views/' + value
-  )
-);
+app.set('views', __dirname + '/views');
 
 app.use(morgan('tiny'));
 app.use(express.static('public'));
@@ -41,7 +36,7 @@ app.use('/user', user_route);
 app.use('/docs', doc_route);
 
 app.use((request, response) => {
-  response.render('not_found');
+  response.render('util/not_found');
 });
 
 const port = process.env.PORT || 3000;

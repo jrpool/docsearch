@@ -1,4 +1,4 @@
-<%- include head.ejs %>
+<%- include('../util/head.ejs'); %>
 
     <h1>Login</h1>
 
@@ -9,14 +9,25 @@
     <form method="post" action="/user/login" class="form">
       <pre class="form-error"></pre>
       <label>
-        <span>Unit or other ID:</span>
-        <input required autofocus type="text" name="id" />
+        <span>Unit or other ID (format: 1AB or 1A):</span>
+        <input placeholder="1A" required autofocus
+          type="text" name="id"
+          size="3" minlength="2" maxlength="3"
+          pattern="\d[A-H]{1,2}"
+        >
+      </label>
+      <label>
+        <span>Make password visible below?</span>
+        <input type="checkbox" name="pwsee" value="yes" checked>
       </label>
       <label>
         <span>Password:</span>
-        <input type="password" name="password" />
+        <input required
+          type="text" name="password"
+          size="40" minlength="5" maxlength="40"
+        >
       </label>
       <input type="submit" value="Log in">
     </form>
 
-<%- include foot.ejs %>
+<%- include('../util/foot.ejs'); %>

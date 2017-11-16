@@ -1,4 +1,4 @@
-<%- include head.ejs %>
+<%- include('../util/head.ejs'); %>
 
     <h1>Registration</h1>
 
@@ -13,22 +13,22 @@
     <form method="post" action="/user/register/role" class="form">
       <pre class="form-error"></pre>
       <label>
-        <span>I am a current member of BTH.</span>
         <input type="radio" name="role" value="member">
+        <span>I am a current member of BTH.</span>
       </label>
       <label>
-        <span>I am a nonmember resident of BTH.</span>
         <input type="radio" name="role" value="resident">
+        <span>I am a nonmember resident of BTH.</span>
       </label>
       <label>
-        <span>I am a prospective member of BTH.</span>
         <input type="radio" name="role" value="prospect">
+        <span>I am a prospective member of BTH.</span>
       </label>
       <label>
-        <span>I am a manager of BTH.</span>
         <input type="radio" name="role" value="mgr">
+        <span>I am a manager of BTH.</span>
       </label>
       <input type="submit" value="Continue">
     </form>
 
-<%- include footer.ejs %>
+<%- include('../util/foot.ejs'); %>

@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "db_reset": "dropdb docsearch && createdb docsearch && npm run load_schema",
-    "lint": "eslint public/*.js src/**/*.js; exit 0",
+    "lint": "eslint public/*.js 'src/**/*.js'; exit 0",
     "lint_fix": "eslint --fix public/*.js src/**; exit 0",
     "load_schema": "psql -d docsearch < src/db/schema/schema.sql",
     "load_test_data": "psql -d docsearch < test/seed/data.sql",

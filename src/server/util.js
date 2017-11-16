@@ -1,9 +1,5 @@
-const getRole = (request, response, next) => {
-  if(!request.session.user) {
-    response.redirect('/');
-  } else {
-    next();
-  }
+const getRole = (request) => {
+  return request.session.user.role || -1;
 };
 
 const renderError = function(error, request, response) {
@@ -23,4 +19,4 @@ const renderMessage = function(messageType, response) {
   response.send(messageTypes[messageType] || messageTypes.otherwise);
 };
 
-module.exports = {isLoggedIn, renderError, renderMessage};
+module.exports = {getRole, renderError, renderMessage};

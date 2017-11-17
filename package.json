@@ -7,6 +7,7 @@
     "db_reset": "dropdb docsearch && createdb docsearch && npm run load_schema",
     "lint": "eslint public/*.js 'src/**/*.js'; exit 0",
     "lint_fix": "eslint --fix public/*.js src/**; exit 0",
+    "load_schema_data": "psql -d docsearch < src/db/schema/schemadata.sql",
     "load_schema": "psql -d docsearch < src/db/schema/schema.sql",
     "load_test_data": "psql -d docsearch < test/seed/data.sql",
     "start": "node src/server.js",
@@ -24,7 +25,7 @@
     "express": ">=4.16.2",
     "express-session": ">=1.15.6",
     "morgan": ">=1.9.0",
-    "pg-promise": ">=7.3.1",
+    "pg": ">=7.4.0",
     "session-file-store": ">=1.1.2"
   },
   "devDependencies": {

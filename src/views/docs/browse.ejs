@@ -1,17 +1,23 @@
-<%- include head.ejs %>
+<%- include('../util/head.ejs'); %>
 
     <h1>Browse Documents</h1>
 
     <p>Here is a list of files and directories to which you have access.</p>
 
-    <p>If you click on a <em>file</em>, you will either see it in your browser or download it. If you click on a <em>directory</em>, you will see a list of the files and directories that it contains.</p>
+    <ul>
+      <li>If you click on a <em>file</em>, you will either see it in your browser or download it.</li>
+      <li>If you click on a <em>directory</em>, you will see a list of the files and directories that it contains.</li>
+    </ul>
 
-    <p><span class="link"><a href="/docs/search">No, I want to search for documents.</a></span></p>
+    <p><span class="link"><a href="/docs/search">No, I want to <em>search</em> for documents.</a></span></p>
 
     <p><span class="link"><a href="/">No, I want to do something else.</a></span></p>
 
-    <div class="tree">
-      <%= thisUser.role.treeTop %>
+    <div class="dirlist">
+      <%= dirData.map(item => {
+        
+      })
+      <%= treeRoot %>
     </div>
 
-<%- include foot.ejs %>
+<%- include('../util/foot.ejs'); %>

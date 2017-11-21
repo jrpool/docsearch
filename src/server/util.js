@@ -1,9 +1,3 @@
-const db = require('../db/db');
-
-const getRole = (request) => {
-  return request.session.user.role || -1;
-};
-
 const renderError = function(error, request, response) {
   response.send(`ERROR: ${error.message}\n\n${error.stack}`);
 };
@@ -21,11 +15,4 @@ const renderMessage = function(messageType, response) {
   response.send(messageTypes[messageType] || messageTypes.otherwise);
 };
 
-const roleDirs = async roles => {
-  const allRoleDirs = await db.pool.query('SELECT role, dir FROM roledirs');
-  return allRoleDirs.reduce((dirs, v) => {
-    
-  },[])
-};
-
-module.exports = {getRole, renderError, renderMessage};
+module.exports = {renderError, renderMessage};

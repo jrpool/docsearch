@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
 const home_route = require('./server/routes/home');
-const user_route = require('./server/routes/user');
-const doc_route = require('./server/routes/docs');
+const usr_route = require('./server/routes/usr');
+const doc_route = require('./server/routes/docs').router;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -32,7 +32,7 @@ app.use(session({
 // app.use(processSession);
 
 app.use('/', home_route);
-app.use('/user', user_route);
+app.use('/usr', usr_route);
 app.use('/docs', doc_route);
 
 app.use((request, response) => {

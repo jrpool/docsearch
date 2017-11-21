@@ -1,4 +1,4 @@
-const DbUser = require('../../db/user');
+const DbUser = require('../../db/usr');
 const {renderError, renderMessage} = require('../util');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
@@ -9,11 +9,11 @@ const hash_password = password => {
 };
 
 router.get('/register', (request, response) => {
-  response.render('user/register');
+  response.render('usr/register');
 });
 
 router.get('/login', (request, response) => {
-  response.render('user/login');
+  response.render('usr/login');
 });
 
 router.post('/signup', (request, response) => {
@@ -31,15 +31,15 @@ router.post('/signup', (request, response) => {
   if (!formData.admin) {
     formData.admin = false;
   }
-  DbUsers.checkUser(formData)
+  DbUser.checkUser(formData)
   .then(user => {
     if (user !== null) {
       renderMessage('alreadyUser', response);
       return '';
     }
     else {
-      const userPromise = DbUsers.createUser(formData);
-      const contactsPromise = DbContacts.getContacts();
+      const userPromise = DbUser.createUser(formData);
+      const contactsPromise = DbUser.getContacts();
       Promise.all([userPromise, contactsPromise])
       .then(valueArray => {
         request.session.user = {
@@ -67,7 +67,7 @@ router.post('/login', (request, response) => {
     renderMessage('missing2Credentials', response);
     return;
   }
-  DbUsers.getLoginUser(formData.username)
+  DbUser.getLoginUser(formData.username)
   .then(user => {
     if (user === null) {
       renderMessage('badLogin', response);

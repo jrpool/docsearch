@@ -1,15 +1,18 @@
 {
   "name": "docsearch",
   "version": "1.0.0",
-  "description": "Website offering search of a repository of documents",
+  "description": "Website for search and retrieval in a repository of documents",
   "main": "src/server.js",
   "scripts": {
-    "db_reset": "dropdb docsearch && createdb docsearch && npm run load_schema",
+    "create_db": "node src/db/config/createdb",
+    "drop_db": "node src/db/config/dropdb",
+    "init_db": "node src/db/config/execfile schema",
     "lint": "eslint public/*.js 'src/**/*.js'; exit 0",
     "lint_fix": "eslint --fix public/*.js src/**; exit 0",
     "load_schema_data": "psql -d docsearch < src/db/schema/schemadata.sql",
     "load_schema": "psql -d docsearch < src/db/schema/schema.sql",
     "load_test_data": "psql -d docsearch < test/seed/data.sql",
+    "seed_db": "node src/db/config/execfile schemadata",
     "start": "node src/server.js",
     "start_dev": "nodemon src/server.js",
     "test": "echo 'Error: no test specified' && exit 1"
@@ -30,7 +33,7 @@
   },
   "devDependencies": {
     "nodemon": ">=1.12.1",
-    "babel-preset-es2015": ">=7.0.0-beta",
+    "babel-preset-env": ">=1.6.1",
     "babel-register": ">=6.26.0",
     "eslint": ">=4.11.0"
   },
@@ -42,11 +45,6 @@
     "type": "git",
     "url": "https://github.com/jrpool/docsearch.git"
   },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
-  },
   "eslintConfig": {
     "env": {
       "node": true,
@@ -57,6 +55,7 @@
     },
     "extends": "eslint:recommended",
     "parserOptions": {
+      "ecmaVersion": 2017,
       "sourceType": "module"
     },
     "rules": {
@@ -119,8 +118,11 @@
         "always"
       ],
       "space-before-function-paren": [
-        "error",
-        "never"
+        "error", {
+          "anonymous": "never",
+          "named": "never",
+          "asyncArrow": "always"
+        }
       ],
       "space-in-parens": [
         "error",

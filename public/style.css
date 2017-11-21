@@ -8,38 +8,71 @@ body {
 }
 
 .buttonish {
-  background-color: darkgray;
+  background-color: #fe0;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
   border-radius: 5px;
-  padding: 0 3px;
+  padding: 1px 3px 3px 3px;
 }
 
-.contact-list{
+.buttonish>a:link,
+.buttonish>a:visited {
+  text-decoration-line: none;
+}
+
+.contact-list {
   display: flex;
   flex-direction: column;
 }
 
-.contact-list-member{
+.contact-list-member {
   display: flex;
   flex-direction: row;
   padding: 0.2em 0.3em;
 }
-.contact-list-member:hover{
+.contact-list-member:hover {
   background-color: lightgrey;
 }
 
-.contact-list-member a{
+.contact-list-member a {
   text-decoration: none;
 }
-.contact-list-member a:hover{
+.contact-list-member a:hover {
   text-decoration: underline;
 }
 
-.contact-list-member .contact-link{
+.contact-list-member .contact-link {
   flex: 1 1 auto;
 }
 
-.contact-show-page-controls{
+.contact-show-page-controls {
   text-align: right;
+}
+
+.dirlist {
+  padding: 9px;
+  background-color: ivory;
+  font-family: monospace;
+}
+
+.dirlist>p {
+  margin-left: 6ch;
+  text-indent: -3ch;
+}
+
+.dirlist>table {
+  margin: 9px;
+}
+
+.dirlist>table,
+.dirlist>table th,
+.dirlist>table td {
+  border-style: solid;
+  border-color: tan;
+  border-width: 1px;
+  border-collapse: collapse;
+  padding: 0 9px;
 }
 
 .form input[type="submit"] {
@@ -109,6 +142,10 @@ nav .search-form input {
   min-height: 100vh;
 }
 
-.page-column-content{
+.page-column-content {
   padding: 1em;
+}
+
+.u1p {
+  font-style: italic;
 }

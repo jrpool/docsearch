@@ -4,16 +4,16 @@
 
     <p>If you are already registered, you can log in here.</p>
 
-    <p><span class="link"><a href="/">No, I don’t want to log in.</a></span></p>
+    <p><span class="link buttonish u1p"><a href="/">restart</a></span></p>
 
     <form method="post" action="/user/login" class="form">
       <pre class="form-error"></pre>
       <label>
-        <span>Unit or other ID (format: 1AB or 1A):</span>
+        <span>Your ID or apartment (format: <code>1A</code> or <code>1AB</code>):</span>
         <input placeholder="1A" required autofocus
           type="text" name="id"
           size="3" minlength="2" maxlength="3"
-          pattern="\d[A-H]{1,2}"
+          pattern="[2-9][A-H]{1,2}|1[A-Z]{1,2}"
         >
       </label>
       <label>

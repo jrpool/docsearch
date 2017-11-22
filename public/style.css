@@ -7,13 +7,15 @@ body {
   font-size: 16px;
 }
 
-.buttonish {
+.buttonish,
+input[type="submit"] {
   background-color: #fe0;
   border-style: solid;
   border-width: 1px;
   border-color: black;
   border-radius: 5px;
   padding: 1px 3px 3px 3px;
+  font-style: italic;
 }
 
 .buttonish>a:link,
@@ -89,7 +91,7 @@ body {
   min-width: 8em;
 }
 
-.form-errors {
+.form-error {
   color: red;
   font-weight: bold;
 }

@@ -19,10 +19,10 @@ CREATE TABLE permit (
 
 CREATE TABLE usr (
   id SERIAL PRIMARY KEY,
-  pwdhash VARCHAR(255) NOT NULL,
-  name VARCHAR(63) NOT NULL,
-  email VARCHAR(63) NOT NULL,
-  facts VARCHAR(127),
+  pwhash VARCHAR(60) NOT NULL,
+  name VARCHAR(40) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  facts VARCHAR(264),
   UNIQUE(name, email)
 );
 
@@ -44,7 +44,7 @@ COMMENT ON COLUMN permit.dir IS 'directory relative to document root';
 COMMENT ON COLUMN permit.act IS 'action';
 COMMENT ON TABLE usr IS 'registered users';
 COMMENT ON COLUMN usr.id IS 'serial ID';
-COMMENT ON COLUMN usr.pwdhash IS 'hash of password';
+COMMENT ON COLUMN usr.pwhash IS 'hash of password';
 COMMENT ON COLUMN usr.name IS 'Full name';
 COMMENT ON COLUMN usr.email IS 'Email address, lower-cased';
 COMMENT ON COLUMN usr.facts IS 'unit, title, etc.';

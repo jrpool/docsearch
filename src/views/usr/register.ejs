@@ -4,16 +4,17 @@
 
     <p>If you are not yet registered, you can register here.</p>
 
-    <p><span class="link buttonish u1p"><a href="/">restart</a></span></p>
+    <p><span class="link buttonish"><a href="/">Restart</a></span></p>
 
     <form method="post" action="/usr/register" class="form">
-      <pre class="form-error"></pre>
+      <pre class="form-error"><%= locals.formError || "" %></pre>
 
       <label>
         <span>Your name:</span>
         <input required autofocus
           type="text" name="name"
           size="40" minlength="3" maxlength="40"
+          value="<%= formData.name %>"
         >
       </label>
       <label>
@@ -21,53 +22,68 @@
         <input required
           type="email" name="email"
           size="50" minlength="6" maxlength="50"
+          value="<%= formData.email %>"
         >
-      </label>
-      <label>
-        <span>Make password visible below?</span>
-        <input type="checkbox" name="pwsee" value="yes" checked>
       </label>
       <label>
         <span>Create a password:</span>
         <input required
-          type="text" name="password1"
+          type="password" name="password1"
           size="40" minlength="5" maxlength="40"
+          value="<%= formData.password1 %>"
+          autocomplete="new-password"
         >
       </label>
       <label>
         <span>Retype the password:</span>
         <input required
-          type="text" name="password2"
+          type="password" name="password2"
           size="40" minlength="5" maxlength="40"
+          value="<%= formData.password2 %>"
+          autocomplete="new-password"
         >
       </label>
       <p>Your relationships to BTH:</p>
       <label>
-        <input type="checkbox" name="grp-member" value="1">
+        <input type="checkbox" name="grpMember"
+          value="1" <%= formData.grpMember ? "checked" : "" %>
+        >
         <span>member</span>
       </label>
       <label>
-        <input type="checkbox" name="grp-resident" value="1">
+        <input type="checkbox" name="grpResident"
+          value="1" <%= formData.grpResident ? "checked" : "" %>
+        >
         <span>nonmember resident</span>
       </label>
       <label>
-        <input type="checkbox" name="grp-prospect" value="1">
+        <input type="checkbox" name="grpProspect"
+          value="1" <%= formData.grpProspect ? "checked" : "" %>
+        >
         <span>prospective member (give details below)</span>
       </label>
       <label>
-        <input type="checkbox" name="grp-manager" value="1">
+        <input type="checkbox" name="grpManager"
+          value="1" <%= formData.grpManager ? "checked" : "" %>
+        >
         <span>manager</span>
       </label>
       <label>
-        <input type="checkbox" name="grp-director" value="1">
+        <input type="checkbox" name="grpDirector"
+          value="1" <%= formData.grpDirector ? "checked" : "" %>
+        >
         <span>director</span>
       </label>
       <label>
-        <input type="checkbox" name="grp-treasurer" value="1">
+        <input type="checkbox" name="grpTreasurer"
+          value="1" <%= formData.grpTreasurer ? "checked" : "" %>
+        >
         <span>treasurer</span>
       </label>
       <label>
-        <input type="checkbox" name="grp-other" value="1">
+        <input type="checkbox" name="grpOther"
+          value="1" <%= formData.grpOther ? "checked" : "" %>
+        >
         <span>other (describe below)</span>
       </label>
       <label>
@@ -76,6 +92,7 @@
           type="text" name="unit0"
           size="3" minlength="2" maxlength="3"
           pattern="\d[A-H]{1,2}"
+          value="<%= formData.unit0 %>"
         >
       </label>
       <label>
@@ -84,17 +101,21 @@
           type="text" name="unit1"
           size="3" minlength="2" maxlength="3"
           pattern="\d[A-H]{1,2}"
+          value="<%= formData.unit1 %>"
         >
       </label>
       <label>
         <span>Your title, if a manager</span>
-        <input type="text" name="title" size="30" maxlength="30">
+        <input type="text" name="title"
+          size="30" maxlength="30" value="<%= formData.title %>"
+        >
       </label>
       <label>
         <span>Additional information</span>
         <input
           type="text" name="etc"
           size="60" maxlength="90"
+          value="<%= formData.etc %>"
         >
       </label>
 

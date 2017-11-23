@@ -12,6 +12,7 @@
     "load_schema_data": "psql -d docsearch < src/db/schema/schemadata.sql",
     "load_schema": "psql -d docsearch < src/db/schema/schema.sql",
     "load_test_data": "psql -d docsearch < test/seed/data.sql",
+    "revive_db": "npm run drop_db && npm run create_db && npm run init_db && npm run seed_db",
     "seed_db": "node src/db/config/execfile schemadata",
     "start": "node src/server.js",
     "start_dev": "nodemon src/server.js",

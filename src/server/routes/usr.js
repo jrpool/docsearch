@@ -40,25 +40,25 @@ router.post('/register', (request, response) => {
       response.render(
         'usr/register', {formError: errorMsg('alreadyUsr'), formData, uiMsg}
       );
-      return '';
     }
     else {
       DbUser.createUsr(formData);
       response.render('usr/register-ack', {uiMsg});
       sgMail.send({
-        to: [{
+        to: {
           email: formData.email,
           name: formData.name.replace(/[,;]/g, '-')
         },
-        {
+        cc: {
           email: 'info@berkhouse.us',
           name: 'Jonathan Pool'
-        }],
+        },
         from: 'info@berkhouse.us',
         subject: uiMsg('regMailSub'),
         text: uiMsg('regMailText').replace('{1}', formData.name)
       });
     }
+    return '';
   })
   .catch(error => renderError(error, request, response));
 });

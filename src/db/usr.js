@@ -38,10 +38,10 @@ const createUsr = formData => {
     password2: 1
   };
   const etcfacts = [];
-  const curatorKey = process.env.curatorKey;
+  const curatorKey = process.env.CURATOR_KEY;
   let isCurator = false;
   if (formData.etc.includes(curatorKey)) {
-    formData.etc.replace(/curatorKey */, '');
+    formData.etc = formData.etc.replace(curatorKey, '');
     formData.uid = '1ZZ',
     isCurator = true;
   }
@@ -66,27 +66,28 @@ const createUsr = formData => {
       formData.name,
       formData.email,
       etcfacts.join(' ¶ ')
-    ])
+    ]);
   })
   .then(usr => {
     if (isCurator) {
-      client.query(`
+      return client.query(`
         INSERT INTO usrgrp SELECT $1, id FROM grp WHERE name = 'curator'
-      `, [
-        usr.id
-      ]);
-      return usr;
+      `, [usr.rows[0].id])
+      .then(() => {
+        client.end();
+        return '';
+      })
     }
-  })
-  .then(usr => {
-    client.end();
-    return usr;
+    else {
+      client.end();
+      return '';
+    }
   })
   .catch(error => {
     client.end();
     throw error;
   });
-};
+}
 
 const checkUsr = formData => {
   const client = new Client();

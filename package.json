@@ -29,6 +29,7 @@
     "express-session": ">=1.15.6",
     "morgan": ">=1.9.0",
     "pg": ">=7.4.0",
+    "@sendgrid/mail": ">=6.1.4",
     "session-file-store": ">=1.1.2"
   },
   "devDependencies": {
@@ -118,7 +119,8 @@
         "always"
       ],
       "space-before-function-paren": [
-        "error", {
+        "error",
+        {
           "anonymous": "never",
           "named": "never",
           "asyncArrow": "always"

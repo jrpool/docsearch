@@ -1,9 +1,11 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1>Registration Request Received</h1>
+    <h1><%= uiMsg('regRcvd') %></h1>
 
-    <p>Thank you! Your registration request has been received. You will be contacted for verification.</p>
+    <p><%= uiMsg('regAck') %></p>
 
-    <p><span class="link buttonish"><a href="/">Restart</a></span></p>
+    <p><span class="link buttonish">
+      <a href="/"><%= uiMsg('home') %></a>
+    </span></p>
 
 <%- include('../util/foot.ejs'); %>

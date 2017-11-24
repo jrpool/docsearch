@@ -72,11 +72,11 @@ router.post('/register', (request, response) => {
 
 router.get('/deregister', (request, response) => {
   const msgs = response.locals.msgs;
-  const usrRow = request.session.usr.rows[0];
+  const usr = request.session.usr;
   sgMail.send({
     to: {
-      email: usrRow.email,
-      name: usrRow.name.replace(/[,;]/g, '-')
+      email: usr.email,
+      name: usr.name.replace(/[,;]/g, '-')
     },
     cc: {
       email: 'info@berkhouse.us',
@@ -84,12 +84,11 @@ router.get('/deregister', (request, response) => {
     },
     from: 'info@berkhouse.us',
     subject: msgs.deregMailSubject,
-    text: msgs.deregMailText.replace('{1}', usrRow.name)
+    text: msgs.deregMailText.replace('{1}', usr.name)
   });
-  DbUser.deleteUsr(request.session.usr.rows[0].id)
+  DbUser.deleteUsr(request.session.usr.id)
   .then(() => {
-    delete request.session.usr;
-    delete request.session.id;
+    request.session.destroy();
     msgs.status = '';
     response.render('usr/deregister-ack', {msgs});
     return '';
@@ -114,14 +113,14 @@ router.post('/login', (request, response) => {
   DbUser.getUsr('uid', formData)
   .then(usr => {
     if (usr.rowCount) {
-      if (!bcrypt.compareSync(formData.password, usr.rows[0].pwhash)) {
+      if (!bcrypt.compareSync(formData.password, usr.pwhash)) {
         response.render(
           'usr/login', {formError: msgs.errLogin, formData, msgs}
         );
         return '';
       }
       else {
-        delete usr.rows[0].pwhash;
+        delete usr.pwhash;
         request.session.usr = usr;
         response.render('usr/login-ack', {msgs});
       }

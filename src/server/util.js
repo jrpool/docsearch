@@ -5,8 +5,9 @@ const renderError = function(error, request, response) {
 const eng = {
   'accessText': 'Some of the documents here have access limitations. If you are a BTH member, prospective member, resident, or manager, you can register or log in for additional access.',
   'accessTitle': 'Access',
-  'bthIs': 'Berkeley Town House (BTH) is a senior housing cooperative in Berkeley, California. In fact, it’s the <em>first</em> senior housing cooperative in the United States!',
+  'bthIs': '<strong>Berkeley Town House</strong> (BTH) is a senior housing cooperative in Berkeley, California. In fact, it’s the <em>first</em> senior housing cooperative in the United States!',
   'bthRelation': 'Your relationships to BTH:',
+  'btnCurate': 'Curate',
   'btnDeregister': 'Deregister',
   'btnHome': 'Home',
   'btnLogin': 'Log in',

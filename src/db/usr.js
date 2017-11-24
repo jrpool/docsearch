@@ -4,6 +4,10 @@ require('dotenv').config();
 // Create a connection to the “docsearch” database.
 const {Client} = require('pg');
 
+/*
+  Define a function that returns database data on the user identified
+  by the submitted login form, including an array of the user’s groups.
+*/
 const getUsr = (basis, formData) => {
   const client = new Client();
   return client.connect()
@@ -11,17 +15,25 @@ const getUsr = (basis, formData) => {
     const query = {};
     if (basis === 'nat') {
       query.values = [formData.name, formData.email];
-      query.text = 'SELECT * FROM usr WHERE name = $1 AND email = $2';
+      query.text = `
+        SELECT usr.*, array_agg(usrgrp.grp) AS grps FROM usr, usrgrp
+        WHERE usr.name = $1 AND usr.email = $2 AND usrgrp.usr = usr.id
+        GROUP BY usr.id
+      `;
     }
     else if (basis === 'uid') {
       query.values = [formData.uid];
-      query.text = 'SELECT * FROM usr WHERE uid = $1';
+      query.text = `
+        SELECT usr.*, array_agg(usrgrp.grp) AS grps FROM usr, usrgrp
+        WHERE usr.uid = $1 AND usrgrp.usr = usr.id
+        GROUP BY usr.id
+      `;
     }
     return client.query(query);
   })
   .then(usr => {
     client.end();
-    return usr;
+    return usr.rowCount ? usr.rows[0] : [];
   })
   .catch(error => {
     client.end();
@@ -29,6 +41,10 @@ const getUsr = (basis, formData) => {
   });
 };
 
+/*
+  Define a function that adds data to the database on the user identified
+  by the submitted registration form.
+*/
 const createUsr = formData => {
   const excludedFromEtc = {
     name: 1,
@@ -89,6 +105,10 @@ const createUsr = formData => {
   });
 }
 
+/*
+  Define a function that deletes data from the database on the user
+  identified by the submitted deregistration form.
+*/
 const deleteUsr = id => {
   const client = new Client();
   return client.connect()
@@ -122,14 +142,18 @@ const checkUsr = formData => {
   });
 };
 
-const engroupUsr = (usr, grp) => {
+// Define a function that adds a user to a group, if not already in it.
+const engrpUsr = (usr, grp) => {
   const client = new Client();
   return client.connect()
   .then(() => {
     return client.query({
       values: [usr, grp],
-      text:
-        'INSERT INTO usrgrp VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING usr'
+      text: `
+        INSERT INTO usrgrp VALUES ($1, $2)
+        ON CONFLICT DO NOTHING
+        RETURNING usr
+      `
     });
   })
   .then(usr => {
@@ -142,4 +166,4 @@ const engroupUsr = (usr, grp) => {
   });
 };
 
-module.exports = {getUsr, createUsr, deleteUsr, checkUsr, engroupUsr};
+module.exports = {getUsr, createUsr, deleteUsr, checkUsr, engrpUsr};

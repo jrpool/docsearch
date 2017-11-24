@@ -22,18 +22,20 @@ app.use(session({
   name: 'docsearch',
   resave: true,
   saveUninitialized: true,
+  unset: 'destroy',
   secret: process.env.SECRET || 'cookiesecret',
-  cookie: {maxAge: 30 * 24 * 60 * 60 * 1000},
+  cookie: {maxAge: 7 * 24 * 60 * 60 * 1000},
   store: new FileStore()
 }));
 
 app.use((request, response, next) => {
   response.locals.query = '';
   response.locals.msgs = require('./server/util').eng;
-  if (request.session.usr) {
+  const usr = request.session.usr;
+  if (usr) {
     response.locals.msgs.status
       = response.locals.msgs.status.replace(
-        '{1}', request.session.usr.rows[0].name
+        '{1}', usr.name
       );
   }
   else {

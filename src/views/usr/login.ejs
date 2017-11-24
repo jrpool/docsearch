@@ -1,16 +1,18 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1>Login</h1>
+    <h1><%- msgs.login %></h1>
 
-    <p>If you are already registered, you can log in here.</p>
+    <p><%- msgs.loginHere %></p>
 
-    <p><span class="link buttonish"><a href="/">Home</a></span></p>
+    <p><span class="link buttonish">
+      <a href="/"><%- msgs.btnHome %></a>
+    </span></p>
 
     <form method="post" action="/usr/login" class="form">
       <pre class="form-error"><%= locals.formError || "" %></pre>
 
       <label>
-        <span>ID:</span>
+        <span><%- msgs.id %></span>
         <input placeholder="1A" required autofocus
           type="text" name="uid"
           size="3" minlength="2" maxlength="3"
@@ -19,7 +21,7 @@
         >
       </label>
       <label>
-        <span>Password:</span>
+        <span><%- msgs.pw %></span>
         <input required
           type="password" name="password"
           size="40" minlength="5" maxlength="40"
@@ -27,7 +29,7 @@
           autocomplete="current-password"
         >
       </label>
-      <input type="submit" value="Log in">
+      <button type="submit" name="submit" "1"><%- msgs.btnLogin %></button>
     </form>
 
 <%- include('../util/foot.ejs'); %>

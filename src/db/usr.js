@@ -75,13 +75,27 @@ const createUsr = formData => {
       `, [usr.rows[0].id])
       .then(() => {
         client.end();
-        return '';
+        return 'curator';
       })
     }
     else {
       client.end();
       return '';
     }
+  })
+  .catch(error => {
+    client.end();
+    throw error;
+  });
+}
+
+const deleteUsr = id => {
+  const client = new Client();
+  return client.connect()
+  .then(() => {return client.query(`DELETE FROM usr WHERE id = $1`, [id]);})
+  .then(() => {
+    client.end();
+    return '';
   })
   .catch(error => {
     client.end();
@@ -128,4 +142,4 @@ const engroupUsr = (usr, grp) => {
   });
 };
 
-module.exports = {getUsr, createUsr, checkUsr};
+module.exports = {getUsr, createUsr, deleteUsr, checkUsr, engroupUsr};

@@ -1,13 +1,15 @@
 require('dotenv').config();
 const express = require('express');
+const app = express();
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const app = express();
 const home_route = require('./server/routes/home');
 const usr_route = require('./server/routes/usr');
 const doc_route = require('./server/routes/docs').router;
+
+app.get('/favicon.ico', (reqest, response) => response.status(204));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -15,10 +17,6 @@ app.set('views', __dirname + '/views');
 app.use(morgan('tiny'));
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use((request, response, next) => {
-  response.locals.query = '';
-  next();
-});
 
 app.use(session({
   name: 'docsearch',
@@ -28,6 +26,21 @@ app.use(session({
   cookie: {maxAge: 30 * 24 * 60 * 60 * 1000},
   store: new FileStore()
 }));
+
+app.use((request, response, next) => {
+  response.locals.query = '';
+  response.locals.msgs = require('./server/util').eng;
+  if (request.session.usr) {
+    response.locals.msgs.status
+      = response.locals.msgs.status.replace(
+        '{1}', request.session.usr.rows[0].name
+      );
+  }
+  else {
+    response.locals.msgs.status = '';
+  }
+  next();
+});
 
 // app.use(processSession);
 

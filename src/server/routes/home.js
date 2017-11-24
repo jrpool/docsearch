@@ -1,12 +1,14 @@
 const router = require('express').Router();
 
 router.get('/', (request, response) => {
-  if (request.session.user) {
-    response.redirect('/docs');
+  let ifAnonymous = '';
+  let ifKnown = 'gone ';
+  if (request.session.usr) {
+    ifAnonymous = 'gone ';
+    ifKnown = '';
   }
-  else {
-    response.render('home');
-  }
+  const msgs = response.locals.msgs;
+  response.render('home', {ifAnonymous, ifKnown, msgs});
 });
 
 module.exports = router;

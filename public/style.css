@@ -148,6 +148,11 @@ nav .search-form input {
   padding: 1em;
 }
 
+.status {
+  text-align: right;
+  color: brown;
+}
+
 .u1p {
   font-style: italic;
 }

@@ -2,27 +2,66 @@ const renderError = function(error, request, response) {
   response.send(`ERROR: ${error.message}\n\n${error.stack}`);
 };
 
-const errorMsg = function(messageKey) {
-  const messageKeys = {
-    badLogin: 'Your ID-password combination was invalid.',
-    alreadyUsr: 'Someone with that name and email address is already registered.',
-    passwordsDiffer: 'The passwords are not identical.',
-    need2LoginFacts: 'Both an ID and a password are required.',
-    need4RegFacts: 'A name, an email address, and duplicate passwords are required.',
-    otherwise: 'Something was wrong with the inputs.'
-  };
-  return messageKeys[messageKey] || messageKeys.otherwise;
+const eng = {
+  'accessText': 'Some of the documents here have access limitations. If you are a BTH member, prospective member, resident, or manager, you can register or log in for additional access.',
+  'accessTitle': 'Access',
+  'bthIs': 'Berkeley Town House (BTH) is a senior housing cooperative in Berkeley, California. In fact, it’s the <em>first</em> senior housing cooperative in the United States!',
+  'bthRelation': 'Your relationships to BTH:',
+  'btnDeregister': 'Deregister',
+  'btnHome': 'Home',
+  'btnLogin': 'Log in',
+  'btnRegister': 'Register',
+  'btnSeePubDocs': 'See public documents',
+  'btnSubmit': 'Submit',
+  'choose': 'Please choose:',
+  'deregAckText': 'Your deregistration succeeded. You are no longer registered or logged in.',
+  'deregAckTitle': 'Deregistration Successful',
+  'deregMailSubject': 'Deregistration at berkhouse.us',
+  'deregMailText': 'This confirms that, at the request of the registrant, the registration of {1} at http://berkhouse.us has been terminated. Please feel free to register again. Thanks!',
+  'docsTitle': 'Documents from BTH',
+  'email': 'Your email address:',
+  'errAlreadyUsr': 'Someone with that name and email address is already registered.',
+  'errGeneral': 'Something was wrong with the inputs.',
+  'errLogin': 'Your ID-password combination was invalid.',
+  'errNeed2LoginFacts': 'Both an ID and a password are required.',
+  'errNeed4RegFacts': 'A name, an email address, and duplicate passwords are required.',
+  'errPasswordsDiffer': 'The passwords are not identical.',
+  'grpCurator': 'Curator',
+  'grpDirector': 'Director',
+  'grpManager': 'Manager',
+  'grpMember': 'Member',
+  'grpOther': 'Other',
+  'grpProspect': 'Prospective member',
+  'grpPublic': 'General public',
+  'grpResident': 'Nonmember resident',
+  'grpTreasurer': 'Treasurer',
+  'id': 'ID:',
+  'info': 'Additional information:',
+  'intro': 'Introduction',
+  'login': 'Login',
+  'loginHere': 'If you are already registered, you can log in here.',
+  'loginOKText': 'Your login succeeded.',
+  'loginOKTitle': 'Login Successful',
+  'logoutOKText': 'Your logout succeeded.',
+  'logoutOKTitle': 'Logout Successful',
+  'mgrTitle': 'Your title, if a manager:',
+  'name': 'Your name:',
+  'pw': 'Password:',
+  'pwNew': 'Create a password:',
+  'pwAgain': 'Reenter the password:',
+  'registration': 'Registration',
+  'regAckText': 'Thank you! Your registration request has been received. You should receive an immediate email confirmation and be contacted later for verification.',
+  'regAckTextCur': 'Thank you! Your registration has been processed. You can log in with ID 1ZZ.',
+  'regAckTitle': 'Registration Request Received',
+  'regHere': 'If you are not yet registered, you can register here.',
+  'regMailSubject': 'Registration at berkhouse.us',
+  'regMailText': 'This confirms the registration of {1} at http://berkhouse.us. Please wait to receive an ID. Once you receive it, you will be able to log in there. Thanks!',
+  'regMailTextCur': 'This confirms the registration of {1} as a curator at http://berkhouse.us. may log in there with ID 1ZZ. Thanks!',
+  'status': 'You are logged in as {1}. <span class="link buttonish"><a href="/usr/logout">Log out</a></span>',
+  'unit0': 'Your unit, if a member or resident:',
+  'unit1': 'Your second unit, if any:',
+  'valueProp': 'At this site you can see some documents from BTH. A BTH member collected the documents from 2009 to 2017 in order to help preserve, and facilitate access to, the institutional memory of this historic community.',
+  'welcome': 'Welcome!'
 };
 
-const uiMsg = function(messageKey) {
-  const messageKeys = {
-    home: 'Home',
-    regAck: 'Thank you! Your registration request has been received. You should receive an immediate email confirmation and be contacted later for verification.',
-    regMailSub: 'Registration at berkhouse.us',
-    regMailText: `This confirms the registration of {1} at http://berkhouse.us. Please wait to receive an ID. Once you receive it, you will be able to log in there. Thanks!`,
-    regRcvd: 'Registration Request Received'
-  };
-  return messageKeys[messageKey] || messageKeys.otherwise;
-};
-
-module.exports = {renderError, errorMsg, uiMsg};
+module.exports = {renderError, eng};

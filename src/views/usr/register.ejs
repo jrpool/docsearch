@@ -1,16 +1,16 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1>Registration</h1>
+    <h1><%- msgs.registration %></h1>
 
-    <p>If you are not yet registered, you can register here.</p>
+    <p><%- msgs.regHere %></p>
 
-    <p><span class="link buttonish"><a href="/">Home</a></span></p>
+    <p><span class="link buttonish"><a href="/"><%- msgs.btnHome %></a></span></p>
 
     <form method="post" action="/usr/register" class="form">
       <pre class="form-error"><%= locals.formError || "" %></pre>
 
       <label>
-        <span>Your name:</span>
+        <span><%- msgs.name %></span>
         <input required autofocus
           type="text" name="name"
           size="40" minlength="3" maxlength="40"
@@ -18,7 +18,7 @@
         >
       </label>
       <label>
-        <span>Your email address:</span>
+        <span><%- msgs.email %></span>
         <input required
           type="email" name="email"
           size="50" minlength="6" maxlength="50"
@@ -26,7 +26,7 @@
         >
       </label>
       <label>
-        <span>Create a password:</span>
+        <span><%- msgs.pwNew %></span>
         <input required
           type="password" name="password1"
           size="40" minlength="5" maxlength="40"
@@ -35,7 +35,7 @@
         >
       </label>
       <label>
-        <span>Retype the password:</span>
+        <span><%- msgs.pwAgain %></span>
         <input required
           type="password" name="password2"
           size="40" minlength="5" maxlength="40"
@@ -43,51 +43,51 @@
           autocomplete="new-password"
         >
       </label>
-      <p>Your relationships to BTH:</p>
+      <p><%- msgs.bthRelation %></p>
       <label>
         <input type="checkbox" name="grpMember"
           value="1" <%= formData.grpMember ? "checked" : "" %>
         >
-        <span>member</span>
+        <span><%- msgs.grpMember %></span>
       </label>
       <label>
         <input type="checkbox" name="grpResident"
           value="1" <%= formData.grpResident ? "checked" : "" %>
         >
-        <span>nonmember resident</span>
+        <span><%- msgs.grpResident %></span>
       </label>
       <label>
         <input type="checkbox" name="grpProspect"
           value="1" <%= formData.grpProspect ? "checked" : "" %>
         >
-        <span>prospective member (give details below)</span>
+        <span><%- msgs.grpProspect %></span>
       </label>
       <label>
         <input type="checkbox" name="grpManager"
           value="1" <%= formData.grpManager ? "checked" : "" %>
         >
-        <span>manager</span>
+        <span><%- msgs.grpManager %></span>
       </label>
       <label>
         <input type="checkbox" name="grpDirector"
           value="1" <%= formData.grpDirector ? "checked" : "" %>
         >
-        <span>director</span>
+        <span><%- msgs.grpDirector %></span>
       </label>
       <label>
         <input type="checkbox" name="grpTreasurer"
           value="1" <%= formData.grpTreasurer ? "checked" : "" %>
         >
-        <span>treasurer</span>
+        <span><%- msgs.grpTreasurer %></span>
       </label>
       <label>
         <input type="checkbox" name="grpOther"
           value="1" <%= formData.grpOther ? "checked" : "" %>
         >
-        <span>other (describe below)</span>
+        <span><%- msgs.grpOther %></span>
       </label>
       <label>
-        <span>Your unit, if you are a member or resident (format: 1 digit + 1 or 2 capital letters)</span>
+        <span><%- msgs.unit0 %></span>
         <input placeholder="1XY"
           type="text" name="unit0"
           size="3" minlength="2" maxlength="3"
@@ -96,7 +96,7 @@
         >
       </label>
       <label>
-        <span>Your second unit, if you have one</span>
+        <span><%- msgs.unit1 %></span>
         <input placeholder="1XY"
           type="text" name="unit1"
           size="3" minlength="2" maxlength="3"
@@ -105,13 +105,13 @@
         >
       </label>
       <label>
-        <span>Your title, if a manager</span>
+        <span><%- msgs.mgrTitle %></span>
         <input type="text" name="title"
           size="30" maxlength="30" value="<%= formData.title %>"
         >
       </label>
       <label>
-        <span>Additional information</span>
+        <span><%- msgs.info %></span>
         <input
           type="text" name="etc"
           size="60" maxlength="90"
@@ -119,9 +119,7 @@
         >
       </label>
 
-      <button type="submit" name="submit" "1">
-        Submit
-      </button>
+      <button type="submit" name="submit" "1"><%- msgs.btnSubmit %></button>
 
     </form>
 

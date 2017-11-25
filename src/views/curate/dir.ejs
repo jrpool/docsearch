@@ -1,32 +1,17 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.curationReg %></h1>
+<h1><%- msgs.curationDir %></h1>
 
-    <p><%- msgs.curateRegHere %></p>
+<p><%- msgs.curateDirHere %></p>
 
-    <p><span class="link buttonish">
-      <a href="/"><%- msgs.btnHome %></a>
-    </span></p>
+<p><span class="link buttonish">
+  <a href="/"><%- msgs.btnHome %></a>
+</span></p>
 
-    <h3><%- msgs.curateRegChoose %></h3>
+<h3><%- msgs.curateDirChoose %></h3>
 
-    <table>
-      <tr>
-        <th><%- msgs.tblID %></th>
-        <th><%- msgs.tblUID %></th>
-        <th><%- msgs.tblName %></th>
-      </tr>
+<p>This feature is not yet implemented.</p>
 
-      <% usrs.forEach(usr => { %>
-        <tr>
-          <td class="open"><span class="link buttonish">
-            <a href="/curate/reg/<%= usr.id %>"><%= usr.id %></a>
-          </span></td>
-          <td><%= usr.uid %></td>
-          <td><%- usr.name %></td>
-        </tr>
-      <% }); %>
-
-    </table>
+<p>To curate directory permissions, edit the file <code>src/db/config/seeddir.sql</code> and then execute the <code>seeddir_db</code> script.</p>
 
 <%- include('../util/foot.ejs'); %>

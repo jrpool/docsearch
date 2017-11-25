@@ -20,18 +20,10 @@ router.get('/reg', (request, response) => {
 
 router.get('/grp', (request, response) => {
   const msgs = response.locals.msgs;
-  DbUsr.getGrps()
-  .then(grps => {
-    response.render('curate/grp', {formData: '', grps, msgs});
-  })
-});
-
-router.get('/grp', (request, response) => {
-  const msgs = response.locals.msgs;
   response.render('curate/grp', {formData: '', msgs});
 });
 
-router.get('/permit', (request, response) => {
+router.get('/dir', (request, response) => {
   const msgs = response.locals.msgs;
   response.render('curate/dir', {formData: '', msgs});
 });
@@ -59,7 +51,7 @@ router.post('/register', (request, response) => {
   formData.pwHash = getHash(formData.password1);
   DbUsr.getUsr('nat', formData)
   .then(usr => {
-    if (usr) {
+    if (usr.id) {
       response.render(
         'usr/register', {formError: msgs.errAlreadyUsr, formData, msgs}
       );

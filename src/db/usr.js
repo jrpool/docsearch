@@ -39,7 +39,7 @@ const getUsr = (basis, formData) => {
   })
   .then(usr => {
     client.end();
-    return usr.rowCount ? usr.rows[0] : [];
+    return usr.rowCount ? usr.rows[0] : {};
   })
   .catch(error => {
     client.end();
@@ -236,4 +236,6 @@ const engrpUsr = (usr, grp) => {
   });
 };
 
-module.exports = {getUsr, getUsrs, createUsr, deleteUsr, checkUsr, engrpUsr};
+module.exports = {
+  getUsr, getUsrs, getGrps, createUsr, deleteUsr, checkUsr, engrpUsr
+};

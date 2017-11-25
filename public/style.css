@@ -77,6 +77,12 @@ button[type="submit"],
   padding: 0 9px;
 }
 
+.foot {
+  text-align: center;
+  font-size: x-small;
+  color: darkgray;
+}
+
 .form input[type="submit"] {
   margin-top: 1em;
 }
@@ -135,6 +141,11 @@ nav .search-form input {
   padding: 0 0.5em;
 }
 
+.open {
+  border-style: none;
+  text-align: center;
+}
+
 .page-column {
   width: 700px;
   margin: 0 auto;
@@ -162,10 +173,6 @@ td {
   border-width: thin;
   border-color: gray;
   padding: 6px;
-}
-
-td.open {
-  border-style: none;
 }
 
 .u1p {

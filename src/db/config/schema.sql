@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS usrgrp, permit, grp, usr;
+DROP TABLE IF EXISTS usrgrp, permit, grp, usr, act;
 
 CREATE TABLE grp (
   id SMALLINT PRIMARY KEY,
@@ -11,9 +11,9 @@ CREATE TABLE act (
 );
 
 CREATE TABLE permit (
-  grp SMALLINT NOT NULL REFERENCES grp(id),
+  grp SMALLINT NOT NULL REFERENCES grp(id) ON DELETE CASCADE,
   dir TEXT NOT NULL,
-  act SMALLINT NOT NULL REFERENCES act(id),
+  act SMALLINT NOT NULL REFERENCES act(id) ON DELETE CASCADE,
   UNIQUE(grp, dir, act)
 );
 
@@ -33,12 +33,12 @@ CREATE TABLE usrgrp (
   UNIQUE(usr, grp)
 );
 
-COMMENT ON TABLE grp IS 'groups users can belong to';
-COMMENT ON COLUMN grp.id IS 'ID';
-COMMENT ON COLUMN grp.name IS 'name';
 COMMENT ON TABLE act IS 'actions performable on files in directories';
 COMMENT ON COLUMN act.id IS 'ID';
 COMMENT ON COLUMN act.name IS 'name';
+COMMENT ON TABLE grp IS 'groups users can belong to';
+COMMENT ON COLUMN grp.id IS 'ID';
+COMMENT ON COLUMN grp.name IS 'name';
 COMMENT ON TABLE permit IS 'permissions of groups on directories';
 COMMENT ON COLUMN permit.grp IS 'group';
 COMMENT ON COLUMN permit.dir IS 'directory relative to document root';

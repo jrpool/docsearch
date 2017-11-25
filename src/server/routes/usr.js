@@ -38,7 +38,7 @@ router.post('/register', (request, response) => {
   formData.pwHash = getHash(formData.password1);
   DbUsr.getUsr('nat', formData)
   .then(usr => {
-    if (usr.length) {
+    if (usr.id) {
       response.render(
         'usr/register', {formError: msgs.errAlreadyUsr, formData, msgs}
       );

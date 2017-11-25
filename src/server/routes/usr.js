@@ -37,17 +37,21 @@ router.post('/register', (request, response) => {
   formData.pwHash = getHash(formData.password1);
   DbUser.getUsr('nat', formData)
   .then(usr => {
-    if (usr.rowCount) {
+    if (usr) {
       response.render(
         'usr/register', {formError: msgs.errAlreadyUsr, formData, msgs}
       );
     }
     else {
       DbUser.createUsr(formData)
+      /*
+        Substitute name into acknowledgements. If registrant is a curator,
+        also substitute UID into them.
+      */
       .then(result => {
-        if (result === 'curator') {
-          msgs.regAckText = msgs.regAckTextCur;
-          msgs.regMailText = msgs.regMailTextCur;
+        if (result.length) {
+          msgs.regAckText = msgs.regAckTextCur.replace('{1}', result);
+          msgs.regMailText = msgs.regMailTextCur.replace('{2}', result);
         }
         response.render('usr/register-ack', {msgs});
         sgMail.send({
@@ -112,7 +116,7 @@ router.post('/login', (request, response) => {
   }
   DbUser.getUsr('uid', formData)
   .then(usr => {
-    if (usr.rowCount) {
+    if (usr.id) {
       if (!bcrypt.compareSync(formData.password, usr.pwhash)) {
         response.render(
           'usr/login', {formError: msgs.errLogin, formData, msgs}

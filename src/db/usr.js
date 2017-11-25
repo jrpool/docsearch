@@ -1,3 +1,10 @@
+/*
+  User-management database functions.
+  Preconditions:
+    The curator group has ID 7.
+    There is a maximum of 26 curators.
+*/
+
 // Import required modules.
 require('dotenv').config();
 
@@ -58,7 +65,6 @@ const createUsr = formData => {
   let isCurator = false;
   if (formData.etc.includes(curatorKey)) {
     formData.etc = formData.etc.replace(curatorKey, '');
-    formData.uid = '1ZZ',
     isCurator = true;
   }
   else {
@@ -69,9 +75,35 @@ const createUsr = formData => {
       etcfacts.push(`${key}=${formData[key]}`);
     }
   }
+  // If registrant is a curator, identify the last-used curator UID.
   const client = new Client();
   return client.connect()
   .then(() => {
+    if (isCurator) {
+      return client.query({
+        text: `
+          SELECT COALESCE(min(uid), '') FROM usrgrp, usr
+          WHERE usrgrp.grp = 7 and usr.id = usrgrp.usr AND usr.uid LIKE '1Z_'
+        `,
+        rowMode: 'array'
+      })
+    }
+    else {
+      return '';
+    }
+  })
+  // If registrant is a curator, identify the next available curator UID.
+  .then(result => {
+    if (isCurator) {
+      const lastUsedUID = result.rows[0][0];
+      if (lastUsedUID) {
+        formData.uid
+          = `1Z${String.fromCharCode(lastUsedUID.charCodeAt(2) - 1)}`;
+        }
+        else {
+          formData.uid = '1ZZ';
+        }
+    }
     return client.query(`
       INSERT INTO usr (uid, pwhash, name, email, facts)
       VALUES ($1, $2, $3, $4, $5)
@@ -86,12 +118,10 @@ const createUsr = formData => {
   })
   .then(usr => {
     if (isCurator) {
-      return client.query(`
-        INSERT INTO usrgrp SELECT $1, id FROM grp WHERE name = 'curator'
-      `, [usr.rows[0].id])
+      return client.query(`INSERT INTO usrgrp SELECT $1, 7`, [usr.rows[0].id])
       .then(() => {
         client.end();
-        return 'curator';
+        return formData.uid;
       })
     }
     else {

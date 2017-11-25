@@ -25,7 +25,7 @@ app.use(session({
   unset: 'destroy',
   secret: process.env.SECRET || 'cookiesecret',
   cookie: {maxAge: 7 * 24 * 60 * 60 * 1000},
-  store: new FileStore()
+  store: new FileStore({retries: 0})
 }));
 
 app.use((request, response, next) => {

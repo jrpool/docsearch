@@ -1,18 +1,12 @@
 const DbUser = require('../../db/usr');
 const {renderError} = require('../util');
 const router = require('express').Router();
-const bcrypt = require('bcrypt');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const getHash = password => {
-  const salt = bcrypt.genSaltSync(10);
-  return bcrypt.hashSync(password, salt);
-};
-
-router.get('/register', (request, response) => {
+router.get('/curate', (request, response) => {
   const msgs = response.locals.msgs;
-  response.render('usr/register', {formData: '', msgs});
+  response.render('curate', {formData: '', msgs});
 });
 
 router.post('/register', (request, response) => {

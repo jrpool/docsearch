@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const home_route = require('./server/routes/home');
 const usr_route = require('./server/routes/usr');
 const doc_route = require('./server/routes/docs').router;
+const curate_route = require('./server/routes/curate');
 
 app.get('/favicon.ico', (reqest, response) => response.status(204));
 
@@ -32,19 +33,11 @@ app.use((request, response, next) => {
   response.locals.query = '';
   response.locals.msgs = require('./server/util').eng;
   const usr = request.session.usr;
-  if (usr) {
-    response.locals.msgs.status
-      = response.locals.msgs.status.replace(
-        '{1}', usr.name
-      );
-  }
-  else {
-    response.locals.msgs.status = '';
-  }
+  const status = response.locals.msgs.status;
+  response.locals.msgs.status
+    = usr ? response.locals.msgs.status.replace('{1}', usr.name) : '';
   next();
 });
-
-// app.use(processSession);
 
 app.use('/', home_route);
 app.use('/usr', usr_route);

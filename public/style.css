@@ -153,6 +153,21 @@ nav .search-form input {
   color: brown;
 }
 
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border-style: solid;
+  border-width: thin;
+  border-color: gray;
+  padding: 6px;
+}
+
+td.open {
+  border-style: none;
+}
+
 .u1p {
   font-style: italic;
 }

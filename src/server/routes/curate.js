@@ -1,12 +1,39 @@
-const DbUser = require('../../db/usr');
+const DbUsr = require('../../db/usr');
 const {renderError} = require('../util');
 const router = require('express').Router();
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-router.get('/curate', (request, response) => {
+router.get('/', (request, response) => {
+  console.log('here');
   const msgs = response.locals.msgs;
   response.render('curate', {formData: '', msgs});
+});
+
+router.get('/reg', (request, response) => {
+  const msgs = response.locals.msgs;
+  DbUsr.getUsrs()
+  .then(usrs => {
+    response.render('curate/reg', {formData: '', usrs, msgs});
+  })
+});
+
+router.get('/grp', (request, response) => {
+  const msgs = response.locals.msgs;
+  DbUsr.getGrps()
+  .then(grps => {
+    response.render('curate/grp', {formData: '', grps, msgs});
+  })
+});
+
+router.get('/grp', (request, response) => {
+  const msgs = response.locals.msgs;
+  response.render('curate/grp', {formData: '', msgs});
+});
+
+router.get('/permit', (request, response) => {
+  const msgs = response.locals.msgs;
+  response.render('curate/dir', {formData: '', msgs});
 });
 
 router.post('/register', (request, response) => {
@@ -30,7 +57,7 @@ router.post('/register', (request, response) => {
     return;
   }
   formData.pwHash = getHash(formData.password1);
-  DbUser.getUsr('nat', formData)
+  DbUsr.getUsr('nat', formData)
   .then(usr => {
     if (usr) {
       response.render(
@@ -38,7 +65,7 @@ router.post('/register', (request, response) => {
       );
     }
     else {
-      DbUser.createUsr(formData)
+      DbUsr.createUsr(formData)
       /*
         Substitute name into acknowledgements. If registrant is a curator,
         also substitute UID into them.
@@ -85,7 +112,7 @@ router.get('/deregister', (request, response) => {
     subject: msgs.deregMailSubject,
     text: msgs.deregMailText.replace('{1}', usr.name)
   });
-  DbUser.deleteUsr(request.session.usr.id)
+  DbUsr.deleteUsr(request.session.usr.id)
   .then(() => {
     request.session.destroy();
     msgs.status = '';
@@ -109,7 +136,7 @@ router.post('/login', (request, response) => {
     );
     return '';
   }
-  DbUser.getUsr('uid', formData)
+  DbUsr.getUsr('uid', formData)
   .then(usr => {
     if (usr.id) {
       if (!bcrypt.compareSync(formData.password, usr.pwhash)) {

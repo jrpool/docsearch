@@ -1,0 +1,36 @@
+<%- include('../util/head.ejs'); %>
+
+    <h1><%- msgs.curationGrp %></h1>
+
+    <p><%- msgs.curateGrpHere %></p>
+
+    <p><span class="link buttonish">
+      <a href="/"><%- msgs.btnHome %></a>
+    </span></p>
+
+    <h3><%- msgs.curateGrpChoose %></h3>
+
+    <table>
+      <tr>
+        <th><%- msgs.tblID %></th>
+        <th><%- msgs.tblName %></th>
+      </tr>
+
+      <% grps.forEach(grp => { %>
+        <tr>
+          <td class="open"><span class="link buttonish">
+            <a href="/curate/grp/<%= grp.id %>"><%= grp.id %></a>
+          </span></td>
+          <td><%- grp.name %></td>
+        </tr>
+      <% }); %>
+      <tr>
+        <td class="open"><span class="link buttonish">
+          <a href="/curate/grp/new">new</a>
+        </span></td>
+        <td>&nbsp;</td>
+      </tr>
+
+    </table>
+
+<%- include('../util/foot.ejs'); %>

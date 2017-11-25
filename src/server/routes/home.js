@@ -8,7 +8,7 @@ router.get('/', (request, response) => {
   if (usr) {
     ifAnonymous = 'gone ';
     ifKnown = '';
-    if (usr.grps.includes(7)) {
+    if (usr.grps.includes(Number.parseInt(process.env.CURATOR_GRP))) {
       ifCurator = '';
     }
   }

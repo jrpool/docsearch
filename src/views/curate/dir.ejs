@@ -1,0 +1,32 @@
+<%- include('../util/head.ejs'); %>
+
+    <h1><%- msgs.curationReg %></h1>
+
+    <p><%- msgs.curateRegHere %></p>
+
+    <p><span class="link buttonish">
+      <a href="/"><%- msgs.btnHome %></a>
+    </span></p>
+
+    <h3><%- msgs.curateRegChoose %></h3>
+
+    <table>
+      <tr>
+        <th><%- msgs.tblID %></th>
+        <th><%- msgs.tblUID %></th>
+        <th><%- msgs.tblName %></th>
+      </tr>
+
+      <% usrs.forEach(usr => { %>
+        <tr>
+          <td class="open"><span class="link buttonish">
+            <a href="/curate/reg/<%= usr.id %>"><%= usr.id %></a>
+          </span></td>
+          <td><%= usr.uid %></td>
+          <td><%- usr.name %></td>
+        </tr>
+      <% }); %>
+
+    </table>
+
+<%- include('../util/foot.ejs'); %>

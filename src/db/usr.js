@@ -1,7 +1,6 @@
 /*
   User-management database functions.
   Preconditions:
-    The curator group has ID 7.
     There is a maximum of 26 curators.
 */
 
@@ -48,6 +47,40 @@ const getUsr = (basis, formData) => {
   });
 };
 
+// Define a function that returns database data on all users.
+const getUsrs = () => {
+  const client = new Client();
+  return client.connect()
+  .then(() => {
+    return client.query('SELECT id, uid, name FROM usr ORDER BY id DESC');
+  })
+  .then(usrs => {
+    client.end();
+    return usrs.rowCount ? usrs.rows : [];
+  })
+  .catch(error => {
+    client.end();
+    throw error;
+  });
+};
+
+// Define a function that returns database data on all user categories.
+const getGrps = () => {
+  const client = new Client();
+  return client.connect()
+  .then(() => {
+    return client.query('SELECT id, name FROM grp ORDER BY id');
+  })
+  .then(grps => {
+    client.end();
+    return grps.rowCount ? grps.rows : [];
+  })
+  .catch(error => {
+    client.end();
+    throw error;
+  });
+};
+
 /*
   Define a function that adds data to the database on the user identified
   by the submitted registration form.
@@ -58,7 +91,8 @@ const createUsr = formData => {
     pwHash: 1,
     email: 1,
     password1: 1,
-    password2: 1
+    password2: 1,
+    submit: 1
   };
   const etcfacts = [];
   const curatorKey = process.env.CURATOR_KEY;
@@ -83,8 +117,11 @@ const createUsr = formData => {
       return client.query({
         text: `
           SELECT COALESCE(min(uid), '') FROM usrgrp, usr
-          WHERE usrgrp.grp = 7 and usr.id = usrgrp.usr AND usr.uid LIKE '1Z_'
+          WHERE usrgrp.grp = $1
+          AND usr.id = usrgrp.usr
+          AND usr.uid LIKE '1Z_'
         `,
+        values: [Number.parseInt(process.env.CURATOR_GRP)],
         rowMode: 'array'
       })
     }
@@ -118,7 +155,10 @@ const createUsr = formData => {
   })
   .then(usr => {
     if (isCurator) {
-      return client.query(`INSERT INTO usrgrp SELECT $1, 7`, [usr.rows[0].id])
+      return client.query(
+        `INSERT INTO usrgrp VALUES ($1, $2)`,
+        [usr.rows[0].id, process.env.CURATOR_GRP]
+      )
       .then(() => {
         client.end();
         return formData.uid;
@@ -196,4 +236,4 @@ const engrpUsr = (usr, grp) => {
   });
 };
 
-module.exports = {getUsr, createUsr, deleteUsr, checkUsr, engrpUsr};
+module.exports = {getUsr, getUsrs, createUsr, deleteUsr, checkUsr, engrpUsr};

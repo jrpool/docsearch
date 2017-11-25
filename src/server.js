@@ -42,6 +42,7 @@ app.use((request, response, next) => {
 app.use('/', home_route);
 app.use('/usr', usr_route);
 app.use('/docs', doc_route);
+app.use('/curate', curate_route);
 
 app.use((request, response) => {
   response.render('util/not_found');

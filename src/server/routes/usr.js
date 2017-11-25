@@ -1,4 +1,4 @@
-const DbUser = require('../../db/usr');
+const DbUsr = require('../../db/usr');
 const {renderError} = require('../util');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
@@ -36,15 +36,15 @@ router.post('/register', (request, response) => {
     return;
   }
   formData.pwHash = getHash(formData.password1);
-  DbUser.getUsr('nat', formData)
+  DbUsr.getUsr('nat', formData)
   .then(usr => {
-    if (usr) {
+    if (usr.length) {
       response.render(
         'usr/register', {formError: msgs.errAlreadyUsr, formData, msgs}
       );
     }
     else {
-      DbUser.createUsr(formData)
+      DbUsr.createUsr(formData)
       /*
         Substitute name into acknowledgements. If registrant is a curator,
         also substitute UID into them.
@@ -91,7 +91,7 @@ router.get('/deregister', (request, response) => {
     subject: msgs.deregMailSubject,
     text: msgs.deregMailText.replace('{1}', usr.name)
   });
-  DbUser.deleteUsr(request.session.usr.id)
+  DbUsr.deleteUsr(request.session.usr.id)
   .then(() => {
     request.session.destroy();
     msgs.status = '';
@@ -115,7 +115,7 @@ router.post('/login', (request, response) => {
     );
     return '';
   }
-  DbUser.getUsr('uid', formData)
+  DbUsr.getUsr('uid', formData)
   .then(usr => {
     if (usr.id) {
       if (!bcrypt.compareSync(formData.password, usr.pwhash)) {

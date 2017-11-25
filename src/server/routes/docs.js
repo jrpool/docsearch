@@ -74,7 +74,7 @@ const readableTopDirs = usrID => {
     return result.rows.map(row => row[0]);
   })
   .catch(error => {
-    console.log(error);
+    renderError(error, request, response);
     client.end();
   });
 };
@@ -116,7 +116,7 @@ router.get('/browse', (request, response) => {
     return '';
   })
   .catch(error => {
-    console.log(error);
+    renderError(error, request, response);
     client.end();
   });
 });

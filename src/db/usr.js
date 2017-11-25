@@ -10,11 +10,35 @@ require('dotenv').config();
 // Create a connection to the “docsearch” database.
 const {Client} = require('pg');
 
+// Define a function that returns database data on a user.
+const getUsr = id => {
+  const client = new Client();
+  return client.connect()
+  .then(() => {
+    return client.query({
+      values: [id],
+      text: `
+        SELECT usr.*, array_agg(usrgrp.grp) AS grps FROM usr, usrgrp
+        WHERE usr.id = $1 AND usrgrp.usr = usr.id
+        GROUP BY usr.id
+      `
+    });
+  })
+  .then(usr => {
+    client.end();
+    return usr.rowCount ? usr.rows[0] : {};
+  })
+  .catch(error => {
+    client.end();
+    throw error;
+  });
+};
+
 /*
   Define a function that returns database data on the user identified
   by the submitted login form, including an array of the user’s groups.
 */
-const getUsr = (basis, formData) => {
+const getFormUsr = (basis, formData) => {
   const client = new Client();
   return client.connect()
   .then(() => {
@@ -81,6 +105,27 @@ const getGrps = () => {
   });
 };
 
+// Define a function that returns a user’s categories.
+const getGrpsOf = usr => {
+  const client = new Client();
+  return client.connect()
+  .then(() => {
+    return client.query({
+      text: 'SELECT grp FROM usrgrp WHERE usr = $1 ORDER BY grp',
+      values: [usr],
+      rowMode: 'array'
+    });
+  })
+  .then(grps => {
+    client.end();
+    return grps.rowCount ? grps.rows.map(row => row[0]) : [];
+  })
+  .catch(error => {
+    client.end();
+    throw error;
+  });
+};
+
 /*
   Define a function that adds data to the database on the user identified
   by the submitted registration form.
@@ -94,7 +139,7 @@ const createUsr = formData => {
     password2: 1,
     submit: 1
   };
-  const etcfacts = [];
+  const claims = [];
   const curatorKey = process.env.CURATOR_KEY;
   let isCurator = false;
   if (formData.etc.includes(curatorKey)) {
@@ -106,7 +151,7 @@ const createUsr = formData => {
   }
   for (const key in formData) {
     if (!excludedFromEtc.hasOwnProperty(key)) {
-      etcfacts.push(`${key}=${formData[key]}`);
+      claims.push(`${key}=${formData[key]}`);
     }
   }
   // If registrant is a curator, identify the last-used curator UID.
@@ -142,7 +187,7 @@ const createUsr = formData => {
         }
     }
     return client.query(`
-      INSERT INTO usr (uid, pwhash, name, email, facts)
+      INSERT INTO usr (uid, pwhash, name, email, claims)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *
     `, [
@@ -150,7 +195,7 @@ const createUsr = formData => {
       formData.pwHash,
       formData.name,
       formData.email,
-      etcfacts.join(' ¶ ')
+      claims.join(' ¶ ')
     ]);
   })
   .then(usr => {
@@ -237,5 +282,5 @@ const engrpUsr = (usr, grp) => {
 };
 
 module.exports = {
-  getUsr, getUsrs, getGrps, createUsr, deleteUsr, checkUsr, engrpUsr
+  getUsr, getFormUsr, getUsrs, getGrps, createUsr, deleteUsr, checkUsr, engrpUsr
 };

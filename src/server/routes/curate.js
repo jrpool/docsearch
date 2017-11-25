@@ -16,6 +16,19 @@ router.get('/reg', (request, response) => {
   .then(usrs => {
     response.render('curate/reg', {formData: '', usrs, msgs});
   })
+  .catch(error => renderError(error, request, response));
+});
+
+router.get('/reg/:id', (request, response) => {
+  const msgs = response.locals.msgs;
+  DbUsr.getUsr(request.params.id)
+  .then(usr => {
+    const grps = msgs.grps.forEach(
+      grp => {grp.push(usr.grps.includes(grp[0]))}
+    );
+    response.render('curate/reg-edit', {usr, grps, msgs});
+  })
+  .catch(error => renderError(error, request, response));
 });
 
 router.get('/grp', (request, response) => {
@@ -49,7 +62,7 @@ router.post('/register', (request, response) => {
     return;
   }
   formData.pwHash = getHash(formData.password1);
-  DbUsr.getUsr('nat', formData)
+  DbUsr.getFormUsr('nat', formData)
   .then(usr => {
     if (usr.id) {
       response.render(
@@ -128,7 +141,7 @@ router.post('/login', (request, response) => {
     );
     return '';
   }
-  DbUsr.getUsr('uid', formData)
+  DbUsr.getFormUsr('uid', formData)
   .then(usr => {
     if (usr.id) {
       if (!bcrypt.compareSync(formData.password, usr.pwhash)) {

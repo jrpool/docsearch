@@ -23,7 +23,7 @@ CREATE TABLE usr (
   pwhash VARCHAR(60) NOT NULL,
   name VARCHAR(40) NOT NULL,
   email VARCHAR(50) NOT NULL,
-  facts VARCHAR(264),
+  claims VARCHAR(264),
   UNIQUE(name, email)
 );
 
@@ -49,7 +49,7 @@ COMMENT ON COLUMN usr.uid IS 'mnemonic ID';
 COMMENT ON COLUMN usr.pwhash IS 'hash of password';
 COMMENT ON COLUMN usr.name IS 'Full name';
 COMMENT ON COLUMN usr.email IS 'Email address, lower-cased';
-COMMENT ON COLUMN usr.facts IS 'unit, title, etc.';
+COMMENT ON COLUMN usr.claims IS 'asserted unit, title, etc.';
 COMMENT ON TABLE usrgrp IS 'users and groups they belong to';
 COMMENT ON COLUMN usrgrp.usr IS 'user';
 COMMENT ON COLUMN usrgrp.grp IS 'group';

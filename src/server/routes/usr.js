@@ -36,7 +36,7 @@ router.post('/register', (request, response) => {
     return;
   }
   formData.pwHash = getHash(formData.password1);
-  DbUsr.getUsr('nat', formData)
+  DbUsr.getFormUsr('nat', formData)
   .then(usr => {
     if (usr.id) {
       response.render(
@@ -115,7 +115,7 @@ router.post('/login', (request, response) => {
     );
     return '';
   }
-  DbUsr.getUsr('uid', formData)
+  DbUsr.getFormUsr('uid', formData)
   .then(usr => {
     if (usr.id) {
       if (!bcrypt.compareSync(formData.password, usr.pwhash)) {

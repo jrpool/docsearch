@@ -1,0 +1,61 @@
+<%- include('../util/head.ejs'); %>
+
+    <h1><%- msgs.curationRegEdit.replace('{1}', usr.id) %></h1>
+
+    <p><%- msgs.curateRegEditHere.replace('{1}', usr.id) %></p>
+
+    <p><span class="link buttonish">
+      <a href="/"><%- msgs.btnHome %></a>
+    </span></p>
+
+    <form method="post" action="/curate/reg/<%= usr.id %>" class="form">
+      <pre class="form-error"><%= locals.formError || "" %></pre>
+
+      <label>
+        <span><%- msgs.uid %></span>
+        <input required autofocus
+          type="text" name="uid"
+          size="3" minlength="2" maxlength="3"
+          value="<%= usr.uid %>"
+          pattern="[2-9][A-H]{1,2}|1[A-Z]{1,2}"
+        >
+      </label>
+      <label>
+        <span><%- msgs.name %></span>
+        <input required
+          type="text" name="name"
+          size="40" minlength="3" maxlength="40"
+          value="<%= usr.name %>"
+        >
+      </label>
+      <label>
+        <span><%- msgs.email %></span>
+        <input required
+          type="email" name="email"
+          size="50" minlength="6" maxlength="50"
+          value="<%= usr.email %>"
+        >
+      </label>
+      <label>
+        <span><%- msgs.info %></span>
+        <input
+          type="text" name="claims"
+          size="50" maxlength="264"
+          value="<%= usr.claims %>"
+        >
+      </label>
+
+      <% msgs.grps.forEach(grp => { %>
+        <label>
+          <input type="checkbox" name="grp" id="<%= grp[0] %>"
+            value="<%= grp[0] %>"<%= grp[2] ? " checked" : "" %>
+          >
+          <span><%= grp[1] %></span>
+        </label>
+      <% }); %>
+
+    <button type="submit" name="submit"><%- msgs.btnSubmit %></button>
+
+  </form>
+
+<%- include('../util/foot.ejs'); %>

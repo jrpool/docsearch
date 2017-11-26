@@ -1,0 +1,15 @@
+<%- include('../util/head.ejs'); %>
+
+    <h1><%- msgs.regEditAckTitle %></h1>
+
+    <p><%- msgs.regEditAckText %></p>
+
+    <% Object.keys(usr).forEach(key => { %>
+      <p><%= key %> = <%- usr.key %></p>
+    <% }); %>
+
+    <p><span class="link buttonish">
+      <a href="/"><%- msgs.btnHome %></a>
+    </span></p>
+
+<%- include('../util/foot.ejs'); %>

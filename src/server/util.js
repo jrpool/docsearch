@@ -42,6 +42,7 @@ const eng = {
   'errGeneral': 'Something was wrong with the inputs.',
   'errLogin': 'Nobody with that ID-password combination is registered.',
   'errNeed2LoginFacts': 'Both an ID and a password are required.',
+  'errNeed3RegFacts': 'A name, UID, and email address are required.',
   'errNeed4RegFacts': 'A name, an email address, and duplicate passwords are required.',
   'errPasswordsDiffer': 'The passwords are not identical.',
   'grps': [
@@ -80,6 +81,10 @@ const eng = {
   'regAckText': 'Thank you! Your registration request has been received. You should receive an immediate email confirmation and be contacted later for verification.',
   'regAckTextCur': 'Thank you! The processing of your registration has begun. Meanwhile, you can log in, using {1} as your ID.',
   'regAckTitle': 'Registration Request Received',
+  'regEditAckText': 'Your revisions to the registration record of user {1} have been made. The current data are:',
+  'regEditAckTitle': 'Registration Record Revised',
+  'regEditMailSubject': 'Registration revision at berkhouse.us',
+  'regEditMailText': 'This confirms that the registration record of {1} at http://berkhouse.us has been updated and now contains: {2}',
   'regHere': 'If you are not yet registered, you can register here.',
   'registration': 'Registration',
   'regMailSubject': 'Registration at berkhouse.us',

@@ -1,3 +1,5 @@
+const {getUpdateQuery} = require('./util');
+
 /*
   User-management database functions.
   Preconditions:
@@ -221,6 +223,25 @@ const createUsr = formData => {
 }
 
 /*
+  Define a function that revises the data on a user.
+*/
+const updateUsr = usr => {
+  const grps = usr.grps;
+  delete usr.grps;
+  const client = new Client();
+  return client.connect()
+  .then(() => client.query(getUpdateQuery('usr', ['id', usr.id], usr)))
+  .then(() => {
+    client.end();
+    return '';
+  })
+  .catch(error => {
+    client.end();
+    throw error;
+  });
+};
+
+/*
   Define a function that deletes data from the database on the user
   identified by the submitted deregistration form.
 */
@@ -282,5 +303,13 @@ const engrpUsr = (usr, grp) => {
 };
 
 module.exports = {
-  getUsr, getFormUsr, getUsrs, getGrps, createUsr, deleteUsr, checkUsr, engrpUsr
+  getUsr,
+  getFormUsr,
+  getUsrs,
+  getGrps,
+  createUsr,
+  updateUsr,
+  deleteUsr,
+  checkUsr,
+  engrpUsr
 };

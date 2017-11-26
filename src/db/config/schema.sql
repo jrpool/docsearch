@@ -12,9 +12,9 @@ CREATE TABLE act (
 
 CREATE TABLE permit (
   grp SMALLINT NOT NULL REFERENCES grp(id) ON DELETE CASCADE,
-  dir TEXT NOT NULL,
   act SMALLINT NOT NULL REFERENCES act(id) ON DELETE CASCADE,
-  UNIQUE(grp, dir, act)
+  dir TEXT NOT NULL,
+  UNIQUE(grp, act, dir)
 );
 
 CREATE TABLE usr (

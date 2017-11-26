@@ -23,10 +23,58 @@ router.get('/reg/:id', (request, response) => {
   const msgs = response.locals.msgs;
   DbUsr.getUsr(request.params.id)
   .then(usr => {
-    const grps = msgs.grps.forEach(
+    // Append to each msgs.grps element whether the user is in it.
+    msgs.grps.forEach(
       grp => {grp.push(usr.grps.includes(grp[0]))}
     );
-    response.render('curate/reg-edit', {usr, grps, msgs});
+    response.render('curate/reg-edit', {usr, msgs});
+  })
+  .catch(error => renderError(error, request, response));
+});
+
+router.post('/reg/:id', (request, response) => {
+  console.log('request body:\n' + JSON.stringify(request.body));
+  const msgs = response.locals.msgs;
+  const usr = request.body;
+  if (usr.grps) {
+    if (Array.isArray(usr.grps)) {
+      usr.grps = usr.grps.map(idString => Number.parseInt(idString));
+    }
+    else {
+      usr.grps = [Number.parseInt(usr.grps)];
+    }
+  }
+  else {
+    usr.grps = [];
+  }
+  msgs.grps.forEach(grp => {grp.push(usr.grps.includes(grp[0]))});
+  if (
+    !usr.uid
+    || !usr.name
+    || !usr.email
+  ) {
+    response.render(
+      'curate/reg-edit', {formError: msgs.errNeed3RegFacts, usr, msgs}
+    );
+    return;
+  }
+  DbUsr.updateUsr(usr)
+  .then(usr => {
+    response.render('curate/reg-edit-ack', {usr, msgs});
+    sgMail.send({
+      to: {
+        email: usr.email,
+        name: usr.name.replace(/[,;]/g, '-')
+      },
+      cc: {
+        email: 'info@berkhouse.us',
+        name: 'Jonathan Pool'
+      },
+      from: 'info@berkhouse.us',
+      subject: msgs.regEditMailSubject,
+      text: msgs.regEditMailText + '\n\n' + JSON.stringify(usr)
+    });
+    return '';
   })
   .catch(error => renderError(error, request, response));
 });

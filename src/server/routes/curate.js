@@ -5,7 +5,6 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.get('/', (request, response) => {
-  console.log('here');
   const msgs = response.locals.msgs;
   response.render('curate', {formData: '', msgs});
 });
@@ -21,11 +20,11 @@ router.get('/reg', (request, response) => {
 
 router.get('/reg/:id', (request, response) => {
   const msgs = response.locals.msgs;
-  DbUsr.getUsr(request.params.id)
-  .then(usr => {
-    // Append to each msgs.grps element whether the user is in it.
-    msgs.grps.forEach(
-      grp => {grp.push(usr.grps.includes(grp[0]))}
+  DbUsr.getUsr({type: 'id', id: request.params.id})
+  .then(deepUsr => {
+    // Append to each msgs.cats element whether the user is in it.
+    msgs.cats.forEach(
+      cat => {cat.push(deepUsr[1].includes(cat[0]))}
     );
     response.render('curate/reg-edit', {usr, msgs});
   })
@@ -33,193 +32,63 @@ router.get('/reg/:id', (request, response) => {
 });
 
 router.post('/reg/:id', (request, response) => {
-  console.log('request body:\n' + JSON.stringify(request.body));
   const msgs = response.locals.msgs;
-  const usr = request.body;
-  if (usr.grps) {
-    if (Array.isArray(usr.grps)) {
-      usr.grps = usr.grps.map(idString => Number.parseInt(idString));
+  const formData = request.body;
+  if (formData.cats) {
+    if (Array.isArray(formData.cats)) {
+      formData.cats = formData.cats.map(idString => Number.parseInt(idString));
     }
     else {
-      usr.grps = [Number.parseInt(usr.grps)];
+      formData.cats = [Number.parseInt(formData.cats)];
     }
   }
   else {
-    usr.grps = [];
+    formData.cats = [];
   }
-  msgs.grps.forEach(grp => {grp.push(usr.grps.includes(grp[0]))});
+  msgs.cats.forEach(cat => {cat.push(formData.cats.includes(cat[0]))});
   if (
-    !usr.uid
-    || !usr.name
-    || !usr.email
-  ) {
-    response.render(
-      'curate/reg-edit', {formError: msgs.errNeed3RegFacts, usr, msgs}
-    );
-    return;
-  }
-  DbUsr.updateUsr(usr)
-  .then(usr => {
-    response.render('curate/reg-edit-ack', {usr, msgs});
-    sgMail.send({
-      to: {
-        email: usr.email,
-        name: usr.name.replace(/[,;]/g, '-')
-      },
-      cc: {
-        email: 'info@berkhouse.us',
-        name: 'Jonathan Pool'
-      },
-      from: 'info@berkhouse.us',
-      subject: msgs.regEditMailSubject,
-      text: msgs.regEditMailText + '\n\n' + JSON.stringify(usr)
-    });
-    return '';
-  })
-  .catch(error => renderError(error, request, response));
-});
-
-router.get('/grp', (request, response) => {
-  const msgs = response.locals.msgs;
-  response.render('curate/grp', {formData: '', msgs});
-});
-
-router.get('/dir', (request, response) => {
-  const msgs = response.locals.msgs;
-  response.render('curate/dir', {formData: '', msgs});
-});
-
-router.post('/register', (request, response) => {
-  const msgs = response.locals.msgs;
-  const formData = request.body;
-  if (
-    !formData.name
+    !formData.uid
+    || !formData.name
     || !formData.email
-    || !formData.password1
-    || !formData.password2
   ) {
     response.render(
-      'usr/register', {formError: msgs.errNeed4RegFacts, formData, msgs}
+      'curate/reg-edit', {formError: msgs.errNeed3RegFacts, usr: formData, msgs}
     );
     return;
   }
-  if (formData.password2 !== formData.password1) {
-    response.render(
-      'usr/register', {formError: msgs.errPasswordsDiffer, formData, msgs}
-    );
-    return;
-  }
-  formData.pwHash = getHash(formData.password1);
-  DbUsr.getFormUsr('nat', formData)
-  .then(usr => {
-    if (usr.id) {
-      response.render(
-        'usr/register', {formError: msgs.errAlreadyUsr, formData, msgs}
-      );
-    }
-    else {
-      DbUsr.createUsr(formData)
-      /*
-        Substitute name into acknowledgements. If registrant is a curator,
-        also substitute UID into them.
-      */
-      .then(result => {
-        if (result.length) {
-          msgs.regAckText = msgs.regAckTextCur.replace('{1}', result);
-          msgs.regMailText = msgs.regMailTextCur.replace('{2}', result);
-        }
-        response.render('usr/register-ack', {msgs});
-        sgMail.send({
-          to: {
-            email: formData.email,
-            name: formData.name.replace(/[,;]/g, '-')
-          },
-          cc: {
-            email: 'info@berkhouse.us',
-            name: 'Jonathan Pool'
-          },
-          from: 'info@berkhouse.us',
-          subject: msgs.regMailSubject,
-          text: msgs.regMailText.replace('{1}', formData.name)
-        });
-      });
-    }
-    return '';
-  })
-  .catch(error => renderError(error, request, response));
-});
-
-router.get('/deregister', (request, response) => {
-  const msgs = response.locals.msgs;
-  const usr = request.session.usr;
-  sgMail.send({
-    to: {
-      email: usr.email,
-      name: usr.name.replace(/[,;]/g, '-')
-    },
-    cc: {
-      email: 'info@berkhouse.us',
-      name: 'Jonathan Pool'
-    },
-    from: 'info@berkhouse.us',
-    subject: msgs.deregMailSubject,
-    text: msgs.deregMailText.replace('{1}', usr.name)
-  });
-  DbUsr.deleteUsr(request.session.usr.id)
+  formData.id = request.params.id;
+  DbUsr.updateUsr(formData)
   .then(() => {
-    request.session.destroy();
-    msgs.status = '';
-    response.render('usr/deregister-ack', {msgs});
-    return '';
-  })
-  .catch(error => renderError(error, request, response));
-});
-
-router.get('/login', (request, response) => {
-  const msgs = response.locals.msgs;
-  response.render('usr/login', {formData: '', msgs});
-});
-
-router.post('/login', (request, response) => {
-  const msgs = response.locals.msgs;
-  const formData = request.body;
-  if (!formData.uid || !formData.password) {
-    response.render(
-      'usr/login', {formError: msgs.errNeed2LoginFacts, formData, msgs}
-    );
-    return '';
-  }
-  DbUsr.getFormUsr('uid', formData)
-  .then(usr => {
-    if (usr.id) {
-      if (!bcrypt.compareSync(formData.password, usr.pwhash)) {
-        response.render(
-          'usr/login', {formError: msgs.errLogin, formData, msgs}
-        );
-        return '';
-      }
-      else {
-        delete usr.pwhash;
-        request.session.usr = usr;
-        response.render('usr/login-ack', {msgs});
-      }
-    }
-    else {
-      response.render(
-        'usr/login', {formError: msgs.errLogin, formData, msgs}
-      );
+    DbUsr.getUsr({type: 'id', id: formData.id})
+    .then(deepUsr => {
+      response.render('curate/reg-edit-ack', {deepUsr, msgs});
+      sgMail.send({
+        to: {
+          email: deepUsr[0].email,
+          name: deepUsr[0].name.replace(/[,;]/g, '-')
+        },
+        cc: {
+          email: 'info@berkhouse.us',
+          name: 'Jonathan Pool'
+        },
+        from: 'info@berkhouse.us',
+        subject: msgs.regEditMailSubject,
+        text: msgs.regEditMailText + '\n\n' + JSON.stringify(deepUsr)
+      });
       return '';
-    }
+    })
   })
   .catch(error => renderError(error, request, response));
 });
 
-router.get('/logout', (request, response) => {
-  const msgs = response.locals.msgs;
-  delete request.session.usr;
-  delete request.session.id;
-  msgs.status = '';
-  response.render('usr/logout-ack', {msgs});
-});
+// router.get('/cat', (request, response) => {
+//   const msgs = response.locals.msgs;
+//   response.render('curate/cat', {formData: '', msgs});
+// });
+//
+// router.get('/dir', (request, response) => {
+//   const msgs = response.locals.msgs;
+//   response.render('curate/dir', {formData: '', msgs});
+// });
 
 module.exports = router;

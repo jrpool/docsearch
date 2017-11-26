@@ -1,4 +1,5 @@
--- After editing this file, execute the script seeddir_db.
+-- After editing this file (if you don’t also edit seedcat.sql), execute
+-- the script seeddir_db.
 
 TRUNCATE permit, act;
 
@@ -7,7 +8,7 @@ INSERT INTO act(id, name) VALUES
   (1, 'add'),
   (2, 'del');
 
-INSERT INTO permit(grp, act, dir) VALUES
+INSERT INTO permit(cat, act, dir) VALUES
   (0, 0, 'docs'),
   (0, 1, 'docs'),
   (0, 2, 'docs'),

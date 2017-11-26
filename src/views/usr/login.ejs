@@ -12,11 +12,10 @@
       <pre class="form-error"><%= locals.formError || "" %></pre>
 
       <label>
-        <span><%- msgs.id %></span>
-        <input placeholder="1A" required autofocus
+        <span><%- msgs.uid %></span>
+        <input required autofocus
           type="text" name="uid"
-          size="3" minlength="2" maxlength="3"
-          pattern="[2-9][A-H]{1,2}|1[A-Z]{1,2}"
+          size="15" minlength="2" maxlength="15"
           value="<%= formData.uid %>"
         >
       </label>

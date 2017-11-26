@@ -1,71 +1,51 @@
-const {getUpdateQuery} = require('./util');
-
 /*
   User-management database functions.
   Preconditions:
-    There is a maximum of 26 curators.
+    There are no more than 26 curators.
 */
 
-// Import required modules.
+// Import environment variables.
 require('dotenv').config();
 
-// Create a connection to the “docsearch” database.
+// Create a client configured for connection to the “docsearch” database.
 const {Client} = require('pg');
 
 // Define a function that returns database data on a user.
-const getUsr = id => {
-  const client = new Client();
-  return client.connect()
-  .then(() => {
-    return client.query({
-      values: [id],
-      text: `
-        SELECT usr.*, array_agg(usrgrp.grp) AS grps FROM usr, usrgrp
-        WHERE usr.id = $1 AND usrgrp.usr = usr.id
-        GROUP BY usr.id
-      `
-    });
-  })
-  .then(usr => {
-    client.end();
-    return usr.rowCount ? usr.rows[0] : {};
-  })
-  .catch(error => {
-    client.end();
-    throw error;
-  });
-};
-
-/*
-  Define a function that returns database data on the user identified
-  by the submitted login form, including an array of the user’s groups.
-*/
-const getFormUsr = (basis, formData) => {
+const getUsr = basis => {
   const client = new Client();
   return client.connect()
   .then(() => {
     const query = {};
-    if (basis === 'nat') {
-      query.values = [formData.name, formData.email];
-      query.text = `
-        SELECT usr.*, array_agg(usrgrp.grp) AS grps FROM usr, usrgrp
-        WHERE usr.name = $1 AND usr.email = $2 AND usrgrp.usr = usr.id
-        GROUP BY usr.id
-      `;
+    if (basis.type === 'id') {
+      query.values = [basis.id];
+      query.text = 'SELECT * FROM usr WHERE id = $1';
     }
-    else if (basis === 'uid') {
-      query.values = [formData.uid];
-      query.text = `
-        SELECT usr.*, array_agg(usrgrp.grp) AS grps FROM usr, usrgrp
-        WHERE usr.uid = $1 AND usrgrp.usr = usr.id
-        GROUP BY usr.id
-      `;
+    else if (basis.type === 'nat') {
+      query.values = [basis.data.name, basis.data.email];
+      query.text = 'SELECT * FROM usr WHERE name = $1 AND email = $2';
     }
-    return client.query(query);
-  })
-  .then(usr => {
-    client.end();
-    return usr.rowCount ? usr.rows[0] : {};
+    else if (basis.type === 'uid') {
+      query.values = [basis.data.uid];
+      query.text = 'SELECT * FROM usr WHERE uid = $1';
+    }
+    else {
+      throw 'Error: basis.type';
+    }
+    return client.query(query)
+    .then(usr => {
+      if (usr.rowCount) {
+        usr = usr.rows[0];
+        return client.query({
+          rowMode: 'array',
+          values: [usr.id],
+          text: 'SELECT cat FROM usrcat WHERE usr = $1 ORDER BY CAT'
+        })
+        .then(cats => [usr, cats.rowCount ? cats.rows.map(row => row[0]) : []]);
+      }
+      else {
+        return [{}, []];
+      }
+    });
   })
   .catch(error => {
     client.end();
@@ -91,15 +71,15 @@ const getUsrs = () => {
 };
 
 // Define a function that returns database data on all user categories.
-const getGrps = () => {
+const getcats = () => {
   const client = new Client();
   return client.connect()
   .then(() => {
-    return client.query('SELECT id, name FROM grp ORDER BY id');
+    return client.query('SELECT id, name FROM cat ORDER BY id');
   })
-  .then(grps => {
+  .then(cats => {
     client.end();
-    return grps.rowCount ? grps.rows : [];
+    return cats.rowCount ? cats.rows : [];
   })
   .catch(error => {
     client.end();
@@ -107,26 +87,26 @@ const getGrps = () => {
   });
 };
 
-// Define a function that returns a user’s categories.
-const getGrpsOf = usr => {
-  const client = new Client();
-  return client.connect()
-  .then(() => {
-    return client.query({
-      text: 'SELECT grp FROM usrgrp WHERE usr = $1 ORDER BY grp',
-      values: [usr],
-      rowMode: 'array'
-    });
-  })
-  .then(grps => {
-    client.end();
-    return grps.rowCount ? grps.rows.map(row => row[0]) : [];
-  })
-  .catch(error => {
-    client.end();
-    throw error;
-  });
-};
+// // Define a function that returns a user’s categories.
+// const getcatsOf = usr => {
+//   const client = new Client();
+//   return client.connect()
+//   .then(() => {
+//     return client.query({
+//       text: 'SELECT cat FROM usrcat WHERE usr = $1 ORDER BY cat',
+//       values: [usr],
+//       rowMode: 'array'
+//     });
+//   })
+//   .then(cats => {
+//     client.end();
+//     return cats.rowCount ? cats.rows.map(row => row[0]) : [];
+//   })
+//   .catch(error => {
+//     client.end();
+//     throw error;
+//   });
+// };
 
 /*
   Define a function that adds data to the database on the user identified
@@ -134,6 +114,7 @@ const getGrpsOf = usr => {
 */
 const createUsr = formData => {
   const excludedFromEtc = {
+    uidPref: 1,
     name: 1,
     pwHash: 1,
     email: 1,
@@ -148,46 +129,15 @@ const createUsr = formData => {
     formData.etc = formData.etc.replace(curatorKey, '');
     isCurator = true;
   }
-  else {
-    formData.uid = null;
-  }
+  formData.uid = 'temp' + Math.ceil(Math.random() * 1000);
   for (const key in formData) {
     if (!excludedFromEtc.hasOwnProperty(key)) {
       claims.push(`${key}=${formData[key]}`);
     }
   }
-  // If registrant is a curator, identify the last-used curator UID.
   const client = new Client();
   return client.connect()
   .then(() => {
-    if (isCurator) {
-      return client.query({
-        text: `
-          SELECT COALESCE(min(uid), '') FROM usrgrp, usr
-          WHERE usrgrp.grp = $1
-          AND usr.id = usrgrp.usr
-          AND usr.uid LIKE '1Z_'
-        `,
-        values: [Number.parseInt(process.env.CURATOR_GRP)],
-        rowMode: 'array'
-      })
-    }
-    else {
-      return '';
-    }
-  })
-  // If registrant is a curator, identify the next available curator UID.
-  .then(result => {
-    if (isCurator) {
-      const lastUsedUID = result.rows[0][0];
-      if (lastUsedUID) {
-        formData.uid
-          = `1Z${String.fromCharCode(lastUsedUID.charCodeAt(2) - 1)}`;
-        }
-        else {
-          formData.uid = '1ZZ';
-        }
-    }
     return client.query(`
       INSERT INTO usr (uid, pwhash, name, email, claims)
       VALUES ($1, $2, $3, $4, $5)
@@ -198,22 +148,23 @@ const createUsr = formData => {
       formData.name,
       formData.email,
       claims.join(' ¶ ')
-    ]);
+    ])
+    .then(bigUsr => usr.rows[0]);
   })
   .then(usr => {
     if (isCurator) {
       return client.query(
-        `INSERT INTO usrgrp VALUES ($1, $2)`,
-        [usr.rows[0].id, process.env.CURATOR_GRP]
+        `INSERT INTO usrcat VALUES ($1, $2)`,
+        [usr.id, process.env.CURATOR_GRP]
       )
       .then(() => {
         client.end();
-        return formData.uid;
+        return [true, formData.uid];
       })
     }
     else {
       client.end();
-      return '';
+      return [false, formData.uid];
     }
   })
   .catch(error => {
@@ -222,15 +173,38 @@ const createUsr = formData => {
   });
 }
 
-/*
-  Define a function that revises the data on a user.
-*/
-const updateUsr = usr => {
-  const grps = usr.grps;
-  delete usr.grps;
+// Define a function that revises the data on a user.
+const updateUsr = formData => {
+  const cats = usr.cats;
+  delete usr.cats;
   const client = new Client();
   return client.connect()
-  .then(() => client.query(getUpdateQuery('usr', ['id', usr.id], usr)))
+  .then(() => client.query({
+    values: [
+      formData.id,
+      formData.uid,
+      formData.name,
+      formData.email,
+      formData.claims
+    ],
+    text: `
+      UPDATE usr SET
+        uid = $2,
+        name = $3,
+        email = $4,
+        claims = $5
+      WHERE id = $1
+    `
+  }))
+  .then(() => {
+    const insertions = cats.map(
+      cat => `INSERT INTO cat VALUES ($1, ${cat})`
+    ).join('; ');
+    return client.query({
+      values: [formData.id],
+      text: `DELETE FROM cats WHERE usr = $1; ${insertions}`
+    });
+  })
   .then(() => {
     client.end();
     return '';
@@ -242,8 +216,8 @@ const updateUsr = usr => {
 };
 
 /*
-  Define a function that deletes data from the database on the user
-  identified by the submitted deregistration form.
+  Define a function that deletes data from the database on a user. The
+  deletion from table usr propagates to the user’s records in usrcat.
 */
 const deleteUsr = id => {
   const client = new Client();
@@ -259,57 +233,57 @@ const deleteUsr = id => {
   });
 }
 
-const checkUsr = formData => {
-  const client = new Client();
-  return client.connect()
-  .then(() => {
-    return client.query({
-      values: [id, pwhash],
-      text: 'SELECT * FROM usr WHERE id = $1 AND pwhash = $2'
-    })
-  })
-  .then(usr => {
-    client.end();
-    return usr;
-  })
-  .catch(error => {
-    client.end();
-    throw error;
-  });
-};
+// // Define a function that returns wheth
+// const checkUsr = formData => {
+//   const client = new Client();
+//   return client.connect()
+//   .then(() => {
+//     return client.query({
+//       values: [id, pwhash],
+//       text: 'SELECT * FROM usr WHERE id = $1 AND pwhash = $2'
+//     })
+//   })
+//   .then(usr => {
+//     client.end();
+//     return usr;
+//   })
+//   .catch(error => {
+//     client.end();
+//     throw error;
+//   });
+// };
 
-// Define a function that adds a user to a group, if not already in it.
-const engrpUsr = (usr, grp) => {
-  const client = new Client();
-  return client.connect()
-  .then(() => {
-    return client.query({
-      values: [usr, grp],
-      text: `
-        INSERT INTO usrgrp VALUES ($1, $2)
-        ON CONFLICT DO NOTHING
-        RETURNING usr
-      `
-    });
-  })
-  .then(usr => {
-    client.end();
-    return usr;
-  })
-  .catch(error => {
-    client.end();
-    throw error;
-  });
-};
+// // Define a function that adds a user to a category, if not already in it.
+// const encatUsr = (usr, cat) => {
+//   const client = new Client();
+//   return client.connect()
+//   .then(() => {
+//     return client.query({
+//       values: [usr, cat],
+//       text: `
+//         INSERT INTO usrcat VALUES ($1, $2)
+//         ON CONFLICT DO NOTHING
+//         RETURNING usr
+//       `
+//     });
+//   })
+//   .then(usr => {
+//     client.end();
+//     return usr;
+//   })
+//   .catch(error => {
+//     client.end();
+//     throw error;
+//   });
+// };
 
 module.exports = {
   getUsr,
-  getFormUsr,
   getUsrs,
-  getGrps,
+  // getcats,
   createUsr,
   updateUsr,
   deleteUsr,
-  checkUsr,
-  engrpUsr
+  // checkUsr,
+  // encatUsr
 };

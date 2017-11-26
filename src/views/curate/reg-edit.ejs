@@ -44,12 +44,12 @@
         >
       </label>
 
-      <% msgs.grps.forEach(grp => { %>
+      <% msgs.cats.forEach(cat => { %>
         <label>
-          <input type="checkbox" name="grps" id="<%= grp[0] %>"
-            value="<%= grp[0] %>"<%= grp[2] ? " checked" : "" %>
+          <input type="checkbox" name="cats" id="<%= cat[0] %>"
+            value="<%= cat[0] %>"<%= cat[2] ? " checked" : "" %>
           >
-          <span><%= grp[1] %></span>
+          <span><%= cat[1] %></span>
         </label>
       <% }); %>
 

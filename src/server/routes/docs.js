@@ -62,12 +62,12 @@ const readableTopDirs = usrID => {
     values: usrID,
     text: usrID
       ?
-      `SELECT permit.dir FROM usrgrp, permit
-        WHERE usrgrp.usr = $1
-        AND permit.grp = usrgrp.grp
+      `SELECT permit.dir FROM usrcat, permit
+        WHERE usrcat.usr = $1
+        AND permit.cat = usrcat.cat
         AND permit.act = 0`
       :
-      'SELECT permit.dir FROM permit WHERE grp = 0 AND act = 0'
+      'SELECT permit.dir FROM permit WHERE cat = 0 AND act = 0'
   }))
   .then(result => {
     client.end();

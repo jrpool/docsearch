@@ -36,24 +36,23 @@ router.post('/register', (request, response) => {
     return;
   }
   formData.pwHash = getHash(formData.password1);
-  DbUsr.getFormUsr('nat', formData)
-  .then(usr => {
-    if (usr.id) {
+  DbUsr.getUsr({type: 'nat', data: formData})
+  .then(deepUsr => {
+    if (deepUsr[0].id) {
       response.render(
         'usr/register', {formError: msgs.errAlreadyUsr, formData, msgs}
       );
     }
     else {
       DbUsr.createUsr(formData)
-      /*
-        Substitute name into acknowledgements. If registrant is a curator,
-        also substitute UID into them.
-      */
+      // Substitute name and temporary UID into acknowledgements.
       .then(result => {
-        if (result.length) {
-          msgs.regAckText = msgs.regAckTextCur.replace('{1}', result);
-          msgs.regMailText = msgs.regMailTextCur.replace('{2}', result);
-        }
+        msgs.regAckText = msgs.regAckText
+          .replace('{1}', formData.name)
+          .replace('{2}', formData.uid);
+          msgs.regMailText = msgs.regMailText
+            .replace('{1}', formData.name)
+            .replace('{2}', formData.uid);
         response.render('usr/register-ack', {msgs});
         sgMail.send({
           to: {
@@ -66,7 +65,7 @@ router.post('/register', (request, response) => {
           },
           from: 'info@berkhouse.us',
           subject: msgs.regMailSubject,
-          text: msgs.regMailText.replace('{1}', formData.name)
+          text: msgs.regMailText
         });
       });
     }
@@ -115,18 +114,19 @@ router.post('/login', (request, response) => {
     );
     return '';
   }
-  DbUsr.getFormUsr('uid', formData)
-  .then(usr => {
-    if (usr.id) {
-      if (!bcrypt.compareSync(formData.password, usr.pwhash)) {
+  DbUsr.getUsr({type: 'uid', data: formData})
+  .then(deepUsr => {
+    if (deepUsr[0].id) {
+      if (!bcrypt.compareSync(formData.password, deepUsr[0].pwhash)) {
         response.render(
           'usr/login', {formError: msgs.errLogin, formData, msgs}
         );
         return '';
       }
       else {
-        delete usr.pwhash;
-        request.session.usr = usr;
+        delete deepUsr[0].pwhash;
+        request.session.usr = deepUsr[0];
+        request.session.cats = deepUsr[1];
         response.render('usr/login-ack', {msgs});
       }
     }
@@ -143,6 +143,7 @@ router.post('/login', (request, response) => {
 router.get('/logout', (request, response) => {
   const msgs = response.locals.msgs;
   delete request.session.usr;
+  delete request.session.cats;
   delete request.session.id;
   msgs.status = '';
   response.render('usr/logout-ack', {msgs});

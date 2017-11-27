@@ -19,6 +19,8 @@ app.use(morgan('tiny'));
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const store = new FileStore({retries: 0});
+
 app.use(session({
   name: 'docsearch',
   resave: true,
@@ -26,10 +28,11 @@ app.use(session({
   unset: 'destroy',
   secret: process.env.SECRET || 'cookiesecret',
   cookie: {maxAge: 7 * 24 * 60 * 60 * 1000},
-  store: new FileStore({retries: 0})
+  store
 }));
 
 app.use((request, response, next) => {
+  request.sessionStore = store;
   response.locals.query = '';
   response.locals.msgs = require('./server/util').eng;
   const usr = request.session.usr;

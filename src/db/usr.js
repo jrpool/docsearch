@@ -181,7 +181,7 @@ const updateUsr = formData => {
   return client.connect()
   .then(() => client.query({
     values: [
-      formData.id,
+      Number.parseInt(formData.id),
       formData.uid,
       formData.name,
       formData.email,

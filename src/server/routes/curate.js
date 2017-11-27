@@ -23,7 +23,7 @@ router.get('/reg', (request, response) => {
 
 router.get('/reg/:id', (request, response) => {
   const msgs = response.locals.msgs;
-  DbUsr.getUsr({type: 'id', id: request.params.id})
+  DbUsr.getUsr({type: 'id', id: Number.parseInt(request.params.id)})
   .then(deepUsr => {
     // Append to each msgs.cats element whether the user is in it.
     msgs.cats.forEach(
@@ -59,7 +59,8 @@ router.post('/reg/:id', (request, response) => {
     );
     return;
   }
-  formData.id = request.params.id;
+  formData.id = Number.parseInt(request.params.id);
+  // Make the changes in the user’s database record.
   DbUsr.updateUsr(formData)
   .then(() => {
     DbUsr.getUsr({type: 'id', id: formData.id})
@@ -82,6 +83,36 @@ router.post('/reg/:id', (request, response) => {
             '{2}',
             '\n\n' + JSON.stringify(deepUsr[0]) + '\nCategories: ' + deepUsr[1]
           )
+      });
+    });
+    // Then delete the user’s session data, forcibly logging the user out.
+    request.sessionStore.list((error, fileNames) => {
+      sids = fileNames.map(v => v.replace(/\.json$/, ''));
+      console.log('sids is: ' + sids);
+      sids.forEach(sid => {
+        console.log('Examining sid ' + sid);
+        request.sessionStore.get(sid, (error, session) => {
+          console.log('Got session ' + JSON.stringify(session));
+          console.log('formData.id is ' + formData.id);
+          console.log('session.usr.id is ' + (session.usr && session.usr.id));
+          console.log('session.usr is ' + Boolean(session.usr));
+          if (session.usr) {
+            console.log('session.usr.id has type ' + typeof session.usr.id);
+            console.log(
+              'formData.id has type ' + typeof formData.id
+            );
+          }
+          if (session.usr && (session.usr.id === formData.id)) {
+            console.log('Before deletion: ' + JSON.stringify(session));
+            delete session.usr;
+            console.log('After deletion: ' + JSON.stringify(session));
+            request.sessionStore.set(sid, session, error => {
+              if (error) {
+                renderError(error, request, response);
+              }
+            });
+          }
+        })
       });
     });
     return '';

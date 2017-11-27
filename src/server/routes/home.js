@@ -5,10 +5,12 @@ router.get('/', (request, response) => {
     ifAnonymous = '',
     ifKnown = 'gone ';
   const sesUsr = request.session.usr;
-  if (sesUsr) {
+  if (request.session.usr) {
     ifAnonymous = 'gone ';
     ifKnown = '';
-    if (sesUsr.cats.includes(Number.parseInt(process.env.CURATOR_GRP))) {
+    if (request.session.cats.includes(
+      Number.parseInt(process.env.CURATOR_GRP)
+    )) {
       ifCurator = '';
     }
   }

@@ -69,9 +69,11 @@ CURATOR_GRP='0'
 
 10. To start the application, execute `npm start`.
 
-9. To access the application while it is running, use a web browser to request this URL:
+11. To access the application while it is running, use a web browser to request this URL:
 
 `http://localhost:3000/`
+
+12. At the home page, register yourself as a curator. To obtain curator permissions, on the registration form put the CURATOR_KEY value into the “Additional information” text field, along with anything else you want to include there.
 
 [lg]: https://www.learnersguild.org
 [npm]: https://www.npmjs.com/

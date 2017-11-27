@@ -10,7 +10,7 @@ const usr_route = require('./server/routes/usr');
 const doc_route = require('./server/routes/docs').router;
 const curate_route = require('./server/routes/curate');
 
-app.get('/favicon.ico', (reqest, response) => response.status(204));
+app.get('/favicon.ico', (request, response) => response.status(204));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');

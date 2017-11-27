@@ -2,11 +2,14 @@
 
     <h1><%- msgs.regEditAckTitle %></h1>
 
-    <p><%- msgs.regEditAckText %></p>
+    <p><%- msgs.regEditAckText.replace('{1}', deepUsr[0].name) %></p>
 
-    <% Object.keys(usr).forEach(key => { %>
-      <p><%= key %> = <%- usr.key %></p>
-    <% }); %>
+    <div class="kvpairs">
+      <% Object.keys(deepUsr[0]).forEach(key => { %>
+        <p><%= key %> = <%- deepUsr[0][key] %></p>
+      <% }); %>
+      <p>Categories = <%= deepUsr[1] %></p>
+    </div>
 
     <p><span class="link buttonish">
       <a href="/"><%- msgs.btnHome %></a>

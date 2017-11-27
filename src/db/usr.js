@@ -149,7 +149,7 @@ const createUsr = formData => {
       formData.email,
       claims.join(' ¶ ')
     ])
-    .then(bigUsr => usr.rows[0]);
+    .then(usr => usr.rows[0]);
   })
   .then(usr => {
     if (isCurator) {
@@ -175,8 +175,8 @@ const createUsr = formData => {
 
 // Define a function that revises the data on a user.
 const updateUsr = formData => {
-  const cats = usr.cats;
-  delete usr.cats;
+  const cats = formData.cats;
+  delete formData.cats;
   const client = new Client();
   return client.connect()
   .then(() => client.query({
@@ -196,13 +196,15 @@ const updateUsr = formData => {
       WHERE id = $1
     `
   }))
+  .then(() => client.query({
+    values: [formData.id],
+    text: `DELETE FROM usrcat WHERE usr = $1`
+  }))
   .then(() => {
-    const insertions = cats.map(
-      cat => `INSERT INTO cat VALUES ($1, ${cat})`
-    ).join('; ');
+    const assignments = cats.map(cat => `($1, ${cat})`).join(', ');
     return client.query({
       values: [formData.id],
-      text: `DELETE FROM cats WHERE usr = $1; ${insertions}`
+      text: `INSERT INTO usrcat VALUES ${assignments}`
     });
   })
   .then(() => {

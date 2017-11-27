@@ -1,7 +1,10 @@
 const DbUsr = require('../../db/usr');
 const {renderError} = require('../util');
 const router = require('express').Router();
+const fs = require('fs');
+const path = require('path');
 const sgMail = require('@sendgrid/mail');
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.get('/', (request, response) => {
@@ -26,7 +29,7 @@ router.get('/reg/:id', (request, response) => {
     msgs.cats.forEach(
       cat => {cat.push(deepUsr[1].includes(cat[0]))}
     );
-    response.render('curate/reg-edit', {usr, msgs});
+    response.render('curate/reg-edit', {usr: deepUsr[0], msgs});
   })
   .catch(error => renderError(error, request, response));
 });
@@ -61,6 +64,7 @@ router.post('/reg/:id', (request, response) => {
   .then(() => {
     DbUsr.getUsr({type: 'id', id: formData.id})
     .then(deepUsr => {
+      delete deepUsr[0].pwhash;
       response.render('curate/reg-edit-ack', {deepUsr, msgs});
       sgMail.send({
         to: {
@@ -73,22 +77,26 @@ router.post('/reg/:id', (request, response) => {
         },
         from: 'info@berkhouse.us',
         subject: msgs.regEditMailSubject,
-        text: msgs.regEditMailText + '\n\n' + JSON.stringify(deepUsr)
+        text:
+          msgs.regEditMailText.replace('{1}', deepUsr[0].name).replace(
+            '{2}',
+            '\n\n' + JSON.stringify(deepUsr[0]) + '\nCategories: ' + deepUsr[1]
+          )
       });
-      return '';
-    })
+    });
+    return '';
   })
   .catch(error => renderError(error, request, response));
 });
 
-// router.get('/cat', (request, response) => {
-//   const msgs = response.locals.msgs;
-//   response.render('curate/cat', {formData: '', msgs});
-// });
-//
-// router.get('/dir', (request, response) => {
-//   const msgs = response.locals.msgs;
-//   response.render('curate/dir', {formData: '', msgs});
-// });
+router.get('/cat', (request, response) => {
+  const msgs = response.locals.msgs;
+  response.render('curate/cat', {formData: '', msgs});
+});
+
+router.get('/dir', (request, response) => {
+  const msgs = response.locals.msgs;
+  response.render('curate/dir', {formData: '', msgs});
+});
 
 module.exports = router;

@@ -4,9 +4,6 @@
     There are no more than 26 curators.
 */
 
-// Import environment variables.
-require('dotenv').config();
-
 // Create a client configured for connection to the “docsearch” database.
 const {Client} = require('pg');
 
@@ -155,7 +152,7 @@ const createUsr = formData => {
     if (isCurator) {
       return client.query(
         `INSERT INTO usrcat VALUES ($1, $2)`,
-        [usr.id, process.env.CURATOR_GRP]
+        [usr.id, process.env.CURATOR_CAT]
       )
       .then(() => {
         client.end();

@@ -1,13 +1,16 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1>Browse Documents</h1>
+    <h1><%- msgs.docsBrowseTitle %></h1>
 
-    <p>Click on a directory or file to see its contents.</p>
+    <p><%- msgs.docsBrowseText %></p>
 
-    <p><span class="link buttonish"><a href="/">restart</a></span></p>
+    <p><span class="link buttonish">
+      <a href="/"><%- msgs.btnHome %></a>
+    </span></p>
 
-    <p><span
-      class="link buttonish"><a href="/docs/search">search</a></span></p>
+    <p><span class="link buttonish">
+      <a href="/docs/search"><%- msgs.btnDocsSearch %></a>
+    </span></p>
 
     <div class="dirlist">
       <%- base

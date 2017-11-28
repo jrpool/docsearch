@@ -14,7 +14,7 @@ https://github.com/jrpool/docsearch
 
 ### General
 
-This application demonstrates the use of HTML, CSS, JavaScript, Apache `solr`, `bcrypt`, `body-parser`, `dotenv`, `ejs`, `express`, `express-session`, `PostgreSQL`, `pg` (node-postgres), `session-file-store`, and SendGrid to create a web server managing and providing selective access to a repository of documents.
+This application demonstrates the use of HTML, CSS, JavaScript, Apache `solr`, `bcrypt`, `body-parser`, `dotenv`, `ejs`, `express`, `express-session`, `session-file-store`, `PostgreSQL`, `pg` (node-postgres), and SendGrid to create a web server managing and providing selective access to a repository of documents.
 
 ### Implementation notes
 
@@ -58,22 +58,29 @@ PGPORT='5432'
 PORT='3000'
 SECRET='«somethingElseSecret»'
 SENDGRID_API_KEY='«yourSendGridAPIKey»'
-CURATOR_GRP='0'
+LG='eng'
+CURATOR_CAT='0'
+CC_EMAIL='«your_username@domain.ext»'
+CC_NAME='«Your Name»'
+FROM_EMAIL='«webmaster@domain.ext»'
+FROM_NAME='«Sender Name»'
 ```
 
 7. Feel free to add and remove directories and files inside `public/docs`. That directory is the root of your repository.
 
 8. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory.
 
-9. To create and populate the database, execute `npm run revive_db`.
+9. This MVP version of the application is monolingual in English, but is designed for localization. To add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in that other language. Name the object with the ISO 639-3 alpha-3 code of that language. Finally, replace `eng` with that code as the value of the `LG` environment variable in the `.env` file.
 
-10. To start the application, execute `npm start`.
+10. To create and populate the database, execute `npm run revive_db`.
 
-11. To access the application while it is running, use a web browser to request this URL:
+11. To start the application, execute `npm start`.
+
+12. To access the application while it is running, use a web browser to request this URL:
 
 `http://localhost:3000/`
 
-12. At the home page, register yourself as a curator. To obtain curator permissions, on the registration form put the CURATOR_KEY value into the “Additional information” text field, along with anything else you want to include there.
+13. At the home page, register yourself as a curator. To obtain curator permissions, on the registration form put the CURATOR_KEY value into the “Additional information” text field, along with anything else you want to include there.
 
 [lg]: https://www.learnersguild.org
 [npm]: https://www.npmjs.com/

@@ -9,7 +9,7 @@ router.get('/', (request, response) => {
     ifAnonymous = 'gone ';
     ifKnown = '';
     if (request.session.cats.includes(
-      Number.parseInt(process.env.CURATOR_GRP)
+      Number.parseInt(process.env.CURATOR_CAT)
     )) {
       ifCurator = '';
     }

@@ -1,5 +1,4 @@
 // Import required modules.
-require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 

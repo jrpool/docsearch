@@ -23,8 +23,8 @@ const store = new FileStore({retries: 0});
 
 app.use(session({
   name: 'docsearch',
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   unset: 'destroy',
   secret: process.env.SECRET || 'cookiesecret',
   cookie: {maxAge: 7 * 24 * 60 * 60 * 1000},
@@ -34,7 +34,7 @@ app.use(session({
 app.use((request, response, next) => {
   request.sessionStore = store;
   response.locals.query = '';
-  response.locals.msgs = require('./server/util').eng;
+  response.locals.msgs = require('./server/util')[process.env.LG];
   const usr = request.session.usr;
   const status = response.locals.msgs.status;
   response.locals.msgs.status

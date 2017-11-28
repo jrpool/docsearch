@@ -28,7 +28,10 @@
     <p><span class="<%= ifAnonymous %>link buttonish">
       <a href="/usr/login"><%- msgs.btnLogin %></a>
     </span></p>
-    <p><span class="link buttonish">
+    <p><span class="<%= ifKnown %>link buttonish">
+      <a href="/docs"><%- msgs.btnSeeDocs %></a>
+    </span></p>
+    <p><span class="<%= ifAnonymous %>link buttonish">
       <a href="/docs"><%- msgs.btnSeePubDocs %></a>
     </span></p>
 

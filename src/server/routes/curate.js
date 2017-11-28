@@ -7,6 +7,15 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+router.use('/', (request, response, next) => {
+  if (request.session.cats.includes(Number.parseInt(process.env.CURATOR_CAT))) {
+    next();
+  }
+  else {
+    response.redirect('/');
+  }
+});
+
 router.get('/', (request, response) => {
   const msgs = response.locals.msgs;
   response.render('curate', {formData: '', msgs});
@@ -73,10 +82,13 @@ router.post('/reg/:id', (request, response) => {
           name: deepUsr[0].name.replace(/[,;]/g, '-')
         },
         cc: {
-          email: 'info@berkhouse.us',
-          name: 'Jonathan Pool'
+          email: process.env.CC_EMAIL,
+          name: process.env.CC_NAME
         },
-        from: 'info@berkhouse.us',
+        from: {
+          email: process.env.FROM_EMAIL,
+          name: process.env.FROM_NAME
+        },
         subject: msgs.regEditMailSubject,
         text:
           msgs.regEditMailText.replace('{1}', deepUsr[0].name).replace(
@@ -88,24 +100,10 @@ router.post('/reg/:id', (request, response) => {
     // Then delete the user’s session data, forcibly logging the user out.
     request.sessionStore.list((error, fileNames) => {
       sids = fileNames.map(v => v.replace(/\.json$/, ''));
-      console.log('sids is: ' + sids);
       sids.forEach(sid => {
-        console.log('Examining sid ' + sid);
         request.sessionStore.get(sid, (error, session) => {
-          console.log('Got session ' + JSON.stringify(session));
-          console.log('formData.id is ' + formData.id);
-          console.log('session.usr.id is ' + (session.usr && session.usr.id));
-          console.log('session.usr is ' + Boolean(session.usr));
-          if (session.usr) {
-            console.log('session.usr.id has type ' + typeof session.usr.id);
-            console.log(
-              'formData.id has type ' + typeof formData.id
-            );
-          }
           if (session.usr && (session.usr.id === formData.id)) {
-            console.log('Before deletion: ' + JSON.stringify(session));
             delete session.usr;
-            console.log('After deletion: ' + JSON.stringify(session));
             request.sessionStore.set(sid, session, error => {
               if (error) {
                 renderError(error, request, response);

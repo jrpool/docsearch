@@ -1,15 +1,21 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1>Documents from BTH</h1>
+    <h1><%- msgs.docsTitle %></h1>
 
-    <p>You can access documents here.</p>
+    <p><%- msgs.docsText %></p>
 
-    <p><span class="link buttonish"><a href="/">restart</a></span></p>
+    <p><span class="link buttonish"><a href="/"><%- msgs.btnHome %></a></span></p>
 
-    <p>Please choose what to do with documents:</p>
+    <p><%- msgs.docsChoose %></p>
 
-    <p><span class="link buttonish"><a href="/docs/browse">browse</a></span></p>
-    <p><span class="link buttonish"><a href="/docs/search">search</a></span></p>
-    <p><span class="<%= addclass %> buttonish"><a href="/docs/add">add one</a></span></p>
+    <p><span class="link buttonish">
+      <a href="/docs/browse"><%- msgs.btnDocsBrowse %></a>
+    </span></p>
+    <p><span class="link buttonish">
+      <a href="/docs/search"><%- msgs.btnDocsSearch %></a>
+    </span></p>
+    <p><span class="<%= docaddclass %>link buttonish">
+      <a href="/docs/add"><%- msgs.btnDocsAdd %></a>
+    </span></p>
 
 <%- include('../util/foot.ejs'); %>

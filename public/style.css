@@ -80,7 +80,7 @@ button[type="submit"],
 .foot {
   text-align: center;
   font-size: x-small;
-  color: darkgray;
+  color: slategray;
 }
 
 .form input[type="submit"] {

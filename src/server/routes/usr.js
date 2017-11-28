@@ -1,3 +1,4 @@
+// Import required modules.
 const DbUsr = require('../../db/usr');
 const {renderError} = require('../util');
 const router = require('express').Router();
@@ -60,10 +61,13 @@ router.post('/register', (request, response) => {
             name: formData.name.replace(/[,;]/g, '-')
           },
           cc: {
-            email: 'info@berkhouse.us',
-            name: 'Jonathan Pool'
+            email: process.env.CC_EMAIL,
+            name: process.env.CC_NAME
           },
-          from: 'info@berkhouse.us',
+          from: {
+            email: process.env.FROM_EMAIL,
+            name: process.env.FROM_NAME
+          },
           subject: msgs.regMailSubject,
           text: msgs.regMailText
         });

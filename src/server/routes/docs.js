@@ -1,20 +1,14 @@
 // Import required modules.
-require('dotenv').config();
+const DbDocs = require('../../db/docs');
+const {renderError} = require('../util');
 const path = require('path');
 const router = require('express').Router();
 const fs = require('fs');
 
-// Create a connection to the “docsearch” database.
-const {Client} = require('pg');
-const client = new Client();
-
-// const {renderError, renderMessage} = require('../util');
-
 // Serve the main doc page
 router.get('/', (request, response) => {
   const usr = request.session.usr;
-  const addclass = usr ? 'link' : 'gone';
-  response.render('docs', {usr, addclass});
+  response.render('docs', {usr, docaddclass: usr ? '' : 'gone '});
 });
 
 // Define a function that returns the type of an item in the filesystem.
@@ -55,38 +49,17 @@ const dirData = (staticPath, reqPath) => {
   }
 };
 
-const readableTopDirs = usrID => {
-  return client.connect()
-  .then(() => client.query({
-    rowMode: 'array',
-    values: usrID,
-    text: usrID
-      ?
-      `SELECT permit.dir FROM usrcat, permit
-        WHERE usrcat.usr = $1
-        AND permit.cat = usrcat.cat
-        AND permit.act = 0`
-      :
-      'SELECT permit.dir FROM permit WHERE cat = 0 AND act = 0'
-  }))
-  .then(result => {
-    client.end();
-    return result.rows.map(row => row[0]);
-  })
-  .catch(error => {
-    renderError(error, request, response);
-    client.end();
-  });
-};
-
 router.get('/browse', (request, response) => {
   const usr = request.session.usr || {id: 0};
-  readableTopDirs(usr.id)
-  .then(dirs => {
+  DbDocs.usrDirRights(usr.id)
+  .then(rights => {
     const reqPath = request.query.p;
-    if (reqPath) {
-      if (dirs.some(dir => reqPath.startsWith(dir))) {
-        const staticPath = path.join(path.resolve(), 'public');
+    // If the request specifies a path other than “docs”.
+    if (reqPath && reqPath !== 'docs') {
+      if (
+        rights.some(right => right[0] === 0 && reqPath.startsWith(right[1]))
+      ) {
+        const staticPath = path.join(process.cwd(), 'public');
         if (itemType(staticPath, reqPath) === 'd') {
           const pathSegs = reqPath.split('/');
           response.render('docs/browse', {
@@ -106,10 +79,16 @@ router.get('/browse', (request, response) => {
         response.redirect('/');
       }
     }
+    // If the request does not specify a path or specifies “docs”.
     else {
       response.render('docs/browse', {
-        usr, up: '', last: '', base: '', delim: '', dirData: dirs.map(
-          dir => ({name: dir, type: 'd', size: '', modDate: ''})
+        usr,
+        up: '',
+        last: '',
+        base: '',
+        delim: '',
+        dirData: rights.map(
+          right => ({name: right[1], type: 'd', size: '', modDate: ''})
         )
       });
     }
@@ -131,4 +110,4 @@ router.get('/add', (request, response) => {
   }
 });
 
-module.exports = {dirData, router};
+module.exports = {router};

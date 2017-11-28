@@ -17,34 +17,30 @@ router.use('/', (request, response, next) => {
 });
 
 router.get('/', (request, response) => {
-  const msgs = response.locals.msgs;
-  response.render('curate', {formData: '', msgs});
+  response.render('curate', {formData: ''});
 });
 
 router.get('/reg', (request, response) => {
-  const msgs = response.locals.msgs;
   DbUsr.getUsrs()
   .then(usrs => {
-    response.render('curate/reg', {formData: '', usrs, msgs});
+    response.render('curate/reg', {formData: '', usrs});
   })
   .catch(error => renderError(error, request, response));
 });
 
 router.get('/reg/:id', (request, response) => {
-  const msgs = response.locals.msgs;
   DbUsr.getUsr({type: 'id', id: Number.parseInt(request.params.id)})
   .then(deepUsr => {
     // Append to each msgs.cats element whether the user is in it.
     msgs.cats.forEach(
       cat => {cat.push(deepUsr[1].includes(cat[0]))}
     );
-    response.render('curate/reg-edit', {usr: deepUsr[0], msgs});
+    response.render('curate/reg-edit', {usr: deepUsr[0]});
   })
   .catch(error => renderError(error, request, response));
 });
 
 router.post('/reg/:id', (request, response) => {
-  const msgs = response.locals.msgs;
   const formData = request.body;
   if (formData.cats) {
     if (Array.isArray(formData.cats)) {
@@ -64,7 +60,7 @@ router.post('/reg/:id', (request, response) => {
     || !formData.email
   ) {
     response.render(
-      'curate/reg-edit', {formError: msgs.errNeed3RegFacts, usr: formData, msgs}
+      'curate/reg-edit', {formError: msgs.errNeed3RegFacts, usr: formData}
     );
     return;
   }
@@ -75,7 +71,7 @@ router.post('/reg/:id', (request, response) => {
     DbUsr.getUsr({type: 'id', id: formData.id})
     .then(deepUsr => {
       delete deepUsr[0].pwhash;
-      response.render('curate/reg-edit-ack', {deepUsr, msgs});
+      response.render('curate/reg-edit-ack', {deepUsr});
       sgMail.send({
         to: {
           email: deepUsr[0].email,
@@ -119,13 +115,11 @@ router.post('/reg/:id', (request, response) => {
 });
 
 router.get('/cat', (request, response) => {
-  const msgs = response.locals.msgs;
-  response.render('curate/cat', {formData: '', msgs});
+  response.render('curate/cat', {formData: ''});
 });
 
 router.get('/dir', (request, response) => {
-  const msgs = response.locals.msgs;
-  response.render('curate/dir', {formData: '', msgs});
+  response.render('curate/dir', {formData: ''});
 });
 
 module.exports = router;

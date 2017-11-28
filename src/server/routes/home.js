@@ -14,8 +14,7 @@ router.get('/', (request, response) => {
       ifCurator = '';
     }
   }
-  const msgs = response.locals.msgs;
-  response.render('home', {ifAnonymous, ifKnown, ifCurator, msgs});
+  response.render('home', {ifAnonymous, ifKnown, ifCurator});
 });
 
 module.exports = router;

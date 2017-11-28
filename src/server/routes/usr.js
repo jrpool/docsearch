@@ -143,7 +143,7 @@ router.get('/logout', (request, response) => {
   delete request.session.usr;
   delete request.session.cats;
   delete request.session.id;
-  msgs.status = '';
+  response.locals.msgs.status = '';
   response.render('usr/logout-ack');
 });
 

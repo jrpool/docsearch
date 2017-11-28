@@ -55,9 +55,9 @@ router.get('/browse', (request, response) => {
   .then(rights => {
     const reqPath = request.query.p;
     // If the request specifies a path other than “docs”.
-    if (reqPath && reqPath !== 'docs') {
+    if (reqPath && (reqPath !== 'docs')) {
       if (
-        rights.some(right => right[0] === 0 && reqPath.startsWith(right[1]))
+        rights.some(right => (right[0] === 0) && reqPath.startsWith(right[1]))
       ) {
         const staticPath = path.join(process.cwd(), 'public');
         if (itemType(staticPath, reqPath) === 'd') {
@@ -87,7 +87,7 @@ router.get('/browse', (request, response) => {
         last: '',
         base: '',
         delim: '',
-        dirData: rights.map(
+        dirData: rights.filter(right => right[0] === 0).map(
           right => ({name: right[1], type: 'd', size: '', modDate: ''})
         )
       });
@@ -100,14 +100,12 @@ router.get('/browse', (request, response) => {
   });
 });
 
+router.get('/search', (request, response) => {
+  response.render('docs/search');
+});
+
 router.get('/add', (request, response) => {
-  const user = request.session.user;
-  if (getRole(user) > -1) {
-    response.render('docs/add', {user});
-  }
-  else {
-    response.redirect('/');
-  }
+  response.render('docs/add');
 });
 
 module.exports = {router};

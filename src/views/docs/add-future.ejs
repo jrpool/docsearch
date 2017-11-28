@@ -1,0 +1,52 @@
+<%- include head.ejs %>
+
+    <h1>Add a Document</h1>
+
+    <p>You can add a document to this collection here.</p>
+
+    <p><span class="link"><a href="/">No, I want to do something else.</a></span></p>
+
+    <form method="post" action="/docs/add/ack" class="form">
+      <pre class="form-error"></pre>
+      <label>
+        <span>Description of this document:</span>
+        <input required autofocus
+          type="text" name="description"
+          size="60" minlength="10" maxlength="60"
+        >
+      </label>
+      <p>I believe this document qualifies as accessible by:</p>
+      <label>
+        <span>The public</span>
+        <input type="checkbox" name="access" value="public">
+      </label>
+      <label>
+        <span>current members of BTH</span>
+        <input type="checkbox" name="access" value="members">
+      </label>
+      <label>
+        <span>prospective members of BTH</span>
+        <input type="checkbox" name="access" value="prospects">
+      </label>
+      <label>
+        <span>nonmember residents of BTH</span>
+        <input type="checkbox" name="access" value="residents">
+      </label>
+      <label>
+        <span>managers of BTH</span>
+        <input type="checkbox" name="access" value="mgrs">
+      </label>
+      <label>
+        <span>directors of BTH</span>
+        <input type="checkbox" name="access" value="dirs">
+      </label>
+      <label>
+        <input required
+          type="file" name="file"
+          accept=".txt, .html, .htm, .csv, .tsv, .pdf, .odt, .ods, .rtf, .doc, .docx, .xls, .xlsx, .jpg, .png"
+        >
+      </label>
+      <input type="submit" value="Submit file">
+    </form>
+
+<%- include foot.ejs %>

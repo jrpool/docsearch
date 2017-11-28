@@ -5,7 +5,7 @@ const renderError = function(error, request, response) {
 const eng = {
   'accessText': 'You can browse and search documents here. Some of them have access limitations. If you are a BTH member, prospective member, resident, or manager, you can register or log in for additional access.',
   'accessTitle': 'Access',
-  'bthIs': '<strong>Berkeley Town House</strong> (BTH) is a senior housing cooperative in Berkeley, California. Founded in 1960, it is the <em>first</em> senior housing cooperative in the United States!',
+  'bthIs': 'Welcome! <strong>Berkeley Town House</strong> (BTH) is a senior housing cooperative in Berkeley, California. Founded in 1960, it is the <em>first</em> senior housing cooperative in the United States!',
   'bthRelation': 'Your relationships to BTH:',
   'btnDocsAdd': 'Add one',
   'btnDocsBrowse': 'Browse',
@@ -59,10 +59,14 @@ const eng = {
   'deregAckTitle': 'Deregistration Successful',
   'deregMailSubject': 'Deregistration at berkhouse.us',
   'deregMailText': 'This confirms that, at the request of the registrant, the registration of {1} at http://berkhouse.us has been terminated. Please feel free to register again. Thanks!',
+  'docsAddHere': 'You can add a document to the repository here.',
+  'docsAddTitle': 'Add a Document',
   'docsChoose': 'Please choose what to do with documents:',
   'docsText': 'You can access documents here.',
   'docsBrowseText': 'Click on a directory or file to see its contents.',
   'docsBrowseTitle': 'Browse Documents',
+  'docsSearchHere': 'You can search for documents here.',
+  'docsSearchTitle': 'Search for Documents',
   'docsTitle': 'Documents from BTH',
   'email': 'Email address:',
   'errAlreadyUsr': 'Someone with that name and email address is already registered.',
@@ -72,7 +76,7 @@ const eng = {
   'errNeed3RegFacts': 'A name, UID, and email address are required.',
   'errNeed4RegFacts': 'A name, an email address, and duplicate passwords are required.',
   'errPasswordsDiffer': 'The passwords are not identical.',
-  'footText': 'Documents from BTH. A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> implementation.<br>DocSearch is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
+  'footText': 'Documents from BTH. A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br>DocSearch is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
   'info': 'Additional information:',
   'intro': 'Introduction',
   'login': 'Login',
@@ -105,7 +109,6 @@ const eng = {
   'unit0': 'Your unit, if a member or resident:',
   'unit1': 'Your second unit, if any:',
   'valueProp': 'This site is a repository of about 14,000 documents from BTH. A BTH member collected them from 2009 to 2017 in order to help preserve, and facilitate access to, the institutional memory of this historic community.',
-  'welcome': 'Welcome!'
 };
 
 module.exports = {renderError, eng};

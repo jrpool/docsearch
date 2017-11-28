@@ -1,24 +1,13 @@
-<%- include head.ejs %>
+<%- include('../util/head.ejs'); %>
 
-    <h1>Search for Documents</h1>
+    <h1><%- msgs.docsSearchTitle %></h1>
 
-    <p>You can search for documents here.</p>
+    <p><%- msgs.docsSearchHere %></p>
 
-    <p><span class="link"><a href="/docs/browse">No, I want to browse for documents.</a></span></p>
+    <p><span class="link buttonish">
+      <a href="/"><%- msgs.btnHome %></a>
+    </span></p>
 
-    <p><span class="link"><a href="/">No, I want to do something else.</a></span></p>
+    <p>This feature is not yet implemented, but it is next on the agenda.</p>
 
-    <form method="post" action="/docs/search" class="form">
-
-      <pre class="form-error"></pre>
-
-      <label>
-        <span>Text to search for:</span>
-        <input type="text" name="subtext" />
-      </label>
-
-      <input type="submit" value="Search">
-
-    </form>
-
-<%- include foot.ejs %>
+<%- include('../util/foot.ejs'); %>

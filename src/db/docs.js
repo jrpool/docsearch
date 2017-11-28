@@ -13,7 +13,7 @@ const usrDirRights = usrID => {
   const client = new Client();
   const query = usrID
     ? `
-      SELECT permit.act, permit.dir FROM usrcat, permit
+      SELECT distinct permit.act, permit.dir FROM usrcat, permit
       WHERE usrcat.usr = $1
       AND permit.cat = usrcat.cat
     `

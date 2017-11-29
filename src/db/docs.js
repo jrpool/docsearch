@@ -11,19 +11,22 @@ const {Client} = require('pg');
 // Define a function that returns a user’s directory rights.
 const usrDirRights = usrID => {
   const client = new Client();
-  const query = usrID
+  const queryText = usrID
     ? `
       SELECT distinct permit.act, permit.dir FROM usrcat, permit
       WHERE usrcat.usr = $1
       AND permit.cat = usrcat.cat
     `
     : 'SELECT act, dir FROM permit WHERE cat = 1';
+  const query = {
+    text: queryText,
+    rowMode: 'array'
+  };
+  if (usrID) {
+    query.values = [usrID];
+  }
   return client.connect()
-  .then(() => client.query({
-    rowMode: 'array',
-    values: [usrID],
-    text: query
-  }))
+  .then(() => client.query(query))
   .then(result => {
     client.end();
     return result.rows;

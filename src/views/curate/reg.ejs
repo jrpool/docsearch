@@ -20,10 +20,10 @@
       <% usrs.forEach(usr => { %>
         <tr>
           <td class="open"><span class="link buttonish">
-            <a href="/curate/reg/<%= usr.id %>"><%= usr.id %></a>
+            <a href="/curate/reg/<%- usr.id %>"><%- usr.id %></a>
           </span></td>
           <td><%= usr.uid %></td>
-          <td><%- usr.name %></td>
+          <td><%= usr.name %></td>
         </tr>
       <% }); %>
 

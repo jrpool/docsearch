@@ -38,6 +38,7 @@ const mailSend = (usrSource, subject, text) => {
 
 router.post('/register', (request, response) => {
   const formData = request.body;
+  const msgs = response.locals.msgs;
   if (
     !formData.name
     || !formData.email

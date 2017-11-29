@@ -9,10 +9,10 @@
     </span></p>
 
     <form method="post" action="/usr/login" class="form">
-      <pre class="form-error"><%= locals.formError || "" %></pre>
+      <pre class="form-error"><%- locals.formError || "" %></pre>
 
       <label>
-        <span><%- msgs.uid %></span>
+        <span><%- msgs.uid %></span><br>
         <input required autofocus
           type="text" name="uid"
           size="15" minlength="2" maxlength="15"
@@ -20,7 +20,7 @@
         >
       </label>
       <label>
-        <span><%- msgs.pw %></span>
+        <span><%- msgs.pw %></span><br>
         <input required
           type="password" name="password"
           size="40" minlength="5" maxlength="40"

@@ -34,7 +34,7 @@ app.use(session({
 app.use((request, response, next) => {
   request.sessionStore = store;
   response.locals.query = '';
-  response.locals.msgs = require('./server/util')[process.env.LG];
+  response.locals.msgs = require('./server/util')[process.env.LANG];
   const usr = request.session.usr;
   const status = response.locals.msgs.status;
   response.locals.msgs.status

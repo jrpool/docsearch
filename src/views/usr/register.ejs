@@ -1,76 +1,75 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.registration %></h1>
+<h1><%- msgs.registration %></h1>
 
-    <p><%- msgs.regHere %></p>
+<p><%- msgs.regHere %></p>
 
-    <p><span class="link buttonish"><a href="/"><%- msgs.btnHome %></a></span></p>
+<p><span class="link buttonish"><a href="/"><%- msgs.btnHome %></a></span></p>
 
-    <form method="post" action="/usr/register" class="form">
-      <pre class="form-error"><%= locals.formError || "" %></pre>
+<form method="post" action="/usr/register" class="form">
+  <pre class="form-error"><%= locals.formError || "" %></pre>
 
-      <label>
-        <span><%- msgs.name %></span>
-        <input required autofocus
-          type="text" name="name"
-          size="40" minlength="3" maxlength="40"
-          value="<%= formData.name %>"
-        >
-      </label>
-      <label>
-        <span><%- msgs.email %></span>
-        <input required
-          type="email" name="email"
-          size="50" minlength="6" maxlength="50"
-          value="<%= formData.email %>"
-        >
-      </label>
-      <label>
-        <span><%- msgs.pwNew %></span>
-        <input required
-          type="password" name="password1"
-          size="40" minlength="5" maxlength="40"
-          value="<%= formData.password1 %>"
-          autocomplete="new-password"
-        >
-      </label>
-      <label>
-        <span><%- msgs.pwAgain %></span>
-        <input required
-          type="password" name="password2"
-          size="40" minlength="5" maxlength="40"
-          value="<%= formData.password2 %>"
-          autocomplete="new-password"
-        >
-      </label>
+  <label>
+    <span><%- msgs.name %></span><br>
+    <input required autofocus
+      type="text" name="name"
+      size="40" minlength="3" maxlength="40"
+      value="<%= formData.name %>"
+    >
+  </label>
+  <label>
+    <span><%- msgs.email %></span><br>
+    <input required
+      type="email" name="email"
+      size="40" minlength="6" maxlength="50"
+      value="<%= formData.email %>"
+    >
+  </label>
+  <label>
+    <span><%- msgs.pwNew %></span><br>
+    <input required
+      type="password" name="password1"
+      size="40" minlength="5" maxlength="40"
+      value="<%= formData.password1 %>"
+      autocomplete="new-password"
+    >
+  </label>
+  <label>
+    <span><%- msgs.pwAgain %></span><br>
+    <input required
+      type="password" name="password2"
+      size="40" minlength="5" maxlength="40"
+      value="<%= formData.password2 %>"
+      autocomplete="new-password"
+    >
+  </label>
 
-      <!-- Checkboxes for category membership (i.e. authorization) claims -->
-      <p><%- msgs.catHead %></p>
-      <% msgs.cats.forEach(cat => { %>
-        <label>
-          <input type="checkbox" name="<%= cat[0] %>"
-            value="1" <%= formData[cat[0]] %> ? "checked" : "" %>
-          >
-          <span><%- cat[1] %></span>
-        </label>
-      <% }) %>
+  <!-- Checkboxes for category membership (i.e. authorization) claims -->
+  <p><%- msgs.catHead %></p>
+  <% msgs.cats.forEach(cat => { %>
+    <label>
+      <input type="checkbox" name="<%- cat[0] %>"
+        value="1" <%- formData[cat[0]] ? "checked" : "" %>
+      >
+      <span><%- cat[1] %></span>
+    </label>
+  <% }) %>
 
-      <!-- Text fields for miscellaneous user information -->
-      <% msgs.usrEtc.forEach(etc => { %>
-        <label>
-          <input
-            type="text" <%=
-              Object.keys(etc.field).map(
-                key => `${key}="${etc.field[key]}"`
-              ).join(' ')
-            %>
-          >
-          <span><%- etc.label %></span>
-        </label>
-      <% }) %>
+  <!-- Text fields for miscellaneous user information -->
+  <% msgs.usrEtc.forEach(etc => { %>
+    <label>
+      <span><%- etc.label %></span><br>
+      <input
+        type="text"
+        <% Object.keys(etc.field).forEach(key => { %>
+          <%- key %>="<%- etc.field[key] %>"
+        <% }) %>
+      >
+    </label>
+  <% }) %>
 
-      <button type="submit" name="submit"><%- msgs.btnSubmit %></button>
+  <button type="submit" name="submit"><%- msgs.btnSubmit %></button>
 
-    </form>
+</form>
 
 <%- include('../util/foot.ejs'); %>

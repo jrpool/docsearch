@@ -21,7 +21,6 @@ const eng = {
   'btnSubmit': 'Submit',
   'catHead': 'Your relationships to BTH:',
   'cats': [
-    ['cat0', 'Curator'],
     ['cat1', 'General public'],
     ['cat2', 'Member'],
     ['cat3', 'Nonmember resident'],
@@ -67,7 +66,7 @@ const eng = {
   'errNeed3RegFacts': 'A name, UID, and email address are required.',
   'errNeed4RegFacts': 'A name, an email address, and duplicate passwords are required.',
   'errPasswordsDiffer': 'The passwords are not identical.',
-  'footText': 'Documents from BTH. A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br>DocSearch is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
+  'footText': 'Documents from BTH. A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br><code>DocSearch</code> is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
   'intro': 'Introduction',
   'introText': 'Welcome! <strong>Berkeley Town House</strong> (BTH) is a senior housing cooperative in Berkeley, California. Founded in 1960, it is the <em>first</em> senior housing cooperative in the United States!</p><p>This site is a repository of about 14,000 documents from BTH. A BTH member collected them from 2009 to 2017 in order to help preserve, and facilitate access to, the institutional memory of this historic community.',
   'itemsIn': 'Items in {1}',
@@ -81,7 +80,7 @@ const eng = {
   'pw': 'Password:',
   'pwAgain': 'Reenter the password:',
   'pwNew': 'Create a password:',
-  'regAckText': 'Thank you, {1}, for registering! You may log in with temporary UID {2}. You should receive an email confirmation and be contacted later for verification.',
+  'regAckText': 'Thank you, {1}, for registering! You may log in with this temporary UID: {2}. You should receive an email confirmation and be contacted later for verification.',
   'regAckTitle': 'Registration in Progress',
   'regEditAckText': 'Your revisions to the registration record of user {1} have been made. The current data are:',
   'regEditAckTitle': 'Registration Record Revised',
@@ -109,7 +108,7 @@ const eng = {
         size: '3',
         minlength: '2',
         maxlength: '3',
-        pattern: '\d[A-H]{1,2}'
+        pattern: '\\d[A-H]{1,2}'
       }
     },
     {
@@ -120,7 +119,7 @@ const eng = {
         size: '3',
         minlength: '2',
         maxlength: '3',
-        pattern: '\d[A-H]{1,2}'
+        pattern: '\\d[A-H]{1,2}'
       }
     },
     {

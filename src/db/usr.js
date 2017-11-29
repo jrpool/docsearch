@@ -101,7 +101,7 @@ const createUsr = formData => {
   .then(() => {
     return client.query(`
       INSERT INTO usr (regdate, uid, pwhash, name, email, claims)
-      VALUES ($1, $2, $3, $4, $5)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `, [
       new Date().toISOString().slice(0, 10),

@@ -1,6 +1,7 @@
 // Import required modules.
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 // Create a connection to the “docsearch” database.
 const {Client} = require('pg');

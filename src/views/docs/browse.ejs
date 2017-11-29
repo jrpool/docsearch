@@ -13,31 +13,30 @@
     </span></p>
 
     <div class="dirlist">
-      <%- base
-        ? '<p><strong>'
-          + msgs.itemsIn.replace(
-            '{1}', '<a href="/docs/browse?p=${up}">${up}</a>/${last}:'
-          )
-          + '</strong></p>'
-        : ''
+      <% if (base) {
+        const itemsInParts = msgs.itemsIn.split('{1}');
       %>
+        <p><strong>
+        <%- itemsInParts[0] %>
+        <a href="/docs/browse?p=<%= up %>"><%= up %></a>/<%= last %>:
+        <%- itemsInParts[1] %>
+        </strong></p>
+      <% } %>
       <table>
         <tr>
           <th><%- msgs.tblItem %></th>
           <th><%- msgs.tblSize %></th>
           <th><%- msgs.tblDate %></th>
         </tr>
-        <%- dirData
-          .map(itemData => {
-            const p = `${base}${delim}${itemData.name}`;
-            return `<tr>
-              <td><a href="/docs/browse?p=${p}">${itemData.name}</a></td>
-              <td>${itemData.size}</td>
-              <td>${itemData.modDate}</td>
-            </tr>`;
-          })
-          .join('\n')
+        <% dirData.forEach(itemData => {
+          const p = `${base}${delim}${itemData.name}`;
         %>
+          <tr>
+            <td><a href="/docs/browse?p=<%= p %>"><%= itemData.name %></a></td>
+            <td><%- itemData.size %></td>
+            <td><%- itemData.modDate %></td>
+          </tr>
+        <% }) %>
       </table>
     </div>
 

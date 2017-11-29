@@ -9,7 +9,7 @@
     </span></p>
 
     <form method="post" action="/curate/reg/<%= usr.id %>" class="form">
-      <pre class="form-error"><%= locals.formError || "" %></pre>
+      <pre class="form-error"><%- locals.formError || "" %></pre>
 
       <label>
         <span><%- msgs.uid %></span>
@@ -44,10 +44,12 @@
         >
       </label>
 
+      <!-- msgs.cats properties have had existing true/false values
+      appended. -->
       <% msgs.cats.forEach(cat => { %>
         <label>
-          <input type="checkbox" name="cats" id="<%= cat[0] %>"
-            value="<%= cat[0] %>"<%= cat[2] ? " checked" : "" %>
+          <input type="checkbox" name="cats" id="<%- cat[0] %>"
+            value="<%- cat[0] %>"<%= cat[2] ? " checked" : "" %>
           >
           <span><%= cat[1] %></span>
         </label>

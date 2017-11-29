@@ -1,9 +1,9 @@
 // Import required modules.
 const DbDocs = require('../../db/docs');
-const {renderError} = require('../util');
 const path = require('path');
 const router = require('express').Router();
 const fs = require('fs');
+const util = require('./util');
 
 // Serve the main doc page
 router.get('/', (request, response) => {
@@ -98,7 +98,7 @@ router.get('/browse', (request, response) => {
     return '';
   })
   .catch(error => {
-    renderError(error, request, response);
+    util.renderError(error, request, response);
     client.end();
   });
 });

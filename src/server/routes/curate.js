@@ -1,16 +1,17 @@
 const DbUsr = require('../../db/usr');
-const {renderError} = require('../util');
 const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
 const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const util = require('./util');
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+let msgs;
 
 // Redirect all curation queries to home page if user is not a curator.
 router.use('/', (request, response, next) => {
   if (request.session.cats.includes(Number.parseInt(process.env.CURATOR_CAT))) {
+    msgs = response.locals.msgs;
     next();
   }
   else {
@@ -28,7 +29,7 @@ router.get('/reg', (request, response) => {
   .then(usrs => {
     response.render('curate/reg', {formData: '', usrs});
   })
-  .catch(error => renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response));
 });
 
 // Page for curation of a particular user’s registration.
@@ -41,7 +42,7 @@ router.get('/reg/:id', (request, response) => {
     );
     response.render('curate/reg-edit', {usr: deepUsr[0]});
   })
-  .catch(error => renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response));
 });
 
 // Delete a user’s session data, forcibly logging the user out.
@@ -54,7 +55,7 @@ const deleteSession = (request, response, usrID) => {
           delete session.usr;
           request.sessionStore.set(sid, session, error => {
             if (error) {
-              renderError(error, request, response);
+              util.renderError(error, request, response);
             }
           });
         }
@@ -108,13 +109,14 @@ router.post('/reg/:id', (request, response) => {
             '\n\n' + JSON.stringify(
               targetDeepUsr[0]
             ) + '\nCategories: ' + targetDeepUsr[1]
-          )
+          ),
+          msgs
         );
       });
     });
     return '';
   })
-  .catch(error => renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response));
 });
 
 router.get('/reg/:id/deregister', (request, response) => {
@@ -128,12 +130,13 @@ router.get('/reg/:id/deregister', (request, response) => {
       util.mailSend(
         [targetDeepUsr[0], request.session.usr],
         msgs.deregMailSubject,
-        msgs.deregMailText
+        msgs.deregMailText,
+        msgs
       );
       return '';
     })
   })
-  .catch(error => renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response));
 });
 
 router.get('/cat', (request, response) => {

@@ -1,7 +1,3 @@
-const renderError = function(error, request, response) {
-  response.send(`ERROR: ${error.message}\n\n${error.stack}`);
-};
-
 const eng = {
   'accessText': 'You can browse and search documents here. Some of them have access limitations. If you are a BTH member, prospective member, resident, or manager, you can register or log in for additional access.',
   'accessTitle': 'Access',
@@ -149,4 +145,4 @@ const eng = {
   ]
 };
 
-module.exports = {renderError, eng};
+module.exports = {eng};

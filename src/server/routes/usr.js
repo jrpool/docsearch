@@ -1,16 +1,17 @@
-// Import required modules.
+// Import and configure required modules.
 const DbUsr = require('../../db/usr');
-const {renderError} = require('../util');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const util = require('./util');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const getHash = password => {
-  const salt = bcrypt.genSaltSync(10);
-  return bcrypt.hashSync(password, salt);
-};
+let msgs;
+
+router.use('/', (request, response, next) => {
+  msgs = response.locals.msgs;
+  next();
+});
 
 router.get('/register', (request, response) => {
   response.render('usr/register', {formData: ''});
@@ -18,7 +19,6 @@ router.get('/register', (request, response) => {
 
 router.post('/register', (request, response) => {
   const formData = request.body;
-  const msgs = response.locals.msgs;
   if (
     !formData.name
     || !formData.email
@@ -36,7 +36,7 @@ router.post('/register', (request, response) => {
     );
     return;
   }
-  formData.pwHash = getHash(formData.password1);
+  formData.pwHash = bcrypt.hashSync(formData.password1, bcrypt.genSaltSync(10));
   DbUsr.getUsr({type: 'nat', data: formData})
   .then(deepUsr => {
     if (deepUsr[0].id) {
@@ -51,16 +51,19 @@ router.post('/register', (request, response) => {
         msgs.regAckText = msgs.regAckText
           .replace('{1}', formData.name)
           .replace('{2}', formData.uid);
-          msgs.regMailText = msgs.regMailText
-            .replace('{1}', formData.name)
-            .replace('{2}', formData.uid);
+        msgs.regMailText = msgs.regMailText
+          .replace('{1}', formData.name)
+          .replace('{2}', formData.uid);
         response.render('usr/register-ack');
-        util.mailSend([formData], msgs.regMailSubject, msgs.regMailText);
-      });
+        util.mailSend(
+          [formData], msgs.regMailSubject, msgs.regMailText, msgs
+        );
+      })
+      .catch(error => util.renderError(error, request, response));
     }
     return '';
   })
-  .catch(error => renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response));
 });
 
 router.get('/deregister', (request, response) => {
@@ -70,10 +73,15 @@ router.get('/deregister', (request, response) => {
     request.session.destroy();
     msgs.status = '';
     response.render('usr/deregister-ack');
-    util.mailSend([usr], msgs.deregMailSubject, msgs.deregMailText);
+    util.mailSend(
+      [usr],
+      msgs.deregMailSubject,
+      msgs.deregMailText.replace('{1}', usr.name.replace(/[,;]/g, '-')),
+      msgs
+    );
     return '';
   })
-  .catch(error => renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response));
 });
 
 router.get('/login', (request, response) => {
@@ -111,7 +119,7 @@ router.post('/login', (request, response) => {
       return '';
     }
   })
-  .catch(error => renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response));
 });
 
 router.get('/logout', (request, response) => {

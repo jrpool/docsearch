@@ -3,6 +3,7 @@ const DbUsr = require('../../db/usr');
 const {renderError} = require('../util');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const util = require('./util');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -14,6 +15,26 @@ const getHash = password => {
 router.get('/register', (request, response) => {
   response.render('usr/register', {formData: ''});
 });
+
+const mailSend = (usrSource, subject, text) => {
+  const options = {
+    to: {
+      email: usrSource.email,
+      name: usrSource.name.replace(/[,;]/g, '-')
+    },
+    cc: {
+      email: process.env.REG_EMAIL,
+      name: process.env.REG_NAME
+    },
+    from: {
+      email: process.env.FROM_EMAIL,
+      name: process.env.FROM_NAME
+    },
+    subject: msgs.regMailSubject,
+    text: msgs.regMailText
+  };
+  sgMail.send(options);
+};
 
 router.post('/register', (request, response) => {
   const formData = request.body;
@@ -53,22 +74,7 @@ router.post('/register', (request, response) => {
             .replace('{1}', formData.name)
             .replace('{2}', formData.uid);
         response.render('usr/register-ack');
-        sgMail.send({
-          to: {
-            email: formData.email,
-            name: formData.name.replace(/[,;]/g, '-')
-          },
-          cc: {
-            email: process.env.CC_EMAIL,
-            name: process.env.CC_NAME
-          },
-          from: {
-            email: process.env.FROM_EMAIL,
-            name: process.env.FROM_NAME
-          },
-          subject: msgs.regMailSubject,
-          text: msgs.regMailText
-        });
+        mailSend(formData, msgs.regMailSubject, msgs.regMailText);
       });
     }
     return '';
@@ -78,24 +84,12 @@ router.post('/register', (request, response) => {
 
 router.get('/deregister', (request, response) => {
   const usr = request.session.usr;
-  sgMail.send({
-    to: {
-      email: usr.email,
-      name: usr.name.replace(/[,;]/g, '-')
-    },
-    cc: {
-      email: 'info@berkhouse.us',
-      name: 'Jonathan Pool'
-    },
-    from: 'info@berkhouse.us',
-    subject: msgs.deregMailSubject,
-    text: msgs.deregMailText.replace('{1}', usr.name)
-  });
   DbUsr.deleteUsr(request.session.usr.id)
   .then(() => {
     request.session.destroy();
     msgs.status = '';
     response.render('usr/deregister-ack');
+    util.mailSend(usr, msgs.deregMailSubject, msgs.deregMailText);
     return '';
   })
   .catch(error => renderError(error, request, response));

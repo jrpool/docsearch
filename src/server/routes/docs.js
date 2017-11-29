@@ -8,7 +8,7 @@ const fs = require('fs');
 // Serve the main doc page
 router.get('/', (request, response) => {
   const usr = request.session.usr;
-  response.render('docs', {usr, docaddclass: usr ? '' : 'gone '});
+  response.render('docs', {usr, ifCanAdd: usr.cats.includes(1) ? '' : 'gone '});
 });
 
 // Define a function that returns the type of an item in the filesystem.

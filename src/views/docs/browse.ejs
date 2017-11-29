@@ -14,11 +14,19 @@
 
     <div class="dirlist">
       <%- base
-        ? `<p><strong>Items in <a href="/docs/browse?p=${up}">${up}</a>/${last}:</strong></p>`
+        ? '<p><strong>'
+          + msgs.itemsIn.replace(
+            '{1}', '<a href="/docs/browse?p=${up}">${up}</a>/${last}:'
+          )
+          + '</strong></p>'
         : ''
       %>
       <table>
-        <tr><th>Item</th><th>Size</th><th>Date</th></tr>
+        <tr>
+          <th><%- msgs.tblItem %></th>
+          <th><%- msgs.tblSize %></th>
+          <th><%- msgs.tblDate %></th>
+        </tr>
         <%- dirData
           .map(itemData => {
             const p = `${base}${delim}${itemData.name}`;

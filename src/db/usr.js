@@ -50,7 +50,7 @@ const getUsr = basis => {
   });
 };
 
-// Define a function that returns database data on all users.
+// Define a function that returns selected database data on all users.
 const getUsrs = () => {
   const client = new Client();
   return client.connect()
@@ -67,66 +67,30 @@ const getUsrs = () => {
   });
 };
 
-// Define a function that returns database data on all user categories.
-const getcats = () => {
-  const client = new Client();
-  return client.connect()
-  .then(() => {
-    return client.query('SELECT id, name FROM cat ORDER BY id');
-  })
-  .then(cats => {
-    client.end();
-    return cats.rowCount ? cats.rows : [];
-  })
-  .catch(error => {
-    client.end();
-    throw error;
-  });
-};
-
-// // Define a function that returns a user’s categories.
-// const getcatsOf = usr => {
-//   const client = new Client();
-//   return client.connect()
-//   .then(() => {
-//     return client.query({
-//       text: 'SELECT cat FROM usrcat WHERE usr = $1 ORDER BY cat',
-//       values: [usr],
-//       rowMode: 'array'
-//     });
-//   })
-//   .then(cats => {
-//     client.end();
-//     return cats.rowCount ? cats.rows.map(row => row[0]) : [];
-//   })
-//   .catch(error => {
-//     client.end();
-//     throw error;
-//   });
-// };
-
 /*
-  Define a function that adds data to the database on the user identified
+  Define a function that adds records to the database on the user identified
   by the submitted registration form.
 */
 const createUsr = formData => {
   const excludedFromEtc = {
-    uidPref: 1,
     name: 1,
     pwHash: 1,
     email: 1,
     password1: 1,
     password2: 1,
+    admin: 1,
     submit: 1
   };
   const claims = [];
   const curatorKey = process.env.CURATOR_KEY;
   let isCurator = false;
-  if (formData.etc.includes(curatorKey)) {
-    formData.etc = formData.etc.replace(curatorKey, '');
+  if (formData.admin.includes(curatorKey)) {
+    formData.admin = '';
     isCurator = true;
   }
-  formData.uid = 'temp' + Math.ceil(Math.random() * 1000);
+  formData.uid = 'temp' + Math.ceil(
+    Math.random() * 100 * process.env.TEMP_UID_MAX
+  );
   for (const key in formData) {
     if (!excludedFromEtc.hasOwnProperty(key)) {
       claims.push(`${key}=${formData[key]}`);
@@ -136,10 +100,11 @@ const createUsr = formData => {
   return client.connect()
   .then(() => {
     return client.query(`
-      INSERT INTO usr (uid, pwhash, name, email, claims)
+      INSERT INTO usr (regdate, uid, pwhash, name, email, claims)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *
     `, [
+      new Date().toISOString().slice(0, 10),
       formData.uid,
       formData.pwHash,
       formData.name,
@@ -215,7 +180,7 @@ const updateUsr = formData => {
 };
 
 /*
-  Define a function that deletes data from the database on a user. The
+  Define a function that deletes all data from the database on a user. The
   deletion from table usr propagates to the user’s records in usrcat.
 */
 const deleteUsr = id => {
@@ -232,57 +197,10 @@ const deleteUsr = id => {
   });
 }
 
-// // Define a function that returns wheth
-// const checkUsr = formData => {
-//   const client = new Client();
-//   return client.connect()
-//   .then(() => {
-//     return client.query({
-//       values: [id, pwhash],
-//       text: 'SELECT * FROM usr WHERE id = $1 AND pwhash = $2'
-//     })
-//   })
-//   .then(usr => {
-//     client.end();
-//     return usr;
-//   })
-//   .catch(error => {
-//     client.end();
-//     throw error;
-//   });
-// };
-
-// // Define a function that adds a user to a category, if not already in it.
-// const encatUsr = (usr, cat) => {
-//   const client = new Client();
-//   return client.connect()
-//   .then(() => {
-//     return client.query({
-//       values: [usr, cat],
-//       text: `
-//         INSERT INTO usrcat VALUES ($1, $2)
-//         ON CONFLICT DO NOTHING
-//         RETURNING usr
-//       `
-//     });
-//   })
-//   .then(usr => {
-//     client.end();
-//     return usr;
-//   })
-//   .catch(error => {
-//     client.end();
-//     throw error;
-//   });
-// };
-
 module.exports = {
   getUsr,
   getUsrs,
-  // getcats,
   createUsr,
   updateUsr,
   deleteUsr,
-  // checkUsr,
-  // encatUsr
 };

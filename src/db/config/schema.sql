@@ -19,6 +19,7 @@ CREATE TABLE permit (
 
 CREATE TABLE usr (
   id SERIAL PRIMARY KEY,
+  regdate DATE NOT NULL,
   uid VARCHAR(15) UNIQUE,
   pwhash VARCHAR(60) NOT NULL,
   name VARCHAR(40) NOT NULL,
@@ -45,6 +46,7 @@ COMMENT ON COLUMN permit.dir IS 'directory relative to document root';
 COMMENT ON COLUMN permit.act IS 'action';
 COMMENT ON TABLE usr IS 'registered users';
 COMMENT ON COLUMN usr.id IS 'serial ID';
+COMMENT ON COLUMN usr.regdate IS 'registration date';
 COMMENT ON COLUMN usr.uid IS 'mnemonic ID';
 COMMENT ON COLUMN usr.pwhash IS 'hash of password';
 COMMENT ON COLUMN usr.name IS 'Full name';

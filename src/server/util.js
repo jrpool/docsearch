@@ -5,8 +5,6 @@ const renderError = function(error, request, response) {
 const eng = {
   'accessText': 'You can browse and search documents here. Some of them have access limitations. If you are a BTH member, prospective member, resident, or manager, you can register or log in for additional access.',
   'accessTitle': 'Access',
-  'bthIs': 'Welcome! <strong>Berkeley Town House</strong> (BTH) is a senior housing cooperative in Berkeley, California. Founded in 1960, it is the <em>first</em> senior housing cooperative in the United States!',
-  'bthRelation': 'Your relationships to BTH:',
   'btnDocsAdd': 'Add one',
   'btnDocsBrowse': 'Browse',
   'btnDocsSearch': 'Search',
@@ -21,25 +19,18 @@ const eng = {
   'btnSeeDocs': 'See documents',
   'btnSeePubDocs': 'See public documents',
   'btnSubmit': 'Submit',
+  'catHead': 'Your relationships to BTH:',
   'cats': [
-    [0, 'Curator'],
-    [1, 'General public'],
-    [2, 'Member'],
-    [3, 'Nonmember resident'],
-    [4, 'Manager'],
-    [5, 'Prospective member'],
-    [6, 'Director'],
-    [7, 'Treasurer']
+    ['cat0', 'Curator'],
+    ['cat1', 'General public'],
+    ['cat2', 'Member'],
+    ['cat3', 'Nonmember resident'],
+    ['cat4', 'Manager'],
+    ['cat5', 'Prospective member'],
+    ['cat6', 'Director'],
+    ['cat7', 'Treasurer'],
+    ['cat8', 'Other']
   ],
-  'catCurator': 'Curator',
-  'catDirector': 'Director',
-  'catManager': 'Manager',
-  'catMember': 'Member',
-  'catOther': 'Other',
-  'catProspect': 'Prospective member',
-  'catPublic': 'General public',
-  'catResident': 'Nonmember resident',
-  'catTreasurer': 'Treasurer',
   'choose': 'Please choose:',
   'curateCatChoose': 'Please choose a category:',
   'curateCatHere': 'You can curate user categories here.',
@@ -77,15 +68,15 @@ const eng = {
   'errNeed4RegFacts': 'A name, an email address, and duplicate passwords are required.',
   'errPasswordsDiffer': 'The passwords are not identical.',
   'footText': 'Documents from BTH. A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br>DocSearch is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
-  'info': 'Additional information:',
   'intro': 'Introduction',
+  'introText': 'Welcome! <strong>Berkeley Town House</strong> (BTH) is a senior housing cooperative in Berkeley, California. Founded in 1960, it is the <em>first</em> senior housing cooperative in the United States!</p><p>This site is a repository of about 14,000 documents from BTH. A BTH member collected them from 2009 to 2017 in order to help preserve, and facilitate access to, the institutional memory of this historic community.',
+  'itemsIn': 'Items in {1}',
   'login': 'Login',
   'loginHere': 'If you are already registered, you can log in here.',
   'loginOKText': 'Your login succeeded.',
   'loginOKTitle': 'Login Successful',
   'logoutOKText': 'Your logout succeeded.',
   'logoutOKTitle': 'Logout Successful',
-  'mgrTitle': 'Your title, if a manager:',
   'name': 'Name:',
   'pw': 'Password:',
   'pwAgain': 'Reenter the password:',
@@ -102,13 +93,61 @@ const eng = {
   'regMailText': 'This confirms the registration of {1} at http://berkhouse.us. You can log in with temporary UID {2}. After verification, it will be replaced with a durable UID.',
   'status': 'You are logged in as {1}. <span class="link buttonish"><a href="/usr/logout">Log out</a></span>',
   'tblCat': 'Category',
+  'tblDate': 'Date',
   'tblID': 'ID',
+  'tblItem': 'Item',
   'tblName': 'Name',
+  'tblSize': 'Size',
   'tblUID': 'UID',
   'uid': 'UID:',
-  'unit0': 'Your unit, if a member or resident:',
-  'unit1': 'Your second unit, if any:',
-  'valueProp': 'This site is a repository of about 14,000 documents from BTH. A BTH member collected them from 2009 to 2017 in order to help preserve, and facilitate access to, the institutional memory of this historic community.',
+  'usrEtc': [
+    {
+      label: 'Your unit, if a member or resident:',
+      field: {
+        name: 'etc0',
+        placeholder: '1XY',
+        size: '3',
+        minlength: '2',
+        maxlength: '3',
+        pattern: '\d[A-H]{1,2}'
+      }
+    },
+    {
+      label: 'Your second unit, if any:',
+      field: {
+        name: 'etc1',
+        placeholder: '1XY',
+        size: '3',
+        minlength: '2',
+        maxlength: '3',
+        pattern: '\d[A-H]{1,2}'
+      }
+    },
+    {
+      label: 'Your title, if a manager:',
+      field: {
+        name: 'etc2',
+        size: '30',
+        maxlength: '30'
+      }
+    },
+    {
+      label: 'Additional information:',
+      field: {
+        name: 'etc3',
+        size: '60',
+        maxlength: '90'
+      }
+    },
+    {
+      label: 'For administrative use:',
+      field: {
+        name: 'admin',
+        size: '20',
+        maxlength: '20'
+      }
+    }
+  ]
 };
 
 module.exports = {renderError, eng};

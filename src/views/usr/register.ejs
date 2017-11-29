@@ -43,81 +43,31 @@
           autocomplete="new-password"
         >
       </label>
-      <p><%- msgs.bthRelation %></p>
-      <label>
-        <input type="checkbox" name="catMember"
-          value="1" <%= formData.catMember ? "checked" : "" %>
-        >
-        <span><%- msgs.catMember %></span>
-      </label>
-      <label>
-        <input type="checkbox" name="catResident"
-          value="1" <%= formData.catResident ? "checked" : "" %>
-        >
-        <span><%- msgs.catResident %></span>
-      </label>
-      <label>
-        <input type="checkbox" name="catProspect"
-          value="1" <%= formData.catProspect ? "checked" : "" %>
-        >
-        <span><%- msgs.catProspect %></span>
-      </label>
-      <label>
-        <input type="checkbox" name="catManager"
-          value="1" <%= formData.catManager ? "checked" : "" %>
-        >
-        <span><%- msgs.catManager %></span>
-      </label>
-      <label>
-        <input type="checkbox" name="catDirector"
-          value="1" <%= formData.catDirector ? "checked" : "" %>
-        >
-        <span><%- msgs.catDirector %></span>
-      </label>
-      <label>
-        <input type="checkbox" name="catTreasurer"
-          value="1" <%= formData.catTreasurer ? "checked" : "" %>
-        >
-        <span><%- msgs.catTreasurer %></span>
-      </label>
-      <label>
-        <input type="checkbox" name="catOther"
-          value="1" <%= formData.catOther ? "checked" : "" %>
-        >
-        <span><%- msgs.catOther %></span>
-      </label>
-      <label>
-        <span><%- msgs.unit0 %></span>
-        <input placeholder="1XY"
-          type="text" name="unit0"
-          size="3" minlength="2" maxlength="3"
-          pattern="\d[A-H]{1,2}"
-          value="<%= formData.unit0 %>"
-        >
-      </label>
-      <label>
-        <span><%- msgs.unit1 %></span>
-        <input placeholder="1XY"
-          type="text" name="unit1"
-          size="3" minlength="2" maxlength="3"
-          pattern="\d[A-H]{1,2}"
-          value="<%= formData.unit1 %>"
-        >
-      </label>
-      <label>
-        <span><%- msgs.mgrTitle %></span>
-        <input type="text" name="title"
-          size="30" maxlength="30" value="<%= formData.title %>"
-        >
-      </label>
-      <label>
-        <span><%- msgs.info %></span>
-        <input
-          type="text" name="etc"
-          size="60" maxlength="90"
-          value="<%= formData.etc %>"
-        >
-      </label>
+
+      <!-- Checkboxes for category membership (i.e. authorization) claims -->
+      <p><%- msgs.catHead %></p>
+      <% msgs.cats.forEach(cat => { %>
+        <label>
+          <input type="checkbox" name="<%= cat[0] %>"
+            value="1" <%= formData[cat[0]] %> ? "checked" : "" %>
+          >
+          <span><%- cat[1] %></span>
+        </label>
+      <% }) %>
+
+      <!-- Text fields for miscellaneous user information -->
+      <% msgs.usrEtc.forEach(etc => { %>
+        <label>
+          <input
+            type="text" <%=
+              Object.keys(etc.field).map(
+                key => `${key}="${etc.field[key]}"`
+              ).join(' ')
+            %>
+          >
+          <span><%- etc.label %></span>
+        </label>
+      <% }) %>
 
       <button type="submit" name="submit"><%- msgs.btnSubmit %></button>
 

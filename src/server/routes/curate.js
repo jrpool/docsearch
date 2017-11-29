@@ -4,9 +4,11 @@ const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
 const sgMail = require('@sendgrid/mail');
+const util = require('./util');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+// Redirect all curation queries to home page if user is not a curator.
 router.use('/', (request, response, next) => {
   if (request.session.cats.includes(Number.parseInt(process.env.CURATOR_CAT))) {
     next();
@@ -20,6 +22,7 @@ router.get('/', (request, response) => {
   response.render('curate', {formData: ''});
 });
 
+// Main page for curation of registrations.
 router.get('/reg', (request, response) => {
   DbUsr.getUsrs()
   .then(usrs => {
@@ -28,6 +31,7 @@ router.get('/reg', (request, response) => {
   .catch(error => renderError(error, request, response));
 });
 
+// Page for curation of a particular user’s registration.
 router.get('/reg/:id', (request, response) => {
   DbUsr.getUsr({type: 'id', id: Number.parseInt(request.params.id)})
   .then(deepUsr => {
@@ -39,6 +43,25 @@ router.get('/reg/:id', (request, response) => {
   })
   .catch(error => renderError(error, request, response));
 });
+
+// Delete a user’s session data, forcibly logging the user out.
+const deleteSession = (request, response, usrID) => {
+  request.sessionStore.list((error, fileNames) => {
+    const sids = fileNames.map(v => v.replace(/\.json$/, ''));
+    sids.forEach(sid => {
+      request.sessionStore.get(sid, (error, session) => {
+        if (usr && (session.usr.id === usrID)) {
+          delete session.usr;
+          request.sessionStore.set(sid, session, error => {
+            if (error) {
+              renderError(error, request, response);
+            }
+          });
+        }
+      })
+    });
+  });
+};
 
 router.post('/reg/:id', (request, response) => {
   const formData = request.body;
@@ -65,51 +88,44 @@ router.post('/reg/:id', (request, response) => {
     return;
   }
   formData.id = Number.parseInt(request.params.id);
-  // Make the changes in the user’s database record.
+  /*
+    Make the changes in the user’s database record and delete the user’s
+    session records, forcibly logging the user out.
+  */
   DbUsr.updateUsr(formData)
   .then(() => {
     DbUsr.getUsr({type: 'id', id: formData.id})
     .then(deepUsr => {
-      delete deepUsr[0].pwhash;
-      response.render('curate/reg-edit-ack', {deepUsr});
-      sgMail.send({
-        to: {
-          email: deepUsr[0].email,
-          name: deepUsr[0].name.replace(/[,;]/g, '-')
-        },
-        cc: {
-          email: process.env.CC_EMAIL,
-          name: process.env.CC_NAME
-        },
-        from: {
-          email: process.env.FROM_EMAIL,
-          name: process.env.FROM_NAME
-        },
-        subject: msgs.regEditMailSubject,
-        text:
+      deleteSession(request, response, formData.id)
+      .then(() => {
+        delete deepUsr[0].pwhash;
+        response.render('curate/reg-edit-ack', {deepUsr});
+        util.mailSend(
+          deepUsr[0],
+          msgs.regEditMailSubject,
           msgs.regEditMailText.replace('{1}', deepUsr[0].name).replace(
             '{2}',
             '\n\n' + JSON.stringify(deepUsr[0]) + '\nCategories: ' + deepUsr[1]
           )
-      });
-    });
-    // Then delete the user’s session data, forcibly logging the user out.
-    request.sessionStore.list((error, fileNames) => {
-      sids = fileNames.map(v => v.replace(/\.json$/, ''));
-      sids.forEach(sid => {
-        request.sessionStore.get(sid, (error, session) => {
-          if (session.usr && (session.usr.id === formData.id)) {
-            delete session.usr;
-            request.sessionStore.set(sid, session, error => {
-              if (error) {
-                renderError(error, request, response);
-              }
-            });
-          }
-        })
+        );
       });
     });
     return '';
+  })
+  .catch(error => renderError(error, request, response));
+});
+
+router.get('/reg/:id/deregister', (request, response) => {
+  const usrID = request.params.id;
+  DbUsr.getUsr({type: 'id', id: usrID})
+  .then(usr => {
+    DbUsr.deleteUsr(usrID)
+    .then(() => {
+      deleteSession(request, response, usrID);
+      response.render('usr/deregister-ack');
+      util.mailSend(usr, msgs.deregMailSubject, msgs.deregMailText);
+      return '';
+    })
   })
   .catch(error => renderError(error, request, response));
 });

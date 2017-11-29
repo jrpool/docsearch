@@ -16,26 +16,6 @@ router.get('/register', (request, response) => {
   response.render('usr/register', {formData: ''});
 });
 
-const mailSend = (usrSource, subject, text) => {
-  const options = {
-    to: {
-      email: usrSource.email,
-      name: usrSource.name.replace(/[,;]/g, '-')
-    },
-    cc: {
-      email: process.env.REG_EMAIL,
-      name: process.env.REG_NAME
-    },
-    from: {
-      email: process.env.FROM_EMAIL,
-      name: process.env.FROM_NAME
-    },
-    subject: msgs.regMailSubject,
-    text: msgs.regMailText
-  };
-  sgMail.send(options);
-};
-
 router.post('/register', (request, response) => {
   const formData = request.body;
   const msgs = response.locals.msgs;
@@ -75,7 +55,7 @@ router.post('/register', (request, response) => {
             .replace('{1}', formData.name)
             .replace('{2}', formData.uid);
         response.render('usr/register-ack');
-        mailSend(formData, msgs.regMailSubject, msgs.regMailText);
+        util.mailSend([formData], msgs.regMailSubject, msgs.regMailText);
       });
     }
     return '';
@@ -90,7 +70,7 @@ router.get('/deregister', (request, response) => {
     request.session.destroy();
     msgs.status = '';
     response.render('usr/deregister-ack');
-    util.mailSend(usr, msgs.deregMailSubject, msgs.deregMailText);
+    util.mailSend([usr], msgs.deregMailSubject, msgs.deregMailText);
     return '';
   })
   .catch(error => renderError(error, request, response));

@@ -118,12 +118,16 @@ router.post('/reg/:id', (request, response) => {
 router.get('/reg/:id/deregister', (request, response) => {
   const usrID = request.params.id;
   DbUsr.getUsr({type: 'id', id: usrID})
-  .then(usr => {
+  .then(targetDeepUsr => {
     DbUsr.deleteUsr(usrID)
     .then(() => {
       deleteSession(request, response, usrID);
       response.render('usr/deregister-ack');
-      util.mailSend(usr, msgs.deregMailSubject, msgs.deregMailText);
+      util.mailSend(
+        [targetDeepUsr[0], request.session.usr],
+        msgs.deregMailSubject,
+        msgs.deregMailText
+      );
       return '';
     })
   })

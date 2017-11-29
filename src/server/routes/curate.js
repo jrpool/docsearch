@@ -95,17 +95,19 @@ router.post('/reg/:id', (request, response) => {
   DbUsr.updateUsr(formData)
   .then(() => {
     DbUsr.getUsr({type: 'id', id: formData.id})
-    .then(deepUsr => {
+    .then(targetDeepUsr => {
       deleteSession(request, response, formData.id)
       .then(() => {
-        delete deepUsr[0].pwhash;
-        response.render('curate/reg-edit-ack', {deepUsr});
+        delete targetDeepUsr[0].pwhash;
+        response.render('curate/reg-edit-ack', {targetDeepUsr});
         util.mailSend(
-          deepUsr[0],
+          [targetDeepUsr[0], request.session.usr],
           msgs.regEditMailSubject,
-          msgs.regEditMailText.replace('{1}', deepUsr[0].name).replace(
+          msgs.regEditMailText.replace('{1}', targetDeepUsr[0].name).replace(
             '{2}',
-            '\n\n' + JSON.stringify(deepUsr[0]) + '\nCategories: ' + deepUsr[1]
+            '\n\n' + JSON.stringify(
+              targetDeepUsr[0]
+            ) + '\nCategories: ' + targetDeepUsr[1]
           )
         );
       });

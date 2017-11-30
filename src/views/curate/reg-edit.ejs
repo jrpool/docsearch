@@ -44,14 +44,16 @@
         >
       </label>
 
+      <p><%- msgs.catsHead %></p>
+
       <!-- msgs.cats properties have had existing true/false values
       appended. -->
       <% msgs.cats.forEach(cat => { %>
         <label>
-          <input type="checkbox" name="cats" id="<%- cat[0] %>"
+          <input type="checkbox" name="cats"
             value="<%- cat[0] %>"<%= cat[2] ? " checked" : "" %>
           >
-          <span><%= cat[1] %></span>
+          <span><%= `${cat[0]}. ${cat[1]}` %></span>
         </label>
       <% }); %>
 

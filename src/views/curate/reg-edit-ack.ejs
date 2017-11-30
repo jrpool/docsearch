@@ -2,14 +2,13 @@
 
     <h1><%- msgs.regEditAckTitle %></h1>
 
-    <% const textparts = msgs.regEditAckText.split('{1}'); %>
-    <p><%- textParts[0] %><%= deepUsr[0].name %><%- textParts[1] %></p>
+    <p><%- textParts[0] %><%= targetDeepUsr[0].name %><%- textParts[1] %></p>
 
     <div class="kvpairs">
-      <% Object.keys(deepUsr[0]).forEach(key => { %>
-        <p><%- key %> = <%= deepUsr[0][key] %></p>
+      <% Object.keys(targetDeepUsr[0]).forEach(key => { %>
+        <p><%- key %> = <%= targetDeepUsr[0][key] %></p>
       <% }); %>
-      <p>Categories = <%- deepUsr[1] %></p>
+      <p>Categories = <%- targetDeepUsr[1] %></p>
     </div>
 
     <p><span class="link buttonish">

@@ -79,7 +79,8 @@ const createUsr = formData => {
     password1: 1,
     password2: 1,
     admin: 1,
-    submit: 1
+    submit: 1,
+    uid: 1
   };
   const claims = [];
   const curatorKey = process.env.CURATOR_KEY;
@@ -163,11 +164,16 @@ const updateUsr = formData => {
     text: `DELETE FROM usrcat WHERE usr = $1`
   }))
   .then(() => {
-    const assignments = cats.map(cat => `($1, ${cat})`).join(', ');
-    return client.query({
-      values: [formData.id],
-      text: `INSERT INTO usrcat VALUES ${assignments}`
-    });
+    if (cats.length) {
+      const assignments = cats.map(cat => `($1, ${cat})`).join(', ');
+      return client.query({
+        values: [formData.id],
+        text: `INSERT INTO usrcat VALUES ${assignments}`
+      });
+    }
+    else {
+      return '';
+    }
   })
   .then(() => {
     client.end();

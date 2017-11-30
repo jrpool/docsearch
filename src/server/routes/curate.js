@@ -51,7 +51,7 @@ const deleteSession = (request, response, usrID) => {
     const sids = fileNames.map(v => v.replace(/\.json$/, ''));
     sids.forEach(sid => {
       request.sessionStore.get(sid, (error, session) => {
-        if (usr && (session.usr.id === usrID)) {
+        if (session.usr && (session.usr.id === usrID)) {
           delete session.usr;
           request.sessionStore.set(sid, session, error => {
             if (error) {
@@ -62,6 +62,7 @@ const deleteSession = (request, response, usrID) => {
       })
     });
   });
+  return '';
 };
 
 router.post('/reg/:id', (request, response) => {
@@ -86,57 +87,63 @@ router.post('/reg/:id', (request, response) => {
     response.render(
       'curate/reg-edit', {formError: msgs.errNeed3RegFacts, usr: formData}
     );
-    return;
+    return '';
   }
   formData.id = Number.parseInt(request.params.id);
   /*
     Make the changes in the user’s database record and delete the user’s
     session records, forcibly logging the user out.
   */
-  DbUsr.updateUsr(formData)
+  return DbUsr.updateUsr(formData)
   .then(() => {
-    DbUsr.getUsr({type: 'id', id: formData.id})
+    return DbUsr.getUsr({type: 'id', id: formData.id})
     .then(targetDeepUsr => {
-      deleteSession(request, response, formData.id)
-      .then(() => {
-        delete targetDeepUsr[0].pwhash;
-        response.render('curate/reg-edit-ack', {targetDeepUsr});
-        util.mailSend(
-          [targetDeepUsr[0], request.session.usr],
-          msgs.regEditMailSubject,
-          msgs.regEditMailText.replace('{1}', targetDeepUsr[0].name).replace(
-            '{2}',
-            '\n\n' + JSON.stringify(
-              targetDeepUsr[0]
-            ) + '\nCategories: ' + targetDeepUsr[1]
-          ),
-          msgs
-        );
-      });
-    });
-    return '';
+      deleteSession(request, response, formData.id);
+      delete targetDeepUsr[0].pwhash;
+      response.render(
+        'curate/reg-edit-ack', {
+          targetDeepUsr, textParts: msgs.regEditAckText.split('{1}')
+        }
+      );
+      return util.mailSend(
+        [targetDeepUsr[0], request.session.usr],
+        msgs.regEditMailSubject,
+        msgs.regEditMailText.replace('{1}', targetDeepUsr[0].name).replace(
+          '{2}',
+          '\n\n' + JSON.stringify(
+            targetDeepUsr[0]
+          ) + '\nCategories: ' + targetDeepUsr[1]
+        ),
+        msgs
+      )
+      .catch(error => console.log(error.toString()));
+    })
+    .catch(error => util.renderError(error, request, response, 'regid1'));
   })
-  .catch(error => util.renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response, 'regid2'));
 });
 
 router.get('/reg/:id/deregister', (request, response) => {
   const usrID = request.params.id;
-  DbUsr.getUsr({type: 'id', id: usrID})
+  return DbUsr.getUsr({type: 'id', id: usrID})
   .then(targetDeepUsr => {
-    DbUsr.deleteUsr(usrID)
+    return DbUsr.deleteUsr(usrID)
     .then(() => {
       deleteSession(request, response, usrID);
       response.render('usr/deregister-ack');
-      util.mailSend(
+      return util.mailSend(
         [targetDeepUsr[0], request.session.usr],
-        msgs.deregMailSubject,
-        msgs.deregMailText,
+        msgs.curateDeregMailSubject,
+        msgs.curateDeregMailText.replace(
+          '{1}', util.emailSanitize(targetDeepUsr[0].name)
+        ),
         msgs
-      );
-      return '';
+      )
+      .catch(error => console.log(error.toString()));
     })
+    .catch(error => util.renderError(error, request, response, 'iddereg0'));
   })
-  .catch(error => util.renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response, 'iddereg1'));
 });
 
 router.get('/cat', (request, response) => {

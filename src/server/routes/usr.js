@@ -28,13 +28,13 @@ router.post('/register', (request, response) => {
     response.render(
       'usr/register', {formError: msgs.errNeed4RegFacts, formData}
     );
-    return;
+    return '';
   }
   if (formData.password2 !== formData.password1) {
     response.render(
       'usr/register', {formError: msgs.errPasswordsDiffer, formData}
     );
-    return;
+    return '';
   }
   formData.pwHash = bcrypt.hashSync(formData.password1, bcrypt.genSaltSync(10));
   DbUsr.getUsr({type: 'nat', data: formData})
@@ -43,9 +43,10 @@ router.post('/register', (request, response) => {
       response.render(
         'usr/register', {formError: msgs.errAlreadyUsr, formData}
       );
+      return '';
     }
     else {
-      DbUsr.createUsr(formData)
+      return DbUsr.createUsr(formData)
       // Substitute name and temporary UID into acknowledgements.
       .then(result => {
         msgs.regAckText = msgs.regAckText
@@ -55,33 +56,33 @@ router.post('/register', (request, response) => {
           .replace('{1}', formData.name)
           .replace('{2}', formData.uid);
         response.render('usr/register-ack');
-        util.mailSend(
+        return util.mailSend(
           [formData], msgs.regMailSubject, msgs.regMailText, msgs
-        );
+        )
+        .catch(error => console.log(error.toString()));
       })
-      .catch(error => util.renderError(error, request, response));
+      .catch(error => util.renderError(error, request, response, 'reg0'));
     }
-    return '';
   })
-  .catch(error => util.renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response, 'reg1'));
 });
 
 router.get('/deregister', (request, response) => {
   const usr = request.session.usr;
-  DbUsr.deleteUsr(request.session.usr.id)
+  return DbUsr.deleteUsr(request.session.usr.id)
   .then(() => {
     request.session.destroy();
     msgs.status = '';
     response.render('usr/deregister-ack');
-    util.mailSend(
+    return util.mailSend(
       [usr],
       msgs.deregMailSubject,
       msgs.deregMailText.replace('{1}', usr.name.replace(/[,;]/g, '-')),
       msgs
-    );
-    return '';
+    )
+    .catch(error => console.log(error.toString()));;
   })
-  .catch(error => util.renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response, 'dereg'));
 });
 
 router.get('/login', (request, response) => {
@@ -96,14 +97,13 @@ router.post('/login', (request, response) => {
     );
     return '';
   }
-  DbUsr.getUsr({type: 'uid', data: formData})
+  return DbUsr.getUsr({type: 'uid', data: formData})
   .then(deepUsr => {
     if (deepUsr[0].id) {
       if (!bcrypt.compareSync(formData.password, deepUsr[0].pwhash)) {
         response.render(
           'usr/login', {formError: msgs.errLogin, formData}
         );
-        return '';
       }
       else {
         delete deepUsr[0].pwhash;
@@ -116,10 +116,10 @@ router.post('/login', (request, response) => {
       response.render(
         'usr/login', {formError: msgs.errLogin, formData}
       );
-      return '';
     }
+    return '';
   })
-  .catch(error => util.renderError(error, request, response));
+  .catch(error => util.renderError(error, request, response, 'login'));
 });
 
 router.get('/logout', (request, response) => {

@@ -30,6 +30,8 @@ const eng = {
   'curateCatChoose': 'Please choose a category:',
   'curateCatHere': 'You can curate user categories here.',
   'curateChoose': 'Please choose what to curate:',
+  'curateDeregMailSubject': 'Deregistration at berkhouse.us',
+  'curateDeregMailText': 'The registration of {1} at http://berkhouse.us has been administratively terminated. Thanks!',
   'curateDirChoose': 'Please choose a directory permission:',
   'curateDirHere': 'You can curate directory permissions here.',
   'curateHere': 'You can curate this <code>docsearch</code> site here.',

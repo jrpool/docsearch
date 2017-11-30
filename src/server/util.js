@@ -27,8 +27,10 @@ const eng = {
     ['cat8', 'Other']
   ],
   'choose': 'Please choose:',
+  'misc': 'Miscellany:',
   'curateCatChoose': 'Please choose a category:',
   'curateCatHere': 'You can curate user categories here.',
+  'curateCats': 'categories',
   'curateChoose': 'Please choose what to curate:',
   'curateDeregMailSubject': 'Deregistration at berkhouse.us',
   'curateDeregMailText': 'The registration of {1} at http://berkhouse.us has been administratively terminated. Thanks!',

@@ -82,7 +82,7 @@ const createUsr = formData => {
     submit: 1,
     uid: 1
   };
-  const claims = [];
+  const misc = [];
   const curatorKey = process.env.CURATOR_KEY;
   let isCurator = false;
   if (formData.admin.includes(curatorKey)) {
@@ -94,14 +94,14 @@ const createUsr = formData => {
   );
   for (const key in formData) {
     if (!excludedFromEtc.hasOwnProperty(key)) {
-      claims.push(`${key}=${formData[key]}`);
+      misc.push(`${key}=${formData[key]}`);
     }
   }
   const client = new Client();
   return client.connect()
   .then(() => {
     return client.query(`
-      INSERT INTO usr (regdate, uid, pwhash, name, email, claims)
+      INSERT INTO usr (regdate, uid, pwhash, name, email, misc)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `, [
@@ -110,7 +110,7 @@ const createUsr = formData => {
       formData.pwHash,
       formData.name,
       formData.email,
-      claims.join(' ¶ ')
+      misc.join(' ¶ ')
     ])
     .then(usr => usr.rows[0]);
   })
@@ -148,14 +148,14 @@ const updateUsr = formData => {
       formData.uid,
       formData.name,
       formData.email,
-      formData.claims
+      formData.misc
     ],
     text: `
       UPDATE usr SET
         uid = $2,
         name = $3,
         email = $4,
-        claims = $5
+        misc = $5
       WHERE id = $1
     `
   }))

@@ -110,9 +110,9 @@ router.post('/reg/:id', (request, response) => {
         msgs.regEditMailSubject,
         msgs.regEditMailText.replace('{1}', targetDeepUsr[0].name).replace(
           '{2}',
-          '\n\n' + JSON.stringify(
-            targetDeepUsr[0]
-          ) + '\nCategories: ' + targetDeepUsr[1]
+          '\n\n' + Object.keys(targetDeepUsr[0]).map(
+            key => key + ' = ' + targetDeepUsr[0][key]
+          ).join('\n') + '\nCategories: ' + targetDeepUsr[1]
         ),
         msgs
       )

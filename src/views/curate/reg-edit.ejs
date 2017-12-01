@@ -44,18 +44,19 @@
         >
       </label>
 
-      <p><%- msgs.catsHead %></p>
-
-      <!-- msgs.cats properties have had existing true/false values
-      appended. -->
-      <% msgs.cats.forEach(cat => { %>
-        <label>
-          <input type="checkbox" name="cats"
-            value="<%- cat[0] %>"<%= cat[3] ? " checked" : "" %>
-          >
-          <span><%= `${cat[0]}. ${cat[2]}` %></span>
-        </label>
-      <% }); %>
+      <section class="boxlist">
+        <h4 class="vclose"><%- msgs.catsHead %></h4>
+        <!-- msgs.cats properties have had existing true/false values
+        appended. -->
+        <% msgs.cats.forEach(cat => { %>
+          <label>
+            <input type="checkbox" name="cats"
+              value="<%- cat[0] %>"<%= cat[3] ? " checked" : "" %>
+            >
+            <span><%= `${cat[0]}. ${cat[2]}` %></span>
+          </label>
+        <% }); %>
+      </section>
 
     <button type="submit" name="submit"><%- msgs.btnSubmit %></button>
 

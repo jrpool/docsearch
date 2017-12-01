@@ -4,9 +4,7 @@
 
     <p><%- msgs.regHere %></p>
 
-    <form>
-      <p><button formaction="/"><%- msgs.btnHome %></button></p>
-    </form>
+    <%- linkButtonP('/', msgs.btnHome) %>
 
     <form method="post" action="/usr/register" class="form">
       <pre class="form-error"><%= locals.formError || "" %></pre>

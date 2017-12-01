@@ -4,16 +4,9 @@
 
     <p><%- msgs.docsBrowseText %></p>
 
-    <form>
+    <%- linkButtonP('/', msgs.btnHome) %>
 
-      <p><button formaction="/"><%- msgs.btnHome %></button></p>
-
-      <p><button formaction="/docs/search">
-        <%- msgs.btnDocsSearch %>
-      </button></p>
-
-    </form>
-
+    <%- linkButtonP('/docs/search', msgs.btnDocsSearch) %>
 
     <div class="dirlist">
       <% if (base) {

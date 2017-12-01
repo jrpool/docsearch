@@ -4,9 +4,7 @@
 
     <p><%- msgs.curateRegHere %></p>
 
-    <form>
-      <p><button formaction="/"><%- msgs.btnHome %></button></p>
-    </form>
+    <%- linkButtonP('/', msgs.btnHome) %>
 
     <h3><%- msgs.curateRegChoose %></h3>
 
@@ -18,21 +16,15 @@
         <th><%- msgs.tblName %></th>
       </tr>
 
-      <form>
-
-        <% usrs.forEach(usr => { %>
-          <tr>
-            <td class="open">
-              <button formaction="/curate/reg/<%- usr.id %>">
-                <%- usr.id %>
-              </button>
-            </td>
-            <td><%= usr.uid %></td>
-            <td><%= usr.name %></td>
-          </tr>
-        <% }); %>
-
-      </form>
+      <% usrs.forEach(usr => { %>
+        <tr>
+          <td class="open">
+            <%- linkButton(`/curate/reg/${usr.id}`, usr.id) %>
+          </td>
+          <td><%= usr.uid %></td>
+          <td><%= usr.name %></td>
+        </tr>
+      <% }); %>
 
     </table>
 

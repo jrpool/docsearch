@@ -1,3 +1,7 @@
+const linkButton = (path, msg, showIf) => `<button ${showIf || ''}type="button" onclick="location.href='${path}'">${msg}</button>`;
+
+const linkButtonP = (path, msg, showIf) => `<p>${linkButton(path, msg, showIf)}</p>`;
+
 const eng = {
   accessText: 'You can browse and search documents here. Some of them have access limitations. If you are a BTH member, prospective member, resident, or manager, you can register or log in for additional access.',
   accessTitle: 'Access',
@@ -11,6 +15,7 @@ const eng = {
   btnDeregister: 'Deregister',
   btnHome: 'Home',
   btnLogin: 'Log in',
+  btnLogout: 'Log out',
   btnRegister: 'Register',
   btnSeeDocs: 'See documents',
   btnSeePubDocs: 'See public documents',
@@ -92,7 +97,7 @@ const eng = {
   registration: 'Registration',
   regMailSubject: 'Registration at berkhouse.us',
   regMailText: 'This confirms the registration of {1} at http://berkhouse.us. You can log in with temporary UID {2}. After verification, it will be replaced with a durable UID.',
-  status: 'You are logged in as {1}. <button formaction="/usr/logout">Log out</button>',
+  status: 'You are logged in as {1}.',
   tblCat: 'Category',
   tblDate: 'Date',
   tblID: 'ID',
@@ -151,4 +156,4 @@ const eng = {
   ]
 };
 
-module.exports = {eng};
+module.exports = {linkButton, linkButtonP, eng};

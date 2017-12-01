@@ -4,16 +4,12 @@
 
     <p><%- msgs.curateHere %></p>
 
-    <form>
+    <%- linkButtonP('/', msgs.btnHome) %>
 
-      <p><button formaction="/"><%- msgs.btnHome %></button></p>
+    <h3><%- msgs.curateChoose %></h3>
 
-      <h3><%- msgs.curateChoose %></h3>
-
-      <p><button formaction="/curate/reg"><%- msgs.btnCurateReg %></button></p>
-      <p><button formaction="/curate/cat"><%- msgs.btnCurateCat %></button></p>
-      <p><button formaction="/curate/dir"><%- msgs.btnCurateDir %></button></p>
-
-    </form>
+    <%- linkButtonP('/curate/reg', msgs.btnCurateReg) %>
+    <%- linkButtonP('/curate/cat', msgs.btnCurateCat) %>
+    <%- linkButtonP('/curate/dir', msgs.btnCurateDir) %>
 
 <%- include('../util/foot.ejs'); %>

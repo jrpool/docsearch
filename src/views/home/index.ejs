@@ -12,25 +12,11 @@
 
     <h3><%- msgs.choose %></h3>
 
-    <form>
-      <p><button <%- ifCurator %>formaction="/curate">
-        <%- msgs.btnCurate %>
-      </button></p>
-      <p><button <%- ifAnonymous %>formaction="/usr/register">
-        <%- msgs.btnRegister %>
-      </button></p>
-      <p><button <%- ifKnown %>formaction="/usr/deregister">
-        <%- msgs.btnDeregister %>
-      </button></p>
-      <p><button <%- ifAnonymous %>formaction="/usr/login">
-        <%- msgs.btnLogin %>
-      </button></p>
-      <p><button <%- ifKnown %>formaction="/docs">
-        <%- msgs.btnSeeDocs %>
-      </button></p>
-      <p><button <%- ifAnonymous %>formaction="/docs">
-        <%- msgs.btnSeePubDocs %>
-      </button></p>
-    </form>
+    <%- linkButtonP('/curate', msgs.btnCurate, ifCurator) %>
+    <%- linkButtonP('/usr/register', msgs.btnRegister, ifAnonymous) %>
+    <%- linkButtonP('/usr/deregister', msgs.btnDeregister, ifKnown) %>
+    <%- linkButtonP('/usr/login', msgs.btnLogin, ifAnonymous) %>
+    <%- linkButtonP('/docs', msgs.btnSeeDocs, ifKnown) %>
+    <%- linkButtonP('/docs', msgs.btnSeePubDocs, ifAnonymous) %>
 
 <%- include('../util/foot.ejs'); %>

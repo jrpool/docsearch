@@ -4,23 +4,12 @@
 
     <p><%- msgs.docsText %></p>
 
-    <form>
+    <%- linkButtonP('/', msgs.btnHome) %>
 
-      <p><button formaction="/"><%- msgs.btnHome %></button></p>
+    <p><%- msgs.docsChoose %></p>
 
-      <p><%- msgs.docsChoose %></p>
-
-      <p><button formaction="/docs/browse">
-        <%- msgs.btnDocsBrowse %>
-      </button></p>
-      <p><button formaction="/docs/search">
-        <%- msgs.btnDocsSearch %>
-      </button></p>
-      <p><button formaction="/docs/add">
-        <%- msgs.btnDocsAdd %>
-      </button></p>
-
-    </form>
-
+    <%- linkButtonP('/docs/browse', msgs.btnDocsBrowse) %>
+    <%- linkButtonP('/docs/search', msgs.btnDocsSearch) %>
+    <%- linkButtonP('/docs/add', msgs.btnDocsAdd) %>
 
 <%- include('../util/foot.ejs'); %>

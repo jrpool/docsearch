@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/style.css">
   </head>
   <body>
-    <form>
-      <p class="status"><%- msgs.status %></p>
-    </form>
+    <p class="status">
+      <%- msgs.status %>
+      <%- linkButton('/usr/logout', msgs.btnLogout).replace(/<.?p>/, '') %>
+    </p>

@@ -32,9 +32,13 @@ app.use(session({
 }));
 
 app.use((request, response, next) => {
+  // Make session store available to curation routes.
   request.sessionStore = store;
+  // Make globals available to all views.
   response.locals.query = '';
   response.locals.msgs = require('./server/util')[process.env.LANG];
+  response.locals.linkButton = require('./server/util').linkButton;
+  response.locals.linkButtonP = require('./server/util').linkButtonP;
   const usr = request.session.usr;
   const status = response.locals.msgs.status;
   response.locals.msgs.status

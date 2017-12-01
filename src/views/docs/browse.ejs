@@ -4,13 +4,16 @@
 
     <p><%- msgs.docsBrowseText %></p>
 
-    <p><span class="link buttonish">
-      <a href="/"><%- msgs.btnHome %></a>
-    </span></p>
+    <form>
 
-    <p><span class="link buttonish">
-      <a href="/docs/search"><%- msgs.btnDocsSearch %></a>
-    </span></p>
+      <p><button formaction="/"><%- msgs.btnHome %></button></p>
+
+      <p><button formaction="/docs/search">
+        <%- msgs.btnDocsSearch %>
+      </button></p>
+
+    </form>
+
 
     <div class="dirlist">
       <% if (base) {

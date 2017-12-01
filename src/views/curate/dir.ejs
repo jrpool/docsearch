@@ -1,17 +1,17 @@
 <%- include('../util/head.ejs'); %>
 
-<h1><%- msgs.curationDir %></h1>
+    <h1><%- msgs.curationDir %></h1>
 
-<p><%- msgs.curateDirHere %></p>
+    <p><%- msgs.curateDirHere %></p>
 
-<p><span class="link buttonish">
-  <a href="/"><%- msgs.btnHome %></a>
-</span></p>
+    <form>
+      <p><button formaction="/"><%- msgs.btnHome %></button></p>
+    </form>
 
-<h3><%- msgs.curateDirChoose %></h3>
+    <h3><%- msgs.curateDirChoose %></h3>
 
-<p>This feature is not yet implemented.</p>
+    <p>This feature is not yet implemented.</p>
 
-<p>To curate directory permissions, edit the file <code>src/db/config/seeddir.sql</code> and then execute the <code>seeddir_db</code> script.</p>
+    <p>To curate directory permissions, edit the file <code>src/db/config/seeddir.sql</code> and then execute the <code>seeddir_db</code> script.</p>
 
 <%- include('../util/foot.ejs'); %>

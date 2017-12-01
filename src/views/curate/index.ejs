@@ -4,22 +4,16 @@
 
     <p><%- msgs.curateHere %></p>
 
-    <p><span class="link buttonish">
-      <a href="/"><%- msgs.btnHome %></a>
-    </span></p>
+    <form>
 
-    <h3><%- msgs.curateChoose %></h3>
+      <p><button formaction="/"><%- msgs.btnHome %></button></p>
 
-    <p><span class="link buttonish">
-      <a href="/curate/reg"><%- msgs.btnCurateReg %></a>
-    </span></p>
+      <h3><%- msgs.curateChoose %></h3>
 
-    <p><span class="link buttonish">
-      <a href="/curate/cat"><%- msgs.btnCurateCat %></a>
-    </span></p>
+      <p><button formaction="/curate/reg"><%- msgs.btnCurateReg %></button></p>
+      <p><button formaction="/curate/cat"><%- msgs.btnCurateCat %></button></p>
+      <p><button formaction="/curate/dir"><%- msgs.btnCurateDir %></button></p>
 
-    <p><span class="link buttonish">
-      <a href="/curate/dir"><%- msgs.btnCurateDir %></a>
-    </span></p>
+    </form>
 
 <%- include('../util/foot.ejs'); %>

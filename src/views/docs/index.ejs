@@ -4,18 +4,23 @@
 
     <p><%- msgs.docsText %></p>
 
-    <p><span class="link buttonish"><a href="/"><%- msgs.btnHome %></a></span></p>
+    <form>
 
-    <p><%- msgs.docsChoose %></p>
+      <p><button formaction="/"><%- msgs.btnHome %></button></p>
 
-    <p><span class="link buttonish">
-      <a href="/docs/browse"><%- msgs.btnDocsBrowse %></a>
-    </span></p>
-    <p><span class="link buttonish">
-      <a href="/docs/search"><%- msgs.btnDocsSearch %></a>
-    </span></p>
-    <p><span class="<%= ifCanAdd %>link buttonish">
-      <a href="/docs/add"><%- msgs.btnDocsAdd %></a>
-    </span></p>
+      <p><%- msgs.docsChoose %></p>
+
+      <p><button formaction="/docs/browse">
+        <%- msgs.btnDocsBrowse %>
+      </button></p>
+      <p><button formaction="/docs/search">
+        <%- msgs.btnDocsSearch %>
+      </button></p>
+      <p><button formaction="/docs/add">
+        <%- msgs.btnDocsAdd %>
+      </button></p>
+
+    </form>
+
 
 <%- include('../util/foot.ejs'); %>

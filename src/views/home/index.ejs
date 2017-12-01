@@ -12,23 +12,25 @@
 
     <h3><%- msgs.choose %></h3>
 
-    <p><span class="<%= ifCurator %>link buttonish">
-      <a href="/curate"><%- msgs.btnCurate %></a>
-    </span></p>
-    <p><span class="<%= ifAnonymous %>link buttonish">
-      <a href="/usr/register"><%- msgs.btnRegister %></a>
-    </span></p>
-    <p><span class="<%= ifKnown %>link buttonish">
-      <a href="/usr/deregister"><%- msgs.btnDeregister %></a>
-    </span></p>
-    <p><span class="<%= ifAnonymous %>link buttonish">
-      <a href="/usr/login"><%- msgs.btnLogin %></a>
-    </span></p>
-    <p><span class="<%= ifKnown %>link buttonish">
-      <a href="/docs"><%- msgs.btnSeeDocs %></a>
-    </span></p>
-    <p><span class="<%= ifAnonymous %>link buttonish">
-      <a href="/docs"><%- msgs.btnSeePubDocs %></a>
-    </span></p>
+    <form>
+      <p><button <%- ifCurator %>formaction="/curate">
+        <%- msgs.btnCurate %>
+      </button></p>
+      <p><button <%- ifAnonymous %>formaction="/usr/register">
+        <%- msgs.btnRegister %>
+      </button></p>
+      <p><button <%- ifKnown %>formaction="/usr/deregister">
+        <%- msgs.btnDeregister %>
+      </button></p>
+      <p><button <%- ifAnonymous %>formaction="/usr/login">
+        <%- msgs.btnLogin %>
+      </button></p>
+      <p><button <%- ifKnown %>formaction="/docs">
+        <%- msgs.btnSeeDocs %>
+      </button></p>
+      <p><button <%- ifAnonymous %>formaction="/docs">
+        <%- msgs.btnSeePubDocs %>
+      </button></p>
+    </form>
 
 <%- include('../util/foot.ejs'); %>

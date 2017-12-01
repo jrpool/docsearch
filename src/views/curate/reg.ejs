@@ -4,28 +4,35 @@
 
     <p><%- msgs.curateRegHere %></p>
 
-    <p><span class="link buttonish">
-      <a href="/"><%- msgs.btnHome %></a>
-    </span></p>
+    <form>
+      <p><button formaction="/"><%- msgs.btnHome %></button></p>
+    </form>
 
     <h3><%- msgs.curateRegChoose %></h3>
 
     <table>
+
       <tr>
         <th><%- msgs.tblID %></th>
         <th><%- msgs.tblUID %></th>
         <th><%- msgs.tblName %></th>
       </tr>
 
-      <% usrs.forEach(usr => { %>
-        <tr>
-          <td class="open"><span class="link buttonish">
-            <a href="/curate/reg/<%- usr.id %>"><%- usr.id %></a>
-          </span></td>
-          <td><%= usr.uid %></td>
-          <td><%= usr.name %></td>
-        </tr>
-      <% }); %>
+      <form>
+
+        <% usrs.forEach(usr => { %>
+          <tr>
+            <td class="open">
+              <button formaction="/curate/reg/<%- usr.id %>">
+                <%- usr.id %>
+              </button>
+            </td>
+            <td><%= usr.uid %></td>
+            <td><%= usr.name %></td>
+          </tr>
+        <% }); %>
+
+      </form>
 
     </table>
 

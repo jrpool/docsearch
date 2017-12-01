@@ -4,9 +4,9 @@
 
     <p><%- msgs.curateRegEditHere.replace('{1}', usr.id) %></p>
 
-    <p><span class="link buttonish">
-      <a href="/"><%- msgs.btnHome %></a>
-    </span></p>
+    <form>
+      <p><button formaction="/"><%- msgs.btnHome %></button></p>
+    </form>
 
     <form method="post" action="/curate/reg/<%= usr.id %>" class="form">
       <pre class="form-error"><%- locals.formError || "" %></pre>
@@ -58,7 +58,7 @@
         <% }); %>
       </section>
 
-    <button type="submit" name="submit"><%- msgs.btnSubmit %></button>
+    <button name="submit"><%- msgs.btnSubmit %></button>
 
   </form>
 

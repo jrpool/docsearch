@@ -92,7 +92,7 @@ const eng = {
   registration: 'Registration',
   regMailSubject: 'Registration at berkhouse.us',
   regMailText: 'This confirms the registration of {1} at http://berkhouse.us. You can log in with temporary UID {2}. After verification, it will be replaced with a durable UID.',
-  status: 'You are logged in as {1}. <span class="link buttonish"><a href="/usr/logout">Log out</a></span>',
+  status: 'You are logged in as {1}. <button formaction="/usr/logout">Log out</button>',
   tblCat: 'Category',
   tblDate: 'Date',
   tblID: 'ID',

@@ -17,14 +17,15 @@ const eng = {
   btnSubmit: 'Submit',
   catHead: 'Your relationships to BTH:',
   cats: [
-    ['1', 'General public'],
-    ['2', 'Member'],
-    ['3', 'Nonmember resident'],
-    ['4', 'Manager'],
-    ['5', 'Prospective member'],
-    ['6', 'Director'],
-    ['7', 'Treasurer'],
-    ['8', 'Other']
+    ['0', false, 'Curator'],
+    ['1', true, 'General public'],
+    ['2', true, 'Member'],
+    ['3', true, 'Nonmember resident'],
+    ['4', true, 'Manager'],
+    ['5', true, 'Prospective member'],
+    ['6', true, 'Director'],
+    ['7', true, 'Treasurer'],
+    ['8', true, 'Other']
   ],
   catsHead: 'Categories:',
   choose: 'Please choose:',

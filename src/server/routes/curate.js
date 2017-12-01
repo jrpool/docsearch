@@ -67,7 +67,6 @@ const deleteSession = (request, response, usrID) => {
 
 router.post('/reg/:id', (request, response) => {
   const formData = request.body;
-  console.log('0. formData is\n:' + JSON.stringify(formData));
   if (formData.cats) {
     if (Array.isArray(formData.cats)) {
       formData.cats = formData.cats.map(idString => Number.parseInt(idString));
@@ -79,7 +78,6 @@ router.post('/reg/:id', (request, response) => {
   else {
     formData.cats = [];
   }
-  console.log('1. formData is\n:' + JSON.stringify(formData));
   msgs.cats.forEach(cat => {cat.push(formData.cats.includes(cat[0]))});
   if (
     !formData.uid

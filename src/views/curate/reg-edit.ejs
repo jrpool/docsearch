@@ -51,9 +51,9 @@
       <% msgs.cats.forEach(cat => { %>
         <label>
           <input type="checkbox" name="cats"
-            value="<%- cat[0] %>"<%= cat[2] ? " checked" : "" %>
+            value="<%- cat[0] %>"<%= cat[3] ? " checked" : "" %>
           >
-          <span><%= `${cat[0]}. ${cat[1]}` %></span>
+          <span><%= `${cat[0]}. ${cat[2]}` %></span>
         </label>
       <% }); %>
 

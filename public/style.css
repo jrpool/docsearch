@@ -7,6 +7,16 @@ body {
   font-size: 16px;
 }
 
+.boxlist {
+  border-style: solid;
+  border-width: thin;
+  border-color: darkgray;
+  margin-bottom: 1em;
+  padding: 0 0.5em 0 0.5em;
+  width: min-content;
+  white-space: nowrap;
+}
+
 button[type="submit"],
 .buttonish {
   background-color: #fe0;
@@ -189,4 +199,8 @@ td {
 
 .u1p {
   font-style: italic;
+}
+
+.vclose {
+  margin: 0.5em;
 }

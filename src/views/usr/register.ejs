@@ -45,15 +45,18 @@
   </label>
 
   <!-- Checkboxes for category membership (i.e. authorization) claims -->
-  <p><%- msgs.catHead %></p>
-  <% msgs.cats.forEach(cat => { %>
-    <label>
-      <input type="checkbox" name="<%- cat[0] %>"
-        value="1" <%- formData[cat[0]] ? "checked" : "" %>
-      >
-      <span><%- cat[1] %></span>
-    </label>
-  <% }) %>
+
+  <section class="boxlist">
+    <h4 class="vclose"><%- msgs.catHead %></h4>
+    <% msgs.cats.filter(cat => cat[1]).forEach(cat => { %>
+      <label>
+        <input type="checkbox" name="<%- cat[0] %>"
+          value="1" <%- formData[cat[0]] ? "checked" : "" %>
+        >
+        <span><%= cat[2] %></span>
+      </label>
+    <% }) %>
+  </section>
 
   <!-- Text fields for miscellaneous user information -->
   <% msgs.usrEtc.forEach(etc => { %>

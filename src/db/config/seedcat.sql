@@ -13,4 +13,5 @@ INSERT INTO cat(id, name) VALUES
   (4, 'manager'),
   (5, 'prospect'),
   (6, 'director'),
-  (7, 'treasurer');
+  (7, 'treasurer'),
+  (8, 'other');

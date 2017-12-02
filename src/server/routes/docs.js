@@ -57,8 +57,8 @@ router.get('/browse', (request, response) => {
   DbDocs.usrDirRights(usr.id)
   .then(rights => {
     const reqPath = request.query.p;
-    // If the request specifies a path other than “docs”.
-    if (reqPath && (reqPath !== 'docs')) {
+    // If the request specifies a path:
+    if (reqPath) {
       if (
         rights.some(right => (right[0] === 0) && reqPath.startsWith(right[1]))
       ) {

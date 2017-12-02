@@ -5,12 +5,12 @@ const router = require('express').Router();
 const fs = require('fs');
 const util = require('./util');
 
-// Serve the main doc page
+// Main doc page, including an “add” button only if user has any add permission.
 router.get('/', (request, response) => {
-  const usr = request.session.usr;
+  const usr = response.locals.usr;
   response.render(
     'docs',
-    {usr, ifCanAdd: usr && request.session.cats.includes(1) ? '' : 'gone '}
+    {usr, ifCanAdd: usr && response.locals.usr[1].includes(1) ? '' : 'gone '}
   );
 });
 
@@ -52,9 +52,10 @@ const dirData = (staticPath, reqPath) => {
   }
 };
 
+// Page where user browses permitted directories.
 router.get('/browse', (request, response) => {
-  const usr = request.session.usr || {id: 0};
-  DbDocs.usrDirRights(usr.id)
+  const usr = response.locals.usr || [{id: 0}, []];
+  DbDocs.usrDirRights(usr[0].id)
   .then(rights => {
     const reqPath = request.query.p;
     // If the request specifies a path:
@@ -103,10 +104,12 @@ router.get('/browse', (request, response) => {
   });
 });
 
+// Page where user searches permitted directories.
 router.get('/search', (request, response) => {
   response.render('docs/search');
 });
 
+// Page where user adds documents to the repository.
 router.get('/add', (request, response) => {
   response.render('docs/add');
 });

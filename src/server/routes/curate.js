@@ -10,21 +10,17 @@ let msgs;
 
 // Redirect all curation queries to home page if user is not a curator.
 router.use('/', (request, response, next) => {
-  const curatorCat = Number.parseInt(process.env.CURATOR_CAT);
-  if (
-    typeof request.session.cats !== 'undefined'
-    && request.session.cats.includes(curatorCat)
-  ) {
-    DbUsr.getUsr({type: 'id', id: request.session.usr.id})
-    .then(deepUsr => {
-      if (deepUsr[1].includes(curatorCat)) {
-        msgs = response.locals.msgs;
-        next();
-      }
-    })
-    .catch(error => util.renderError(error, request, response));
-  }
-  response.redirect('/');
+  DbUsr.hasCat(request.session.usrID, Number.parseInt(process.env.CURATOR_CAT))
+  .then(isCurator => {
+    if (isCurator) {
+      msgs = response.locals.msgs;
+      next();
+    }
+    else {
+      response.redirect('/');
+    }
+  })
+  .catch(error => util.renderError(error, request, response));
 });
 
 router.get('/', (request, response) => {
@@ -53,7 +49,7 @@ router.get('/reg/:id', (request, response) => {
   .catch(error => util.renderError(error, request, response));
 });
 
-// Delete a user’s session data, forcibly logging the user out.
+// Define a function that deletes a user’s session and logs the user out.
 const deleteSession = (request, response, usrID) => {
   request.sessionStore.list((error, fileNames) => {
     const sids = fileNames.map(v => v.replace(/\.json$/, ''));
@@ -73,6 +69,7 @@ const deleteSession = (request, response, usrID) => {
   return '';
 };
 
+// Page for curator editing of a particular user’s registration.
 router.post('/reg/:id', (request, response) => {
   const formData = request.body;
   if (formData.cats) {
@@ -114,7 +111,7 @@ router.post('/reg/:id', (request, response) => {
         }
       );
       return util.mailSend(
-        [targetDeepUsr[0], request.session.usr],
+        [targetDeepUsr[0], response.locals.usr],
         msgs.regEditMailSubject,
         msgs.regEditMailText.replace('{1}', targetDeepUsr[0].name).replace(
           '{2}',
@@ -131,6 +128,7 @@ router.post('/reg/:id', (request, response) => {
   .catch(error => util.renderError(error, request, response, 'regid2'));
 });
 
+// Page for curator deregistration of a particular user.
 router.get('/reg/:id/dereg', (request, response) => {
   const targetUsrID = Number.parseInt(request.params.id);
   return DbUsr.getUsr({type: 'id', id: targetUsrID})
@@ -143,7 +141,7 @@ router.get('/reg/:id/dereg', (request, response) => {
       );
       response.render('curate/deregister-ack');
       return util.mailSend(
-        [targetDeepUsr[0], request.session.usr],
+        [targetDeepUsr[0], response.locals.usr],
         msgs.curateDeregMailSubject,
         msgs.curateDeregMailText.replace('{1}', targetDeepUsr[0].name),
         msgs
@@ -155,10 +153,15 @@ router.get('/reg/:id/dereg', (request, response) => {
   .catch(error => util.renderError(error, request, response, 'iddereg1'));
 });
 
+// Page for curator editing of the categories in the schema.
 router.get('/cat', (request, response) => {
   response.render('curate/cat', {formData: ''});
 });
 
+/*
+  Page for curator editing of the directories in the document repository
+  and the permissions of user categories on the directories.
+*/
 router.get('/dir', (request, response) => {
   response.render('curate/dir', {formData: ''});
 });

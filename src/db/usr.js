@@ -7,7 +7,7 @@
 // Create a client configured for connection to the “docsearch” database.
 const {Client} = require('pg');
 
-// Define a function that returns database data on a user.
+// Define a function that returns all database data on a user.
 const getUsr = basis => {
   const client = new Client();
   return client.connect()
@@ -42,6 +42,26 @@ const getUsr = basis => {
       else {
         return [{}, []];
       }
+    });
+  })
+  .catch(error => {
+    client.end();
+    throw error;
+  });
+};
+
+// Define a function that returns whether a user is in a category.
+const hasCat = (usrID, cat) => {
+  const client = new Client();
+  return client.connect()
+  .then(() => {
+    return client.query(`
+      SELECT COUNT(cat) FROM usrcat WHERE usr = ${usrID} AND cat = ${cat}
+    `)
+    .then(count => count > 0)
+    .catch(error => {
+      client.end();
+      throw error;
     });
   })
   .catch(error => {

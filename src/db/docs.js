@@ -8,7 +8,10 @@ const fs = require('fs');
 // Create a client configured for connection to the “docsearch” database.
 const {Client} = require('pg');
 
-// Define a function that returns a user’s directory rights.
+/*
+  Define a function that returns a user’s directory rights, where a user
+  with ID 0 is deemed to have the rights of the general public.
+*/
 const usrDirRights = usrID => {
   const client = new Client();
   const queryText = usrID
@@ -17,7 +20,7 @@ const usrDirRights = usrID => {
       WHERE usrcat.usr = $1
       AND permit.cat = usrcat.cat
     `
-    : 'SELECT act, dir FROM permit WHERE cat = 1';
+    : `SELECT act, dir FROM permit WHERE cat = ${process.env.PUBLIC_CAT}`;
   const query = {
     text: queryText,
     rowMode: 'array'

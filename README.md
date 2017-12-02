@@ -73,7 +73,7 @@ Make that parent directory your working directory, by executing, for example:
 
 ### Customization
 
-1. Create a file named `.env` in the project directory and populate it with the following content, where you will replace any parts that begin and end with “«»”. You may omit the `CC_EMAIL` and `CC_NAME` variables. If present, they cause registration confirmation email messages to be sent not only to the user who made a change and the user whose registration record was changed, but also to the address specied by `CC_EMAIL` and `CC_NAME`. The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs before curators assign permanent IDs to them.
+1. Create a file named `.env` in the project directory and populate it with the following content, where you will replace any parts that begin and end with “«»”. You may omit the `CC_EMAIL` and `CC_NAME` variables. If present, they cause registration confirmation email messages to be sent not only to the user who made a change and the user whose registration record was changed, but also to the address specied by `CC_EMAIL` and `CC_NAME`. The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs before curators assign permanent IDs to them. CURATOR_CAT and PUBLIC_CAT are the categories the users in which are to have the rights of curators and of the general public, respectively.
 
 ```
 CURATOR_KEY='«somethingSecret»'
@@ -86,7 +86,8 @@ PORT='«3000»'
 SECRET='«somethingElseSecret»'
 SENDGRID_API_KEY='«SHGCPHTDI.0987LRLCGlnh45ntsh2390»'
 LANG='eng'
-CURATOR_CAT='0'
+CURATOR_CAT='«0»'
+PUBLIC_CAT='«1»'
 REG_EMAIL='«your_username@domain.ext»'
 REG_NAME='«Your Name»'
 FROM_EMAIL='«webmaster@domain.ext»'

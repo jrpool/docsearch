@@ -1,4 +1,5 @@
 require('dotenv').config();
+const DbUsr = require('./db/usr');
 const express = require('express');
 const app = express();
 const session = require('express-session');
@@ -44,19 +45,45 @@ app.use(session({
   store
 }));
 
+/*
+  Make general resources available to routes and views during this
+  request-response cycle.
+*/
 app.use((request, response, next) => {
-  // Make session store available to curation routes.
   request.sessionStore = store;
-  // Make globals available to all views.
   response.locals.query = '';
   response.locals.msgs = require('./server/util')[process.env.LANG];
   response.locals.linkButton = require('./server/util').linkButton;
   response.locals.linkButtonP = require('./server/util').linkButtonP;
-  const usr = request.session.usr;
-  const status = response.locals.msgs.status;
-  response.locals.msgs.status
-    = usr ? response.locals.msgs.status.replace('{1}', usr.name) : '';
-  next();
+  if (request.session && request.session.usrID) {
+    DbUsr.getUsr(usrID)
+    .then(deepUsr => {
+      if (deepUsr[0].id) {
+        response.locals.usr = deepUsr;
+        response.locals.msgs.status = `
+          ${response.locals.msgs.status.replace('{1}', deepUsr[0].name)}
+          ${linkButton(
+            '/usr/logout', msgs.btnLogout, {tabIndex: 'tabindex="-1" '}
+          )}
+          ${linkButton(
+            '/usr/deregister', msgs.btnDeregister, {tabIndex: 'tabindex="-1" '}
+          )}
+        `;
+      }
+      else {
+        response.locals.msgs.status = '';
+      }
+      next();
+    })
+    .catch(error => {
+      throw error;
+    });
+  }
+  else {
+    response.locals.usr = [{}, []];
+    response.locals.msgs.status = '';
+    next();
+  }
 });
 
 app.use('/', home_route);

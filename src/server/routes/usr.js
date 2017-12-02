@@ -13,10 +13,10 @@ router.use('/', (request, response, next) => {
   next();
 });
 
+// Registration page.
 router.get('/register', (request, response) => {
   response.render('usr/register', {formData: ''});
 });
-
 router.post('/register', (request, response) => {
   const formData = request.body;
   if (
@@ -67,9 +67,10 @@ router.post('/register', (request, response) => {
   .catch(error => util.renderError(error, request, response, 'reg1'));
 });
 
+// Deregistration button’s result.
 router.get('/deregister', (request, response) => {
-  const usr = request.session.usr;
-  return DbUsr.deleteUsr(request.session.usr.id)
+  const usr = response.locals.usr;
+  return DbUsr.deleteUsr(usr[0].id)
   .then(() => {
     request.session.destroy();
     msgs.status = '';
@@ -85,10 +86,10 @@ router.get('/deregister', (request, response) => {
   .catch(error => util.renderError(error, request, response, 'dereg'));
 });
 
+// Login page.
 router.get('/login', (request, response) => {
   response.render('usr/login', {formData: ''});
 });
-
 router.post('/login', (request, response) => {
   const formData = request.body;
   if (!formData.uid || !formData.password) {
@@ -107,8 +108,7 @@ router.post('/login', (request, response) => {
       }
       else {
         delete deepUsr[0].pwhash;
-        request.session.usr = deepUsr[0];
-        request.session.cats = deepUsr[1];
+        request.session.usrID = response.locals.usr[0].id;
         response.render('usr/login-ack');
       }
     }
@@ -122,12 +122,19 @@ router.post('/login', (request, response) => {
   .catch(error => util.renderError(error, request, response, 'login'));
 });
 
+// Logout button’s result.
 router.get('/logout', (request, response) => {
-  delete request.session.usr;
-  delete request.session.cats;
+  delete request.session.usrID;
   delete request.session.id;
-  response.locals.msgs.status = '';
-  response.render('usr/logout-ack');
+  request.session.destroy(error => {
+    if (error) {
+      util.renderError(error, request, response, 'logout');
+    }
+    else {
+      response.locals.msgs.status = '';
+      response.render('usr/logout-ack');
+    }
+  });
 });
 
 module.exports = router;

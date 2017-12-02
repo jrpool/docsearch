@@ -6,17 +6,4 @@
     <link rel="stylesheet" type="text/css" href="/style.css">
   </head>
   <body>
-    <p class="status">
-      <%-
-        msgs.status
-          ? `${msgs.status}
-            ${linkButton(
-              '/usr/logout', msgs.btnLogout, {tabIndex: 'tabindex="-1" '}
-            )}
-            ${linkButton(
-              '/usr/deregister', msgs.btnDeregister, {tabIndex: 'tabindex="-1" '}
-            )}
-          `
-          : ''
-      %>
-    </p>
+    <p class="status"><%- msgs.status %></p>

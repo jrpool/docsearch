@@ -1,15 +1,15 @@
 const router = require('express').Router();
 
+// Home page.
 router.get('/', (request, response) => {
-  console.log('request path is ' + request.path);
   let ifCurator = 'class="gone" ',
     ifAnonymous = '',
     ifKnown = 'class="gone" ';
-  const sesUsr = request.session.usr;
-  if (request.session.usr) {
+  const usr = response.locals.usr;
+  if (usr[0].id) {
     ifAnonymous = 'class="gone" ';
     ifKnown = '';
-    if (request.session.cats.includes(
+    if (usr[1].includes(
       Number.parseInt(process.env.CURATOR_CAT)
     )) {
       ifCurator = '';

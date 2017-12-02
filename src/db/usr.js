@@ -30,7 +30,6 @@ const getUsr = basis => {
     }
     return client.query(query)
     .then(usr => {
-      console.log('usr is ' + JSON.stringify(usr));
       if (usr.rowCount) {
         usr = usr.rows[0];
         return client.query({

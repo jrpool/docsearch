@@ -1,6 +1,6 @@
-const linkButton = (path, msg, showIf) => `<button ${showIf || ''}type="button" onclick="location.href='${path}'">${msg}</button>`;
+const linkButton = (path, msg, opts) => `<button ${typeof opts === 'object' && opts.showIf || ''}${typeof opts === 'object' && opts.tabIndex || ''}type="button" onclick="location.href='${path}'">${msg}</button>`;
 
-const linkButtonP = (path, msg, showIf) => `<p>${linkButton(path, msg, showIf)}</p>`;
+const linkButtonP = (path, msg, opts) => `<p>${linkButton(path, msg, opts)}</p>`;
 
 const eng = {
   accessText: 'You can browse and search documents here. Some of them have access limitations. If you are a BTH member, prospective member, resident, or manager, you can register or log in for additional access.',

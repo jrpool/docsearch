@@ -9,15 +9,28 @@ const home_route = require('./server/routes/home');
 const usr_route = require('./server/routes/usr');
 const doc_route = require('./server/routes/docs').router;
 const curate_route = require('./server/routes/curate');
+const fs = require('fs');
+const path = require('path');
 
 app.get('/favicon.ico', (request, response) => response.status(204));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-app.use(morgan('tiny'));
+// Serve static files (i.e. style.css).
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Log which IP addresses made which requests.
+const accessLogStream = fs.createWriteStream(
+  path.join(process.cwd(), 'logs/access.log'), {flags: 'a'}
+);
+// Because this follows express.static, no static assets are logged.
+app.use(morgan(
+  ':date[iso] :status :method :remote-addr :url', {
+    stream: accessLogStream,
+  }
+));
 
 const store = new FileStore({retries: 0});
 

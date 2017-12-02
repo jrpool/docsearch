@@ -2,14 +2,7 @@
 
     <h1><%- msgs.deregAckTitle %></h1>
 
-    <p><%- textParts[0] %><%= targetDeepUsr[0].name %><%- textParts[1] %></p>
-
-    <div class="kvpairs">
-      <% Object.keys(targetDeepUsr[0]).forEach(key => { %>
-        <p><%- key %> = <%= targetDeepUsr[0][key] %></p>
-      <% }); %>
-      <p><%= msgs.curateCats %> = <%- targetDeepUsr[1] %></p>
-    </div>
+    <p><%- msgs.curateDeregAckText %></p>
 
     <%- linkButtonP('/', msgs.btnHome) %>
 

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 router.get('/', (request, response) => {
+  console.log('request path is ' + request.path);
   let ifCurator = 'class="gone" ',
     ifAnonymous = '',
     ifKnown = 'class="gone" ';

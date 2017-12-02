@@ -10,13 +10,21 @@ let msgs;
 
 // Redirect all curation queries to home page if user is not a curator.
 router.use('/', (request, response, next) => {
-  if (request.session.cats.includes(Number.parseInt(process.env.CURATOR_CAT))) {
-    msgs = response.locals.msgs;
-    next();
+  const curatorCat = Number.parseInt(process.env.CURATOR_CAT);
+  if (
+    typeof request.session.cats !== 'undefined'
+    && request.session.cats.includes(curatorCat)
+  ) {
+    DbUsr.getUsr({type: 'id', id: request.session.usr.id})
+    .then(deepUsr => {
+      if (deepUsr[1].includes(curatorCat)) {
+        msgs = response.locals.msgs;
+        next();
+      }
+    })
+    .catch(error => util.renderError(error, request, response));
   }
-  else {
-    response.redirect('/');
-  }
+  response.redirect('/');
 });
 
 router.get('/', (request, response) => {
@@ -53,7 +61,7 @@ const deleteSession = (request, response, usrID) => {
       request.sessionStore.get(sid, (error, session) => {
         if (session.usr && (session.usr.id === usrID)) {
           delete session.usr;
-          request.sessionStore.set(sid, session, error => {
+          request.sessionStore.destroy(sid, error => {
             if (error) {
               util.renderError(error, request, response);
             }
@@ -124,7 +132,7 @@ router.post('/reg/:id', (request, response) => {
 });
 
 router.get('/reg/:id/dereg', (request, response) => {
-  const targetUsrID = request.params.id;
+  const targetUsrID = Number.parseInt(request.params.id);
   return DbUsr.getUsr({type: 'id', id: targetUsrID})
   .then(targetDeepUsr => {
     return DbUsr.deleteUsr(targetUsrID)
@@ -133,7 +141,7 @@ router.get('/reg/:id/dereg', (request, response) => {
       msgs.curateDeregAckText = msgs.curateDeregAckText.replace(
         '{1}', targetDeepUsr[0].name
       );
-      response.render('usr/deregister-ack');
+      response.render('curate/deregister-ack');
       return util.mailSend(
         [targetDeepUsr[0], request.session.usr],
         msgs.curateDeregMailSubject,

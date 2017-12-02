@@ -6,11 +6,12 @@
 
     <%- linkButtonP('/', msgs.btnHome) %>
 
-    <h3><%- msgs.curateRegChoose %></h3>
+    <h3><%- msgs.choose %></h3>
 
     <table>
 
       <tr>
+        <th colspan="2"></th>
         <th><%- msgs.tblID %></th>
         <th><%- msgs.tblUID %></th>
         <th><%- msgs.tblName %></th>
@@ -19,8 +20,14 @@
       <% usrs.forEach(usr => { %>
         <tr>
           <td class="open">
-            <%- linkButton(`/curate/reg/${usr.id}`, usr.id) %>
+            <%- linkButton(
+              `/curate/reg/${usr.id}/dereg`, msgs.btnDeregister
+            ) %>
           </td>
+          <td class="open">
+            <%- linkButton(`/curate/reg/${usr.id}`, msgs.btnEdit) %>
+          </td>
+          <td><%= usr.id %></td>
           <td><%= usr.uid %></td>
           <td><%= usr.name %></td>
         </tr>

@@ -123,20 +123,21 @@ router.post('/reg/:id', (request, response) => {
   .catch(error => util.renderError(error, request, response, 'regid2'));
 });
 
-router.get('/reg/:id/deregister', (request, response) => {
-  const usrID = request.params.id;
-  return DbUsr.getUsr({type: 'id', id: usrID})
+router.get('/reg/:id/dereg', (request, response) => {
+  const targetUsrID = request.params.id;
+  return DbUsr.getUsr({type: 'id', id: targetUsrID})
   .then(targetDeepUsr => {
-    return DbUsr.deleteUsr(usrID)
+    return DbUsr.deleteUsr(targetUsrID)
     .then(() => {
-      deleteSession(request, response, usrID);
+      deleteSession(request, response, targetUsrID);
+      msgs.curateDeregAckText = msgs.curateDeregAckText.replace(
+        '{1}', targetDeepUsr[0].name
+      );
       response.render('usr/deregister-ack');
       return util.mailSend(
         [targetDeepUsr[0], request.session.usr],
         msgs.curateDeregMailSubject,
-        msgs.curateDeregMailText.replace(
-          '{1}', util.emailSanitize(targetDeepUsr[0].name)
-        ),
+        msgs.curateDeregMailText.replace('{1}', targetDeepUsr[0].name),
         msgs
       )
       .catch(error => console.log(error.toString()));

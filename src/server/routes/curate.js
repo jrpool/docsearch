@@ -38,7 +38,7 @@ router.get('/reg/:id', (request, response) => {
   .then(deepUsr => {
     // Append to each msgs.cats element whether the user is in it.
     msgs.cats.forEach(
-      cat => {cat.push(deepUsr[1].includes(cat[0]))}
+      cat => {cat.push(deepUsr[1].includes(Number.parseInt(cat[0])))}
     );
     response.render('curate/reg-edit', {usr: deepUsr[0]});
   })

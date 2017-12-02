@@ -9,6 +9,12 @@
     <p class="status">
       <%-
         msgs.status
-        && linkButton('/usr/logout', msgs.btnLogout).replace(/<.?p>/, '')
+          ? `${msgs.status}
+            ${linkButton(
+              '/usr/logout', msgs.btnLogout
+            ).replace(/<.?p>/, '')}
+            ${linkButton('/usr/deregister', msgs.btnDeregister)}
+          `
+          : ''
       %>
     </p>

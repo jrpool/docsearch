@@ -141,7 +141,7 @@ router.get('/reg/:id/dereg', (request, response) => {
       );
       response.render('curate/deregister-ack');
       return util.mailSend(
-        [targetDeepUsr[0], response.locals.usr],
+        [targetDeepUsr[0], response.locals.usr[0]],
         msgs.curateDeregMailSubject,
         msgs.curateDeregMailText.replace('{1}', targetDeepUsr[0].name),
         msgs

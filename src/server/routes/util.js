@@ -13,16 +13,17 @@ const emailSanitize = name => name.replace(/[,;]/g, '-');
 
 /*
   Define a function that sends a message, ensuring (per SendGrid requirements)
-  that all email addresses in the “to” and “cc” headers are unique.
+  that all email addresses in the “to” and “cc” headers are unique. usrs is
+  an array of the array elements of user records.
 */
 const mailSend = (usrs, subject, text, msgs) => {
-  if(usrs.length === 2 && usrs[1][0].email === usrs[0][0].email) {
+  if(usrs.length === 2 && usrs[1].email === usrs[0].email) {
     usrs.shift();
   }
   const options = {
     to: usrs.map(usr => ({
-      email: usr[0].email,
-      name: emailSanitize(usr[0].name)
+      email: usr.email,
+      name: emailSanitize(usr.name)
     })),
     from: {
       email: process.env.FROM_EMAIL,
@@ -31,7 +32,7 @@ const mailSend = (usrs, subject, text, msgs) => {
     subject,
     text
   };
-  if(!usrs.map(usr => usr[0].email).includes(process.env.REG_EMAIL)) {
+  if(!usrs.map(usr => usr.email).includes(process.env.REG_EMAIL)) {
     options.cc = {
       email: process.env.REG_EMAIL,
       name: process.env.REG_NAME

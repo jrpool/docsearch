@@ -49,6 +49,7 @@ router.post('/register', (request, response) => {
       return DbUsr.createUsr(formData)
       // Substitute name and temporary UID into acknowledgements.
       .then(result => {
+        formData.pwHash = '';
         msgs.regAckText = msgs.regAckText
           .replace('{1}', formData.name)
           .replace('{2}', formData.uid);
@@ -76,7 +77,7 @@ router.get('/deregister', (request, response) => {
     msgs.status = '';
     response.render('usr/deregister-ack');
     return util.mailSend(
-      [usr],
+      [usr[0]],
       msgs.deregMailSubject,
       msgs.deregMailText.replace('{1}', usr[0].name),
       msgs

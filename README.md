@@ -73,9 +73,14 @@ Make that parent directory your working directory, by executing, for example:
 
 ### Customization
 
-1. Create a file named `.env` in the project directory and populate it with the following content, where you will replace any parts that begin and end with “«»”. You may omit the `CC_EMAIL` and `CC_NAME` variables. If present, they cause registration confirmation email messages to be sent not only to the user who made a change and the user whose registration record was changed, but also to the address specied by `CC_EMAIL` and `CC_NAME`. The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs before curators assign permanent IDs to them. CURATOR_CAT and PUBLIC_CAT are the categories the users in which are to have the rights of curators and of the general public, respectively.
+1. Create a file named `.env` in the project directory and populate it with the following content, where you will replace any parts that begin and end with “«»”. Details:
+
+- The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs before curators assign permanent IDs to them.
+- `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the rights of curators (maximum rights) and of the general public (minimum rights), respectively.
+- If you are only running the application and not developing it, change the value of `NODE_ENV` to `production`.
 
 ```
+NODE_ENV='«development»'
 CURATOR_KEY='«somethingSecret»'
 PGHOST='localhost'
 PGUSER='solr'
@@ -96,7 +101,7 @@ COOKIE_EXPIRE_DAYS='«7»'
 TEMP_UID_MAX='«3»'
 ```
 
-2. Feel free to add and remove directories and files inside `public/docs`. That directory is the root of your repository.
+2. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
 
 3. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory.
 
@@ -108,9 +113,9 @@ TEMP_UID_MAX='«3»'
 
 11. To start the application, execute `npm start`.
 
-12. To access the application while it is running, use a web browser to request this URL:
+12. To access the application while it is running, use a web browser to request this URL (replacing `«PORT»` with the value of the `PORT` environment variable):
 
-`http://localhost:3000/`
+`http://localhost:«PORT»/`
 
 13. At the home page, register yourself as a curator. To obtain curator permissions, on the registration form put the CURATOR_KEY value into the “Additional information” text field, along with anything else you want to include there.
 

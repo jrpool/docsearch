@@ -15,8 +15,7 @@
     "revive_db": "npm run drop_db && npm run create_db && npm run init_db && npm run seedall_db",
     "seeddir_db": "node src/db/config/execfile seeddir",
     "seedall_db": "node src/db/config/execfile seedcat && npm run seeddir_db",
-    "start": "node src/server.js",
-    "start_dev": "nodemon src/server.js",
+    "start": "if-env NODE_ENVIRONMENT=production && node src/server.js || nodemon src/server.js",
     "test": "echo 'Error: no test specified' && exit 1"
   },
   "keywords": [],
@@ -29,6 +28,7 @@
     "ejs": ">=2.5.7",
     "express": ">=4.16.2",
     "express-session": ">=1.15.6",
+    "if-env": ">=1.0.0",
     "morgan": ">=1.9.0",
     "pg": ">=7.4.0",
     "@sendgrid/mail": ">=6.1.4",

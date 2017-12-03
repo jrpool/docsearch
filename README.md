@@ -51,6 +51,7 @@ file addition
 file deletion
 category curation
 directory permission curation
+https
 ```
 
 Suggestions on priorities for the further development of the project are welcome.
@@ -75,7 +76,11 @@ Make that parent directory your working directory, by executing, for example:
 
     `cd docsearch`
 
-4. Obtain an account at SendGrid. For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
+4. Create a directory named `sessions` by executing:
+
+    `mkdir sessions`
+
+5. Obtain an account at SendGrid. For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
 
 ## Configuration
 

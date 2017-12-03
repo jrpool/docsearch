@@ -33,19 +33,19 @@ The use case addressed by this application is a person or organization that has 
 
 -- Once a user is registered, the user can log in, and if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
 
--- Registration includes making claims as to the categories that the user belongs to. Membership in categories is what determines the access to the collection that a user has. A registrant’s claims are not automatically trusted. Curators decide which categories users actually belong to and amend users’ registration records accordingly.
+-- Registration includes making claims as to the categories that the user belongs to. Membership in categories is what determines the access to the collection that a user has. A registrant’s claims are not automatically trusted. Curators decide which categories users actually belong to.
 
--- Registration also includes being issued a temporary user ID to enable logins. Curators decide on permanent IDs for users and amend users’ registration records accordingly.
+-- Registration also includes being issued a temporary user ID (UID) to enable logins. Curators decide on permanent UIDs for users.
 
--- A registration authority gets an email notice of each registration. This allows a curator to review and amend the user’s registration record. The user is notified of the amendment, including the approved category memberships and the permanent user ID.
+-- Users can log in and out and, once registered, can deregister themselves. Curators, can amend users’ registration records and deregister users.
+
+-- The repository administration gets an email notice of each registration, registration amendment, and deregistration. Normally, after receiving a registration notice, a curator amends the registration record to replace the temporary UID with a durable one. When a curator acts on a user’s registration record, email notices are sent to the curator, the repository administration, and the affected user.
 
 ### Implementation notes
 
 This application is currently a “minimum viable product”. Suggestions on priorities for the further development of the project are welcome.
 
-## Installation and Configuration
-
-### General procedure
+## Installation
 
 0. These instructions presuppose that (1) [npm][npm] and [PostgreSQL][pg] are installed, (2) there is a PostgreSQL database cluster, (3) PostgreSQL is running, and (4) when you connect to the cluster you are a PostgreSQL superuser.
 
@@ -69,9 +69,9 @@ Make that parent directory your working directory, by executing, for example:
 
     `npm i`
 
-5. Obtain an account at SendGrid. For demonstration use, the free plan with a limit of 100 messages per day will suffice. (A complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
+5. Obtain an account at SendGrid. For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
 
-### Customization
+## Configuration
 
 1. Create a file named `.env` in the project directory and populate it with the following content, where you will replace any parts that begin and end with “«»”. Details:
 
@@ -103,21 +103,35 @@ TEMP_UID_MAX='«3»'
 
 2. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
 
-3. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory.
+3. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
 
 4. Modify the values of the properties in the `eng` object in the file `src/server/utic.js`, to conform to your requirements.
 
 5. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the ISO 639-3 alpha-3 code of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization.
 
-6. To create and populate the database, execute `npm run revive_db`.
+## Execution
 
-11. To start the application, execute `npm start`.
+1. To create and populate the database, execute `npm run revive_db`.
 
-12. To access the application while it is running, use a web browser to request this URL (replacing `«PORT»` with the value of the `PORT` environment variable):
+2. To start the application, execute `npm start`.
+
+3. To access the application while it is running, use a web browser to request this URL (replacing `«PORT»` with the value of the `PORT` environment variable):
 
 `http://localhost:«PORT»/`
 
-13. At the home page, register yourself as a curator. To obtain curator permissions, on the registration form put the CURATOR_KEY value into the “Additional information” text field, along with anything else you want to include there.
+4. In the application, register yourself as a curator. To obtain curator permissions, on the registration form put the CURATOR_KEY value into the “For administrative use” text field.
+
+## Version notes
+
+This version is missing:
+
+```
+search
+file addition
+file deletion
+category curation
+directory permission curation
+```
 
 [lg]: https://www.learnersguild.org
 [npm]: https://www.npmjs.com/

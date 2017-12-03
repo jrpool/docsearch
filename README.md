@@ -58,7 +58,7 @@ Suggestions on priorities for the further development of the project are welcome
 
 ## Installation
 
-0. These instructions presuppose that (1) [npm][npm] and [PostgreSQL][pg] are installed, (2) there is a PostgreSQL database cluster, (3) PostgreSQL is running, (4) when you connect to the cluster you are a PostgreSQL superuser, and your PostgreSQL configuration permits trusted local IPv4 connections from you and from the `solr` PostgreSQL user that this application will create. If you get authentication errors running the `revive_db` script described below, you can edit your `pg_hba.conf` file, which may be located in `/etc/postgresql/«version»/main` or `/usr/local/var/postgres`. Insert the following lines above the existing line of type `host`:
+0. These instructions presuppose that (1) [npm][npm] and [PostgreSQL][pg] are installed, (2) there is a PostgreSQL database cluster, (3) PostgreSQL is running, (4) when you connect to the cluster you are a PostgreSQL superuser, and your PostgreSQL configuration permits trusted local IPv4 connections from you and from the `solr` PostgreSQL user that this application will create. If you get authentication errors running the `revive_db` script described below, you can edit your `pg_hba.conf` file, which may be located in `/etc/postgresql/«version»/main` or `/usr/local/var/postgres`. Insert the following lines above the existing line of type `host`, then restart postgreSQL with the applicable command on your server, such as `sudo service postgresql restart` or `pg_ctl restart`.
 
 ```
 host    all             «you»           127.0.0.1/32             trust
@@ -85,53 +85,47 @@ Make that parent directory your working directory, by executing, for example:
 
     `mkdir sessions`
 
-5. Obtain an account at SendGrid. For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
+5. Create a log directory and a file for log entries by executing:
+
+```
+    mkdir logs
+    touch logs/access.logs
+```
+
+6. Obtain an account at SendGrid. For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
 
 ## Configuration
 
-1. Create a file named `.env` in the project directory and populate it with the following content, where you will replace any parts that begin and end with “«»”. Details:
+1. Edit the definitions of environment variables at the beginning of the `src/server.js` file to satisfy your requirements. Details:
 
 - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs before curators assign permanent IDs to them.
 - `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the rights of curators (maximum rights) and of the general public (minimum rights), respectively.
-- If you are only running the application and not developing it, change the value of `NODE_ENV` to `production`.
+- If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
+
+2. Create a file named `.env` at the root of your project directory and populate it with the following content, where you will replace any parts that begin and end with “«»”. If you consider any of the environment variables defined in `src/server.js` confidential, you may move them to `.env` and change their syntax accordingly.
 
 ```
-NODE_ENV='«development»'
 CURATOR_KEY='«somethingSecret»'
-PGHOST='localhost'
-PGUSER='solr'
-PGDATABASE='docsearch'
 PGPASSWORD='null'
-PGPORT='«5432»'
-PORT='«3000»'
 SECRET='«somethingElseSecret»'
 SENDGRID_API_KEY='«SHGCPHTDI.0987LRLCGlnh45ntsh2390»'
-LANG='eng'
-CURATOR_CAT='«0»'
-PUBLIC_CAT='«1»'
-REG_EMAIL='«your_username@domain.ext»'
-REG_NAME='«Your Name»'
-FROM_EMAIL='«webmaster@domain.ext»'
-FROM_NAME='«Sender Name»'
-COOKIE_EXPIRE_DAYS='«7»'
-TEMP_UID_MAX='«3»'
 ```
 
-2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in the previous step.
+3. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in the previous step.
 
-3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
+4. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
 
-4. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
+5. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
 
-5. Modify the values of the properties in the `eng` object in the file `src/server/utic.js`, to conform to your requirements.
+6. Modify the values of the properties in the `eng` object in the file `src/server/utic.js`, to conform to your requirements.
 
-6. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the ISO 639-3 alpha-3 code of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization.
+7. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the ISO 639-3 alpha-3 code of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization.
 
 ## Execution
 
 1. To create and populate the database, execute `npm run revive_db`.
 
-2. To start the application, execute `npm start`.
+2. To start the application, execute `npm run start_prod` (or, if in a development environment, `npm run start_dev`).
 
 3. To access the application while it is running, use a web browser to request this URL (replacing `«PORT»` with the value of the `PORT` environment variable):
 

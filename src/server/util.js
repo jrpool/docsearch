@@ -88,7 +88,7 @@ const eng = {
   pw: 'Password:',
   pwAgain: 'Reenter the password:',
   pwNew: 'Create a password:',
-  regAckText: 'Thank you, {1}, for registering! You may log in with this temporary UID:<br><br><blockquote><strong>{2}</strong></blockquote><br><br>You should receive an email confirmation and be contacted later for verification.',
+  regAckText: 'Thank you, {1}, for registering! You may log in with this temporary UID:<blockquote><strong>{2}</strong></blockquote>You should receive an email confirmation and be contacted later for verification.',
   regAckTitle: 'Registration in Progress',
   regEditAckText: 'Your revisions to the registration record of user {1} have been made. The current data are:',
   regEditAckTitle: 'Registration Record Revised',

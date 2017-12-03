@@ -1,4 +1,29 @@
-require('dotenv').config();
+// Define non-confidential environment variables.'
+process.env.NODE_ENV = 'production';
+process.env.PGHOST = 'localhost';
+process.env.PGUSER = 'solr';
+process.env.PGDATABASE = 'docsearch';
+process.env.PGPORT = '5432';
+process.env.PORT = '3000';
+process.env.LANG = 'eng';
+process.env.CURATOR_CAT = '0';
+process.env.PUBLIC_CAT = '1';
+process.env.FROM_EMAIL = 'noreply@yourdomain.org';
+process.env.FROM_NAME = 'Documents from Your Organization';
+process.env.COOKIE_EXPIRE_DAYS = '7';
+process.env.TEMP_UID_MAX = '3';
+process.env.REG_EMAIL = 'admin@yourdomain.org';
+process.env.REG_NAME = 'Your Administrator';
+
+/*
+  Import confidential environment variables, overriding any conflicting
+  existing ones, including those above.
+*/
+const fs = require('fs');
+const dotenv = require('dotenv');
+Object.assign(process.env, dotenv.parse(fs.readFileSync('.env')));
+
+// Import required modules.
 const DbUsr = require('./db/usr');
 const express = require('express');
 const app = express();
@@ -10,7 +35,6 @@ const home_route = require('./server/routes/home');
 const usr_route = require('./server/routes/usr');
 const doc_route = require('./server/routes/docs').router;
 const curate_route = require('./server/routes/curate');
-const fs = require('fs');
 const path = require('path');
 
 app.get('/favicon.ico', (request, response) => response.status(204));
@@ -33,8 +57,8 @@ app.use(morgan(
   }
 ));
 
+// Make session directory contain session records.
 const store = new FileStore({retries: 0});
-
 app.use(session({
   name: 'docsearch',
   resave: false,

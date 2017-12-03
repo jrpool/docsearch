@@ -78,7 +78,7 @@ router.get('/deregister', (request, response) => {
     return util.mailSend(
       [usr],
       msgs.deregMailSubject,
-      msgs.deregMailText.replace('{1}', usr.name.replace(/[,;]/g, '-')),
+      msgs.deregMailText.replace('{1}', usr[0].name),
       msgs
     )
     .catch(error => console.log(error.toString()));;

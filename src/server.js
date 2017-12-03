@@ -80,6 +80,7 @@ app.use((request, response, next) => {
             );
       }
       else {
+        response.locals.usr = [{}, []];
         response.locals.msgs.status = '';
       }
       next();

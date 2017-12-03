@@ -67,13 +67,24 @@ router.get('/browse', (request, response) => {
   .then(rights => {
     /*
       Identify directories the user is permitted to see, sorted, pruned
-      of duplicates and to subtree tops.
+      of duplicates and limited to subtree tops.
     */
+    const rightMap = {};
     rights = rights
       .filter(right => cats.includes(right[0]) && right[1] === 0)
       .map(right => right[2])
       .sort()
-      .filter((right, index, array) => !right.includes(array[index - 1]));
+      .reverse();
+    rights.forEach(right => rightMap[right] = 1);
+    rights = rights.filter(right => {
+      const rightParts = right.split('/');
+      for (let i = rightParts.length - 1; i > 0; i--) {
+        if (rightMap[rightParts.slice(0, i).join('/')]) {
+          return false;
+        }
+      }
+      return true;
+    });
     const reqPath = request.query.p;
     // If the request specifies a path:
     if (reqPath) {

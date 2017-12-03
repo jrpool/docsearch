@@ -16,7 +16,7 @@
     "seeddir_db": "node src/db/config/execfile seeddir",
     "seedall_db": "node src/db/config/execfile seedcat && npm run seeddir_db",
     "start_dev": "nodemon src/server",
-    "start_prod": "node src/server",
+    "start": "node src/server",
     "test": "echo 'Error: no test specified' && exit 1"
   },
   "keywords": [],

@@ -141,7 +141,7 @@ URL=http://www.yourdomain.org
 
 1. To create and populate the database, execute `npm run revive_db`.
 
-2. To start the application, execute `npm run start_prod` (or, if in a development environment, `npm run start_dev`).
+2. To start the application, execute `npm start` (or, if in a development environment, `npm run start_dev`).
 
 3. To access the application while it is running, use a web browser to request the application’s port on your server, such as:
 

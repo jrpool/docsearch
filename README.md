@@ -43,7 +43,17 @@ The use case addressed by this application is a person or organization that has 
 
 ### Implementation notes
 
-This application is currently a “minimum viable product”. Suggestions on priorities for the further development of the project are welcome.
+This application is currently a “minimum viable product”. This version is missing:
+
+```
+search
+file addition
+file deletion
+category curation
+directory permission curation
+```
+
+Suggestions on priorities for the further development of the project are welcome.
 
 ## Installation
 
@@ -65,11 +75,7 @@ Make that parent directory your working directory, by executing, for example:
 
     `cd docsearch`
 
-4. Install required dependencies (you can see them listed in `package.json`) by executing:
-
-    `npm i`
-
-5. Obtain an account at SendGrid. For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
+4. Obtain an account at SendGrid. For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
 
 ## Configuration
 
@@ -101,13 +107,15 @@ COOKIE_EXPIRE_DAYS='«7»'
 TEMP_UID_MAX='«3»'
 ```
 
-2. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
+2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in the previous step.
 
-3. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
+3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
 
-4. Modify the values of the properties in the `eng` object in the file `src/server/utic.js`, to conform to your requirements.
+4. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
 
-5. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the ISO 639-3 alpha-3 code of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization.
+5. Modify the values of the properties in the `eng` object in the file `src/server/utic.js`, to conform to your requirements.
+
+6. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the ISO 639-3 alpha-3 code of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization.
 
 ## Execution
 
@@ -120,18 +128,6 @@ TEMP_UID_MAX='«3»'
 `http://localhost:«PORT»/`
 
 4. In the application, register yourself as a curator. To obtain curator permissions, on the registration form put the CURATOR_KEY value into the “For administrative use” text field.
-
-## Version notes
-
-This version is missing:
-
-```
-search
-file addition
-file deletion
-category curation
-directory permission curation
-```
 
 [lg]: https://www.learnersguild.org
 [npm]: https://www.npmjs.com/

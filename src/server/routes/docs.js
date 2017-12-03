@@ -10,7 +10,12 @@ router.get('/', (request, response) => {
   const usr = response.locals.usr;
   response.render(
     'docs',
-    {usr, ifCanAdd: usr && response.locals.usr[1].includes(1) ? '' : 'gone '}
+    {
+      usr,
+      ifCanAdd: usr && response.locals.usr[1].includes(
+        Number.parseInt(process.env.CURATOR_CAT)
+      ) ? '' : 'class="gone" '
+    }
   );
 });
 
@@ -59,11 +64,13 @@ router.get('/browse', (request, response) => {
   .then(rights => {
     const reqPath = request.query.p;
     // If the request specifies a path:
-    if (reqPath) {
+    if (reqPath && reqPath !== 'docs') {
+      // If permitted to the user:
       if (
         rights.some(right => (right[0] === 0) && reqPath.startsWith(right[1]))
       ) {
         const staticPath = path.join(process.cwd(), 'public');
+        // If it is a directory, display its contents.
         if (itemType(staticPath, reqPath) === 'd') {
           const pathSegs = reqPath.split('/');
           response.render('docs/browse', {
@@ -79,9 +86,7 @@ router.get('/browse', (request, response) => {
           response.sendFile(reqPath, {root: staticPath});
         }
       }
-      else {
-        response.redirect('/');
-      }
+      else (response.redirect('/'));
     }
     // If the request does not specify a path or specifies “docs”.
     else {

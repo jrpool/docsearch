@@ -56,19 +56,28 @@ app.use((request, response, next) => {
   response.locals.linkButton = require('./server/util').linkButton;
   response.locals.linkButtonP = require('./server/util').linkButtonP;
   if (request.session && request.session.usrID) {
-    DbUsr.getUsr(usrID)
+    DbUsr.getUsr({type: 'id', id: request.session.usrID})
     .then(deepUsr => {
       if (deepUsr[0].id) {
         response.locals.usr = deepUsr;
-        response.locals.msgs.status = `
-          ${response.locals.msgs.status.replace('{1}', deepUsr[0].name)}
-          ${linkButton(
-            '/usr/logout', msgs.btnLogout, {tabIndex: 'tabindex="-1" '}
-          )}
-          ${linkButton(
-            '/usr/deregister', msgs.btnDeregister, {tabIndex: 'tabindex="-1" '}
-          )}
-        `;
+        response.locals.msgs.status =
+          response.locals.msgs.status.replace('{1}', deepUsr[0].name)
+            .replace(
+              '{2}',
+              response.locals.linkButton(
+                '/usr/logout',
+                response.locals.msgs.btnLogout,
+                {tabIndex: 'tabindex="-1" '}
+              )
+            )
+            .replace(
+              '{3}',
+              response.locals.linkButton(
+                '/usr/deregister',
+                response.locals.msgs.btnDeregister,
+                {tabIndex: 'tabindex="-1" '}
+              )
+            );
       }
       else {
         response.locals.msgs.status = '';

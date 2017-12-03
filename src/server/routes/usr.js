@@ -108,7 +108,7 @@ router.post('/login', (request, response) => {
       }
       else {
         delete deepUsr[0].pwhash;
-        request.session.usrID = response.locals.usr[0].id;
+        request.session.usrID = deepUsr[0].id;
         response.render('usr/login-ack');
       }
     }

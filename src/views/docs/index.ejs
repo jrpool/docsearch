@@ -10,6 +10,6 @@
 
     <%- linkButtonP('/docs/browse', msgs.btnDocsBrowse) %>
     <%- linkButtonP('/docs/search', msgs.btnDocsSearch) %>
-    <%- linkButtonP('/docs/add', msgs.btnDocsAdd) %>
+    <%- linkButtonP('/docs/add', msgs.btnDocsAdd, {showIf: ifCanAdd}) %>
 
 <%- include('../util/foot.ejs'); %>

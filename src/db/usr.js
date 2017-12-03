@@ -55,10 +55,12 @@ const hasCat = (usrID, cat) => {
   const client = new Client();
   return client.connect()
   .then(() => {
-    return client.query(`
-      SELECT COUNT(cat) FROM usrcat WHERE usr = ${usrID} AND cat = ${cat}
-    `)
-    .then(count => count > 0)
+    return client.query({
+      text: `SELECT COUNT(cat) FROM usrcat WHERE usr = $1 AND cat = $2`,
+      values: [usrID, cat],
+      rowMode: 'array'
+    })
+    .then(result => result.rows[0][0] || false)
     .catch(error => {
       client.end();
       throw error;
@@ -225,6 +227,7 @@ const deleteUsr = id => {
 
 module.exports = {
   getUsr,
+  hasCat,
   getUsrs,
   createUsr,
   updateUsr,

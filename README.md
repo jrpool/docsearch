@@ -96,7 +96,7 @@ Make that parent directory your working directory, by executing, for example:
 
 ## Configuration
 
-1. Create a file named `.env` at the root of your project directory and populate it with the following content, amended as you wish. This file will be protected from modification by any updates of the application. Details:
+0. Create a file named `.env` at the root of your project directory and populate it with the following content, amended as you wish. This file will be protected from modification by any updates of the application. Details:
 
 - `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
 - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
@@ -127,6 +127,8 @@ TEMP_UID_MAX=3
 URL=http://www.yourdomain.org
 ```
 
+1. Ensure that non-local users can reach the application at the port you have chosen (see below under “Execution”). If they cannot, modify the server configuration to enable this access. If you have `ufw` installed, you can execute `ufw status` to see what is allowed. If the required port is not allowed, you can add it by executing `ufw allow 3000` (or such other port as you have chosen).
+
 2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in the previous step.
 
 3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
@@ -139,18 +141,18 @@ URL=http://www.yourdomain.org
 
 ## Execution
 
-1. To create and populate the database, execute `npm run revive_db`.
+0. To create and populate the database, execute `npm run revive_db`.
 
-2. To start the application, execute `npm start` (or, if in a development environment, `npm run start_dev`).
+1. To start the application, execute `npm start` (or, if in a development environment, `npm run start_dev`).
 
-3. To access the application while it is running, use a web browser to request the application’s port on your server, such as:
+2. To access the application while it is running, use a web browser to request the application’s port on your server, such as:
 
 ```
 http://localhost:3000
 http://www.yourserver.org:3000
 ```
 
-4. When you access the application with your browser, register yourself as a curator. To obtain curator status, enter the CURATOR_KEY value into the “For administrative use” text field. Then, when you log in, you will be a curator.
+3. When you access the application with your browser, register yourself as a curator. To obtain curator status, enter the CURATOR_KEY value into the “For administrative use” text field. Then, when you log in, you will be a curator.
 
 [lg]: https://www.learnersguild.org
 [npm]: https://www.npmjs.com/

@@ -96,30 +96,46 @@ Make that parent directory your working directory, by executing, for example:
 
 ## Configuration
 
-1. Edit the definitions of environment variables at the beginning of the `src/server.js` file to satisfy your requirements. Details:
+1. Create a file named `.env` at the root of your project directory and populate it with the following content, amended as you wish. This file will be protected from modification by any updates of the application. Details:
 
-- The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs before curators assign permanent IDs to them.
-- `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the rights of curators (maximum rights) and of the general public (minimum rights), respectively.
+- `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
 - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
-
-2. Create a file named `.env` at the root of your project directory and populate it with the following content, where you will replace any parts that begin and end with “«»”. If you consider any of the environment variables defined in `src/server.js` confidential, you may move them to `.env` and change their syntax accordingly.
+- See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
+- The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs before curators assign permanent IDs to them.
 
 ```
-CURATOR_KEY='«somethingSecret»'
-PGPASSWORD='null'
-SECRET='«somethingElseSecret»'
-SENDGRID_API_KEY='«SHGCPHTDI.0987LRLCGlnh45ntsh2390»'
+COOKIE_EXPIRE_DAYS=7
+CURATOR_CAT=0
+CURATOR_KEY=ASecretKey
+DOMAIN=yourdomain.org
+FROM_EMAIL=noreply@yourdomain.org
+FROM_NAME=Documents from Your Organization
+LANG=eng
+NODE_ENV=production
+PGDATABASE=docsearch
+PGHOST=localhost
+PGPASSWORD=null
+PGPORT=5432
+PGUSER=solr
+PORT=3000
+PUBLIC_CAT=1
+REG_EMAIL=admin@yourdomain.org
+REG_NAME=Your Administrator
+SECRET=AnAuthenticationSecret
+SENDGRID_API_KEY=wHaTeVer.SenDGriDgIvEs.YoU
+TEMP_UID_MAX=3
+URL=http://www.yourdomain.org
 ```
 
-3. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in the previous step.
+2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in the previous step.
 
-4. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
+3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
 
-5. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
+4. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
 
-6. Modify the values of the properties in the `eng` object in the file `src/server/utic.js`, to conform to your requirements.
+5. Modify the values of the properties in the `eng` object in the file `src/server/utic.js`, to conform to your requirements.
 
-7. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the ISO 639-3 alpha-3 code of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization.
+6. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the ISO 639-3 alpha-3 code of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LANG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization.
 
 ## Execution
 
@@ -127,11 +143,14 @@ SENDGRID_API_KEY='«SHGCPHTDI.0987LRLCGlnh45ntsh2390»'
 
 2. To start the application, execute `npm run start_prod` (or, if in a development environment, `npm run start_dev`).
 
-3. To access the application while it is running, use a web browser to request this URL (replacing `«PORT»` with the value of the `PORT` environment variable):
+3. To access the application while it is running, use a web browser to request the application’s port on your server, such as:
 
-`http://localhost:«PORT»/`
+```
+http://localhost:3000
+http://www.yourserver.org:3000
+```
 
-4. In the application, register yourself as a curator. To obtain curator permissions, on the registration form put the CURATOR_KEY value into the “For administrative use” text field.
+4. When you access the application with your browser, register yourself as a curator. To obtain curator status, enter the CURATOR_KEY value into the “For administrative use” text field. Then, when you log in, you will be a curator.
 
 [lg]: https://www.learnersguild.org
 [npm]: https://www.npmjs.com/

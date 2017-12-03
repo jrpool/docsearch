@@ -9,16 +9,8 @@
     <%- linkButtonP('/docs/search', msgs.btnDocsSearch) %>
 
     <div class="dirlist">
-      <% if (base) {
-        const itemsInParts = msgs.itemsIn.split('{1}');
-      %>
-        <p><strong>
-        <%- itemsInParts[0] %>
-        <a href="/docs/browse?p=<%= up %>"><%= up %></a>/<%= last %>:
-        <%- itemsInParts[1] %>
-        </strong></p>
-      <% } %>
       <table>
+        <caption><%- head %></caption>
         <tr>
           <th><%- msgs.tblItem %></th>
           <th><%- msgs.tblSize %></th>

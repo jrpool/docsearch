@@ -77,7 +77,7 @@ const eng = {
   footText: 'Documents from BTH. A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br><code>DocSearch</code> is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
   intro: 'Introduction',
   introText: 'Welcome! <strong>Berkeley Town House</strong> (BTH) is a senior housing cooperative in Berkeley, California. Founded in 1960, it is the <em>first</em> senior housing cooperative in the United States!</p><p>This site is a repository of about 14,000 documents from BTH. A BTH member collected them from 2009 to 2017 in order to help preserve, and facilitate access to, the institutional memory of this historic community.',
-  itemsIn: 'Items in {1}',
+  itemsIn: '<p><strong>Items in {1}</strong></p>',
   login: 'Login',
   loginHere: 'If you are already registered, you can log in here.',
   loginOKText: 'Your login succeeded.',

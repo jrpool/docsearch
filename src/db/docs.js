@@ -8,30 +8,14 @@ const fs = require('fs');
 // Create a client configured for connection to the “docsearch” database.
 const {Client} = require('pg');
 
-/*
-  Define a function that returns a user’s directory rights, where all users,
-  in addition to any categories they are in, are deemed to be in the general public.
-*/
-const usrDirRights = usrID => {
+// Define a function that returns the directory rights of users in categories.
+const catDirRights = () => {
   const client = new Client();
-  const queryText = usrID
-    ? `
-      SELECT distinct permit.act, permit.dir FROM usrcat, permit
-      WHERE usrcat.usr = $1
-      AND permit.cat = usrcat.cat
-      UNION
-      SELECT act, dir FROM permit WHERE cat = ${process.env.PUBLIC_CAT}
-    `
-    : `SELECT act, dir FROM permit WHERE cat = ${process.env.PUBLIC_CAT}`;
-  const query = {
-    text: queryText,
-    rowMode: 'array'
-  };
-  if (usrID) {
-    query.values = [usrID];
-  }
   return client.connect()
-  .then(() => client.query(query))
+  .then(() => client.query({
+    text: 'SELECT * from permit',
+    rowMode: 'array'
+  }))
   .then(result => {
     client.end();
     return result.rows;
@@ -42,4 +26,4 @@ const usrDirRights = usrID => {
   });
 };
 
-module.exports = {usrDirRights};
+module.exports = {catDirRights};

@@ -111,7 +111,7 @@ router.post('/reg/:id', (request, response) => {
         }
       );
       return util.mailSend(
-        [targetDeepUsr[0], response.locals.usr],
+        [targetDeepUsr[0], response.locals.usr[0]],
         msgs.regEditMailSubject,
         msgs.regEditMailText.replace('{1}', targetDeepUsr[0].name).replace(
           '{2}',

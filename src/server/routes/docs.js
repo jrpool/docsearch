@@ -59,46 +59,52 @@ const dirData = (staticPath, reqPath) => {
 
 // Page where user browses permitted directories.
 router.get('/browse', (request, response) => {
-  const usr = response.locals.usr || [{id: 0}, []];
-  DbDocs.usrDirRights(usr[0].id)
+  const cats
+    = response.locals.usr[1].length
+    ? response.locals.usr[1]
+    : [process.env.PUBLIC_CAT];
+  DbDocs.catDirRights()
   .then(rights => {
+    /*
+      Identify directories the user is permitted to see, sorted, pruned
+      of duplicates and to subtree tops.
+    */
+    rights = rights
+      .filter(right => cats.includes(right[0]) && right[1] === 0)
+      .map(right => right[2])
+      .sort()
+      .filter((right, index, array) => !right.includes(array[index - 1]));
     const reqPath = request.query.p;
     // If the request specifies a path:
-    if (reqPath && reqPath !== 'docs') {
-      // If permitted to the user:
-      if (
-        rights.some(right => (right[0] === 0) && reqPath.startsWith(right[1]))
-      ) {
+    if (reqPath) {
+      // If user is permitted to see it:
+      if (rights.some(right => reqPath.startsWith(right))) {
         const staticPath = path.join(process.cwd(), 'public');
         // If it is a directory, display its contents.
         if (itemType(staticPath, reqPath) === 'd') {
-          const pathSegs = reqPath.split('/');
           response.render('docs/browse', {
-            usr,
-            up: pathSegs.slice(0, -1).join('/'),
-            last: pathSegs.slice(-1),
             base: reqPath,
             delim: '/',
-            dirData: dirData(staticPath, reqPath)
+            dirData: dirData(staticPath, reqPath),
+            head: response.locals.msgs.itemsIn.replace('{1}', reqPath)
           });
         }
+        // If it is a regular file, serve it.
         else {
           response.sendFile(reqPath, {root: staticPath});
         }
       }
       else (response.redirect('/'));
     }
-    // If the request does not specify a path or specifies “docs”.
+    // If the request does not specify a path:
     else {
       response.render('docs/browse', {
-        usr,
-        up: '',
-        last: '',
         base: '',
         delim: '',
-        dirData: rights.filter(right => right[0] === 0).map(
-          right => ({name: right[1], type: 'd', size: '', modDate: ''})
-        )
+        dirData: rights.map(
+          right => ({name: right, type: 'd', size: '', modDate: ''})
+        ),
+        head: ''
       });
     }
     return '';

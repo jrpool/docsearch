@@ -51,21 +51,26 @@ router.get('/reg/:id', (request, response) => {
 
 // Define a function that deletes a user’s session and logs the user out.
 const deleteSession = (request, response, usrID) => {
-  request.sessionStore.list((error, fileNames) => {
-    const sids = fileNames.map(v => v.replace(/\.json$/, ''));
-    sids.forEach(sid => {
-      request.sessionStore.get(sid, (error, session) => {
-        if (session.usr && (session.usr.id === usrID)) {
-          delete session.usr;
-          request.sessionStore.destroy(sid, error => {
-            if (error) {
-              util.renderError(error, request, response);
-            }
-          });
-        }
-      })
+  if (usrID === response.locals.usr[0].id) {
+    request.session.destroy();
+  }
+  else {
+    request.sessionStore.list((error, fileNames) => {
+      const sids = fileNames.map(v => v.replace(/\.json$/, ''));
+      sids.forEach(sid => {
+        request.sessionStore.get(sid, (error, session) => {
+          if (session.usr && (session.usr.id === usrID)) {
+            delete session.usr;
+            request.sessionStore.destroy(sid, error => {
+              if (error) {
+                util.renderError(error, request, response);
+              }
+            });
+          }
+        })
+      });
     });
-  });
+  }
   return '';
 };
 

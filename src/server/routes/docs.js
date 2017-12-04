@@ -62,7 +62,7 @@ router.get('/browse', (request, response) => {
   const cats
     = response.locals.usr[1].length
     ? response.locals.usr[1]
-    : [process.env.PUBLIC_CAT];
+    : [Number.parseInt(process.env.PUBLIC_CAT)];
   DbDocs.catDirRights()
   .then(rights => {
     /*

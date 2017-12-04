@@ -18,28 +18,28 @@ This application demonstrates the use of HTML, CSS, JavaScript, Apache `solr`, `
 
 The use case addressed by this application is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
 
--- Document formats for which the application intends to extract and analyze text content to support relevance discovery are <a href="http://tika.apache.org/1.16/formats.html">those supported by Apache Tika</a>.
+- Document formats for which the application intends to extract and analyze text content to support relevance discovery are <a href="http://tika.apache.org/1.16/formats.html">those supported by Apache Tika</a>.
 
--- Possible user actions are:
-    -- Browse through the directory tree.
-    -- Display and download specific documents.
-    -- Search with query strings for documents a user is authorized to see.
-    -- Add a document to the collection.
-    -- Delete a document from the collection.
+- Possible user actions are:
+    - Browse through the directory tree.
+    - Display and download specific documents.
+    - Search with query strings for documents a user is authorized to see.
+    - Add a document to the collection.
+    - Delete a document from the collection.
 
--- Anybody can register as a user.
+- Anybody can register as a user.
 
--- There are between 1 and 26 “curators” (super-users). Any person automatically becomes a curator by including the `CURATOR_KEY` string in the `admin` field of the registration form. This key is kept secret and is disclosed only to those who should become curators.
+- There are between 1 and 26 “curators” (super-users). Any person automatically becomes a curator by including the `CURATOR_KEY` string in the `admin` field of the registration form. This key is kept secret and is disclosed only to those who should become curators.
 
--- Once a user is registered, the user can log in, and if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
+- Once a user is registered, the user can log in, and if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
 
--- Registration includes making claims as to the categories that the user belongs to. Membership in categories is what determines the access to the collection that a user has. A registrant’s claims are not automatically trusted. Curators decide which categories users actually belong to.
+- Registration includes making claims as to the categories that the user belongs to. Membership in categories is what determines the access to the collection that a user has. A registrant’s claims are not automatically trusted. Curators decide which categories users actually belong to.
 
--- Registration also includes being issued a temporary user ID (UID) to enable logins. Curators decide on permanent UIDs for users.
+- Registration also includes being issued a temporary user ID (UID) to enable logins. Curators decide on permanent UIDs for users.
 
--- Users can log in and out and, once registered, can deregister themselves. Curators, can amend users’ registration records and deregister users.
+- Users can log in and out and, once registered, can deregister themselves. Curators, can amend users’ registration records and deregister users.
 
--- The repository administration gets an email notice of each registration, registration amendment, and deregistration. Normally, after receiving a registration notice, a curator amends the registration record to replace the temporary UID with a durable one. When a curator acts on a user’s registration record, email notices are sent to the curator, the repository administration, and the affected user.
+- The repository administration gets an email notice of each registration, registration amendment, and deregistration. Normally, after receiving a registration notice, a curator amends the registration record to replace the temporary UID with a durable one. When a curator acts on a user’s registration record, email notices are sent to the curator, the repository administration, and the affected user.
 
 ### Implementation notes
 

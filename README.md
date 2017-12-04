@@ -14,11 +14,11 @@ https://github.com/jrpool/docsearch
 
 ### General
 
-This application demonstrates the use of HTML, CSS, JavaScript, Apache `solr`, `bcrypt`, `body-parser`, `dotenv`, `ejs`, `express`, `express-session`, `session-file-store`, `PostgreSQL`, `pg` (node-postgres), and SendGrid to create a web server managing, and providing selective access to, a repository of documents.
+This application demonstrates the use of HTML, CSS, JavaScript, Apache `solr`, `bcrypt`, `body-parser`, `dotenv`, `ejs`, `express`, `express-session`, `session-file-store`, `PostgreSQL`, `pg` (node-postgres), and the SendGrid Web API to create a web server that manages, and provides selective access to, a repository of documents.
 
 The use case addressed by this application is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
 
-- Document formats for which the application intends to extract and analyze text content to support relevance discovery are <a href="http://tika.apache.org/1.16/formats.html">those supported by Apache Tika</a>.
+- Document formats for which the application intends to extract and analyze text content to support relevance discovery are [those supported by Apache Tika](http://tika.apache.org/1.16/formats.html).
 
 - Possible user actions are:
     - Browse through the directory tree.
@@ -56,13 +56,17 @@ https
 
 Suggestions on priorities for the further development of the project are welcome. Feel free to [file issues at the repository](https://github.com/jrpool/docsearch/issues).
 
+## Demonstration
+
+There is a [demonstration version of this application](http://berkhouse.us:3001), with a small directory tree of sample documents.
+
 ## Installation
 
-0. These instructions presuppose that (1) [npm][npm] and [PostgreSQL][pg] are installed, (2) there is a PostgreSQL database cluster, (3) PostgreSQL is running, (4) when you connect to the cluster you are a PostgreSQL superuser, and your PostgreSQL configuration permits trusted local IPv4 connections from you and from the `solr` PostgreSQL user that this application will create. If you get authentication errors running the `revive_db` script described below, you can edit your `pg_hba.conf` file, which may be located in `/etc/postgresql/«version»/main` or `/usr/local/var/postgres`. Insert the following lines above the existing line of type `host`, then restart postgreSQL with the applicable command on your server, such as `sudo service postgresql restart` or `pg_ctl restart`.
+0. These instructions presuppose that (1) [npm][npm] and [PostgreSQL][pg] are installed, (2) there is a PostgreSQL database cluster, (3) PostgreSQL is running, (4) when you connect to the cluster you are a PostgreSQL superuser, and (5) your PostgreSQL configuration permits trusted local IPv4 connections from you and from the `solr` PostgreSQL user that this application will create. If you get authentication errors running the `revive_db` script described below, you can edit your `pg_hba.conf` file, which may be located in `/etc/postgresql/«version»/main` or `/usr/local/var/postgres`. Insert the following lines above the existing similar line of type `host`, then restart postgreSQL with the applicable command on your server, such as `sudo service postgresql restart` or `pg_ctl restart`.
 
 ```
-host    all             «you»           127.0.0.1/32             trust
-host    all             solr            127.0.0.1/32             trust
+    host  all  «you»  127.0.0.1/32  trust
+    host  all  solr   127.0.0.1/32  trust
 ```
 
 1. Your copy of this project will be located in its own directory, inside some other directory that you may choose or create. For example, to create that parent directory inside your own home directory’s `Documents` subdirectory and call it `projects`, you can execute:
@@ -92,7 +96,7 @@ Make that parent directory your working directory, by executing, for example:
     touch logs/access.logs
 ```
 
-6. Obtain an account at SendGrid. For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
+6. Obtain an account at [SendGrid](https://sendgrid.com/). For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
 
 ## Configuration
 

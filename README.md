@@ -105,7 +105,7 @@ Make that parent directory your working directory, by executing, for example:
 - `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
 - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
 - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
-- The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs before curators assign permanent IDs to them.
+- The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
 
 ```
 COOKIE_EXPIRE_DAYS=7
@@ -131,21 +131,21 @@ TEMP_UID_MAX=3
 URL=http://www.yourdomain.org
 ```
 
-1. Ensure that non-local users can reach the application at the port you have chosen (see below under “Execution”). If they cannot, modify the server configuration to enable this access. If you have `ufw` installed, you can execute `ufw status` to see what is allowed. If the required port is not allowed, you can add it by executing `ufw allow 3000` (or such other port as you have chosen).
+1. Ensure that non-local users can reach the application at the port you have chosen (see below under “Execution”). If they cannot, modify the server configuration to enable this access. If you have `ufw` installed, you can execute `ufw status` to see what is allowed. If the required port is not allowed, you can add it by executing `sudo ufw allow 3000` (or such other port as you have chosen).
 
-2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in the previous step.
+2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in step 0.
 
-3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed. You may include symbolic links in it, and users with access to those links will also have access to the files and directories that they reference. The feature offers you the ability to grant multiple categories of users access to a particular file or directory without the need to make copies of it. But the feature requires care, because it is possible to mistakenly include a symbolic link to directories and files, anywhere in your file system, that you intend not to disclose.
+3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed. You may include symbolic links in it, and users with access to those links will also have access to the files and directories that they reference. This feature offers you the ability to grant multiple categories of users access to a particular file or directory without the need to make copies of it. But the feature requires care, because it is possible to mistakenly include a symbolic link to directories and files, anywhere in your file system, that you intend not to disclose.
 
 4. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
 
-5. Modify the values of the properties in the `eng` object in the file `src/server/utic.js`, to conform to your requirements.
+5. Modify the values of the properties in the `eng` object in the file `src/server/util.js`, to conform to your requirements.
 
-6. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the ISO 639-3 alpha-3 code of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LANG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization.
+6. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the [ISO 639-3 alpha-3 code](http://www-01.sil.org/iso639-3/codes.asp) of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LANG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization per user or browser preferences.
 
 ## Execution
 
-0. To create and populate the database, execute `npm run revive_db`.
+0. Once the application is installed, create and populate the database by executing `npm run revive_db`.
 
 1. To start the application, execute `npm start` (or, if in a development environment, `npm run start_dev`).
 

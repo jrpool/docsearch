@@ -14,7 +14,7 @@ https://github.com/jrpool/docsearch
 
 ### General
 
-This application demonstrates the use of HTML, CSS, JavaScript, Apache `solr`, `bcrypt`, `body-parser`, `dotenv`, `ejs`, `express`, `express-session`, `session-file-store`, `PostgreSQL`, `pg` (node-postgres), and the SendGrid Web API to create a web server that manages, and provides selective access to, a repository of documents.
+This application demonstrates the use of HTML, CSS, JavaScript, Apache `solr`, `bcrypt`, `body-parser`, `dotenv`, `ejs`, `express`, `express-session`, `session-file-store`, `PostgreSQL`, `pg` (node-postgres), the SendGrid Web API, and `PM2` to create a web server that manages, and provides selective access to, a repository of documents.
 
 The use case addressed by this application is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
 
@@ -147,7 +147,7 @@ URL=http://www.yourdomain.org
 
 0. Once the application is installed, create and populate the database by executing `npm run revive_db`.
 
-1. To start the application, execute `npm start` (or, if in a development environment, `npm run start_dev`).
+1. To start the application, execute `npm run start_daemon` (or, if in a development environment, `npm run start_dev`). The former command will launch a daemon that keeps the application running. If you want to stop the application after that, execute `npm run stop_daemon`.
 
 2. To access the application while it is running, use a web browser to request the application’s port on your server, such as:
 

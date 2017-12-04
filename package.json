@@ -15,8 +15,10 @@
     "revive_db": "npm run drop_db && npm run create_db && npm run init_db && npm run seedall_db",
     "seeddir_db": "node src/db/config/execfile seeddir",
     "seedall_db": "node src/db/config/execfile seedcat && npm run seeddir_db",
+    "start_daemon": "pm2 start npm --name 'docsearch' -- start",
     "start_dev": "nodemon src/server",
     "start": "node src/server",
+    "stop_daemon": "pm2 delete docsearch",
     "test": "echo 'Error: no test specified' && exit 1"
   },
   "keywords": [],
@@ -31,6 +33,7 @@
     "express-session": ">=1.15.6",
     "morgan": ">=1.9.0",
     "pg": ">=7.4.0",
+    "pm2": ">=2.8.0",
     "@sendgrid/mail": ">=6.1.4",
     "session-file-store": ">=1.1.2"
   },

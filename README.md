@@ -29,7 +29,7 @@ The use case addressed by this application is a person or organization that has 
 
 - Anybody can register as a user.
 
-- There are between 1 and 26 “curators” (super-users). Any person automatically becomes a curator by including the `CURATOR_KEY` string in the `admin` field of the registration form. This key is kept secret and is disclosed only to those who should become curators.
+- There is at least 1 “curator” (super-user). Any person automatically becomes a curator by including the `CURATOR_KEY` string in the administrative field of the registration form. This key is kept secret and is disclosed only to those who should become curators.
 
 - Once a user is registered, the user can log in and, if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
 
@@ -54,7 +54,7 @@ directory permission curation
 https
 ```
 
-Suggestions on priorities for the further development of the project are welcome. Feel free to [file issues at the repository](https://github.com/jrpool/docsearch/issues).
+Suggestions on priorities for the further development of the project, and of course bug reports, are welcome. Feel free to [file issues at the repository](https://github.com/jrpool/docsearch/issues).
 
 ## Demonstration
 

@@ -31,7 +31,7 @@ The use case addressed by this application is a person or organization that has 
 
 - There are between 1 and 26 “curators” (super-users). Any person automatically becomes a curator by including the `CURATOR_KEY` string in the `admin` field of the registration form. This key is kept secret and is disclosed only to those who should become curators.
 
-- Once a user is registered, the user can log in, and if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
+- Once a user is registered, the user can log in and, if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
 
 - Registration includes making claims as to the categories that the user belongs to. Membership in categories is what determines the access to the collection that a user has. A registrant’s claims are not automatically trusted. Curators decide which categories users actually belong to.
 

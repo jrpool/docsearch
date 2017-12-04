@@ -131,7 +131,7 @@ URL=http://www.yourdomain.org
 
 2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in the previous step.
 
-3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed.
+3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed. You may include symbolic links in it, and users with access to those links will also have access to the files and directories that they reference. The feature offers you the ability to grant multiple categories of users access to a particular file or directory without the need to make copies of it. But the feature requires care, because it is possible to mistakenly include a symbolic link to directories and files, anywhere in your file system, that you intend not to disclose.
 
 4. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
 

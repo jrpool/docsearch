@@ -9,9 +9,5 @@ INSERT INTO cat(id, name) VALUES
   (0, 'curator'),
   (1, 'public'),
   (2, 'member'),
-  (3, 'resident'),
-  (4, 'manager'),
-  (5, 'prospect'),
-  (6, 'director'),
-  (7, 'treasurer'),
-  (8, 'other');
+  (3, 'manager'),
+  (4, 'director');

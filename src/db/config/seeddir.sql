@@ -14,14 +14,7 @@ INSERT INTO permit(cat, act, dir) VALUES
   (0, 2, 'docs'),
   (1, 0, 'docs/public'),
   (2, 0, 'docs/public'),
-  (2, 0, 'docs/bth'),
-  (3, 0, 'docs/public'),
-  (3, 0, 'docs/bth/social'),
-  (4, 0, 'docs/public'),
-  (4, 0, 'docs/bth/social'),
-  (5, 0, 'docs/public'),
-  (6, 0, 'docs/public'),
-  (6, 0, 'docs/bth'),
-  (6, 0, 'docs/board'),
-  (7, 0, 'docs/public'),
-  (7, 0, 'docs/bth/finance');
+  (2, 0, 'docs/semipublic'),
+  (3, 0, 'docs'),
+  (3, 1, 'docs'),
+  (4, 0, 'docs');

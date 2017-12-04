@@ -3,7 +3,7 @@ const linkButton = (path, msg, opts) => `<button ${typeof opts === 'object' && o
 const linkButtonP = (path, msg, opts) => `<p>${linkButton(path, msg, opts)}</p>`;
 
 const eng = {
-  accessText: 'You can browse and search documents here. Some of them have access limitations. If you are a BTH member, prospective member, resident, or manager, you can register or log in for additional access.',
+  accessText: 'You can browse and search documents here. Some of them have access limitations. If you are a member, director, or manager, you can register or log in for additional access.',
   accessTitle: 'Access',
   btnDocsAdd: 'Add one',
   btnDocsBrowse: 'Browse',
@@ -21,17 +21,13 @@ const eng = {
   btnSeeDocs: 'See documents',
   btnSeePubDocs: 'See public documents',
   btnSubmit: 'Submit',
-  catHead: 'Your relationships to BTH:',
+  catHead: 'Your status:',
   cats: [
     ['0', false, 'Curator'],
-    ['1', true, 'General public'],
+    ['1', true, 'Public'],
     ['2', true, 'Member'],
-    ['3', true, 'Nonmember resident'],
-    ['4', true, 'Manager'],
-    ['5', true, 'Prospective member'],
-    ['6', true, 'Director'],
-    ['7', true, 'Treasurer'],
-    ['8', true, 'Other']
+    ['3', true, 'Manager'],
+    ['4', true, 'Director']
   ],
   catsHead: 'Categories:',
   choose: 'Please choose:',
@@ -65,7 +61,7 @@ const eng = {
   docsBrowseTitle: 'Browse Documents',
   docsSearchHere: 'You can search for documents here.',
   docsSearchTitle: 'Search for Documents',
-  docsTitle: 'Documents from BTH',
+  docsTitle: 'Document Access Service',
   email: 'Email address:',
   errAlreadyUsr: 'Someone with that name and email address is already registered.',
   errGeneral: 'Something was wrong with the inputs.',
@@ -74,9 +70,9 @@ const eng = {
   errNeed3RegFacts: 'A name, UID, and email address are required.',
   errNeed4RegFacts: 'A name, an email address, and duplicate passwords are required.',
   errPasswordsDiffer: 'The passwords are not identical.',
-  footText: 'Documents from BTH. A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br><code>DocSearch</code> is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
+  footText: 'Document Access Service. A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br><code>DocSearch</code> is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
   intro: 'Introduction',
-  introText: 'Welcome! <strong>Berkeley Town House</strong> (BTH) is a senior housing cooperative in Berkeley, California. Founded in 1960, it is the <em>first</em> senior housing cooperative in the United States!</p><p>This site is a repository of about 14,000 documents from BTH. A BTH member collected them from 2009 to 2017 in order to help preserve, and facilitate access to, the institutional memory of this historic community.',
+  introText: 'Welcome! <strong>Generic Information Organization</strong> (GIO) makes its archive of documents available at this site.',
   itemsIn: '<p><strong>Items in {1}</strong></p>',
   login: 'Login',
   loginHere: 'If you are already registered, you can log in here.',
@@ -109,31 +105,20 @@ const eng = {
   uid: 'UID:',
   usrEtc: [
     {
-      label: 'Your unit, if a member or resident:',
+      label: 'Your membership number, if a member:',
       field: {
         name: 'etc0',
-        placeholder: '1XY',
-        size: '3',
-        minlength: '2',
-        maxlength: '3',
-        pattern: '\\d[A-H]{1,2}'
+        placeholder: '1234',
+        size: '5',
+        minlength: '1',
+        maxlength: '5',
+        pattern: '\\d{1,5}'
       }
     },
     {
-      label: 'Your second unit, if any:',
+      label: 'Your title, if you are a GIO manager:',
       field: {
         name: 'etc1',
-        placeholder: '1XY',
-        size: '3',
-        minlength: '2',
-        maxlength: '3',
-        pattern: '\\d[A-H]{1,2}'
-      }
-    },
-    {
-      label: 'Your title, if a manager:',
-      field: {
-        name: 'etc2',
         size: '30',
         maxlength: '30'
       }
@@ -141,7 +126,7 @@ const eng = {
     {
       label: 'Additional information:',
       field: {
-        name: 'etc3',
+        name: 'etc2',
         size: '60',
         maxlength: '90'
       }

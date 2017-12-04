@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>Object-oriented JavaScript example</title>
+  </head>
+
+  <body>
+    <div>
+      <label for="jscode">Enter code:</label>
+      <input type="text" id="jscode" size="50">
+      <button>Submit code</button>
+      <p></p>
+    </div>
+  </body>
+
+  <script>
+    const input = document.querySelector('input');
+    const btn = document.querySelector('button');
+    const para = document.querySelector('p');
+
+    btn.onclick = () => {
+      const code = input.value;
+      para.textContent = eval(code);
+    };
+    function Person(first, last, age, gender, interests) {
+      this.name = {
+        first,
+        last
+      };
+      this.age = age;
+      this.gender = gender;
+      this.interests = interests;
+      this.bio = function() {
+        alert(this.name.first + ' ' + this.name.last + ' is ' + this.age + ' years old. He likes ' + this.interests[0] + ' and ' + this.interests[1] + '.');
+      };
+      this.greeting = function() {
+        alert('Hi! I’m ' + this.name.first + '.');
+      };
+    }
+    const person1 = new Person('Bob', 'Smith', 32, 'male', ['music', 'skiing']);
+    const person2 = new person1.constructor(
+      'Guido', 'Vitelli', 59, 'female', ['climate change', 'justice']
+    );
+    const person3 = Object.create(person1);
+    const person4 = Object.create(person3);
+    const person5 = person1;
+    const person6 = person1;
+  </script>
+
+</html>

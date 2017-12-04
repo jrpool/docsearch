@@ -33,11 +33,11 @@ The use case addressed by this application is a person or organization that has 
 
 - Once a user is registered, the user can log in and, if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
 
-- Registration includes making claims as to the categories that the user belongs to. Membership in categories is what determines the access to the collection that a user has. A registrant’s claims are not automatically trusted. Curators decide which categories users actually belong to.
+- Registration includes making claims as to the categories that the user belongs to. Membership in categories determines the access to the collection that a user has. A registrant’s claims are not automatically trusted. Curators decide which categories users really belong to.
 
 - Registration also includes being issued a temporary user ID (UID) to enable logins. Curators decide on permanent UIDs for users.
 
-- Users can log in and out and, once registered, can deregister themselves. Curators, can amend users’ registration records and deregister users.
+- Users can log in and out and, once registered, can deregister themselves. Curators can amend users’ registration records and deregister users.
 
 - The repository administration gets an email notice of each registration, registration amendment, and deregistration. Normally, after receiving a registration notice, a curator amends the registration record to replace the temporary UID with a durable one. When a curator acts on a user’s registration record, email notices are sent to the curator, the repository administration, and the affected user.
 
@@ -54,7 +54,7 @@ directory permission curation
 https
 ```
 
-Suggestions on priorities for the further development of the project are welcome.
+Suggestions on priorities for the further development of the project are welcome. Feel free to [file issues at the repository](https://github.com/jrpool/docsearch/issues).
 
 ## Installation
 

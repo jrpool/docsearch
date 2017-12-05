@@ -58,7 +58,7 @@ Suggestions on priorities for the further development of the project, and of cou
 
 ## Demonstration
 
-There is a [demonstration version of this application](http://berkhouse.us:3001), with a small directory tree of sample documents.
+There is a [demonstration version of this application](http://jpdev.pro:3001), with a small directory tree of sample documents.
 
 ## Installation
 

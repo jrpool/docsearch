@@ -63,7 +63,13 @@ app.use(session({
 app.use((request, response, next) => {
   request.sessionStore = store;
   response.locals.query = '';
-  response.locals.msgs = util[process.env.LANG];
+  /*
+    Copy the messages object so changes may be made that don’t persist
+    across request-response cycles via the Node require cache. Otherwise,
+    personalized messages can be inherited by subsequent requests using
+    the same browser, e.g., giving users other users’ data.
+  */
+  response.locals.msgs = Object.assign({}, util[process.env.LANG]);
   response.locals.linkButton = util.linkButton;
   response.locals.linkButtonP = util.linkButtonP;
   if (request.session && request.session.usrID) {

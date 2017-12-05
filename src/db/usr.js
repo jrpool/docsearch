@@ -91,7 +91,7 @@ const getUsrs = () => {
 
 /*
   Define a function that adds records to the database on the user identified
-  by the submitted registration form.
+  by the submitted registration form and returns whether the user is a curator.
 */
 const createUsr = formData => {
   const excludedFromEtc = {
@@ -105,9 +105,8 @@ const createUsr = formData => {
     uid: 1
   };
   const misc = [];
-  const curatorKey = process.env.CURATOR_KEY;
   let isCurator = false;
-  if (formData.admin.includes(curatorKey)) {
+  if (formData.admin.includes(process.env.CURATOR_KEY)) {
     formData.admin = '';
     isCurator = true;
   }
@@ -125,7 +124,7 @@ const createUsr = formData => {
     return client.query(`
       INSERT INTO usr (regdate, uid, pwhash, name, email, misc)
       VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING *
+      RETURNING id
     `, [
       new Date().toISOString().slice(0, 10),
       formData.uid,
@@ -144,12 +143,12 @@ const createUsr = formData => {
       )
       .then(() => {
         client.end();
-        return [true, formData.uid];
+        return true;
       })
     }
     else {
       client.end();
-      return [false, formData.uid];
+      return false;
     }
   })
   .catch(error => {

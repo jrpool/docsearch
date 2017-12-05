@@ -47,7 +47,7 @@ router.post('/register', (request, response) => {
     else {
       return DbUsr.createUsr(formData)
       // Substitute name and temporary UID into acknowledgements.
-      .then(result => {
+      .then(() => {
         delete formData.pwHash;
         response.locals.msgs.regAckText = response.locals.msgs.regAckText
           .replace('{1}', formData.name)

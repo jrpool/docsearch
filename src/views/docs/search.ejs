@@ -1,11 +1,14 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.docsSearchTitle %></h1>
+<p>
+  <%- linkButton('/', msgs.btnHome) %>
+  <%- linkButton('/docs/browse', msgs.btnDocsBrowse) %>
+</p>
 
-    <p><%- msgs.docsSearchHere %></p>
+<h1><%- msgs.docsSearchTitle %></h1>
 
-    <%- linkButtonP('/', msgs.btnHome) %>
+<p><%- msgs.docsSearchHere %></p>
 
-    <p>This feature is not yet implemented.</p>
+<p>This feature is not yet implemented.</p>
 
 <%- include('../util/foot.ejs'); %>

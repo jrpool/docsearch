@@ -1,63 +1,63 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.curationRegEdit.replace('{1}', usr.id) %></h1>
+<%- linkButtonP('/', msgs.btnHome) %>
 
-    <p><%- msgs.curateRegEditHere.replace('{1}', usr.id) %></p>
+<h1><%- msgs.curationRegEdit.replace('{1}', usr.id) %></h1>
 
-    <%- linkButtonP('/', msgs.btnHome) %>
+<p><%- msgs.curateRegEditHere.replace('{1}', usr.id) %></p>
 
-    <form method="post" action="/curate/reg/<%= usr.id %>" class="form">
-      <pre class="form-error"><%- locals.formError || "" %></pre>
+<form method="post" action="/curate/reg/<%= usr.id %>" class="form">
+  <pre class="form-error"><%- locals.formError || "" %></pre>
 
+  <label>
+    <span><%- msgs.uid %></span>
+    <input required autofocus
+      type="text" name="uid"
+      size="15" minlength="2" maxlength="15"
+      value="<%= usr.uid %>"
+    >
+  </label>
+  <label>
+    <span><%- msgs.name %></span>
+    <input required
+      type="text" name="name"
+      size="40" minlength="3" maxlength="40"
+      value="<%= usr.name %>"
+    >
+  </label>
+  <label>
+    <span><%- msgs.email %></span>
+    <input required
+      type="email" name="email"
+      size="50" minlength="6" maxlength="50"
+      value="<%= usr.email %>"
+    >
+  </label>
+  <label>
+    <span><%- msgs.misc %></span>
+    <input
+      type="text" name="misc"
+      size="50" maxlength="264"
+      value="<%= usr.misc %>"
+    >
+  </label>
+
+  <section class="boxlist">
+    <h4 class="vclose"><%- msgs.catsHead %></h4>
+    <!-- msgs.cats properties have had existing true/false values
+    appended. -->
+    <% msgs.cats.forEach(cat => { %>
       <label>
-        <span><%- msgs.uid %></span>
-        <input required autofocus
-          type="text" name="uid"
-          size="15" minlength="2" maxlength="15"
-          value="<%= usr.uid %>"
+        <input type="checkbox" name="cats"
+          value="<%- cat[0] %>"<%= cat[3] ? " checked" : "" %>
         >
+        <span><%= `${cat[0]}. ${cat[2]}` %></span>
       </label>
-      <label>
-        <span><%- msgs.name %></span>
-        <input required
-          type="text" name="name"
-          size="40" minlength="3" maxlength="40"
-          value="<%= usr.name %>"
-        >
-      </label>
-      <label>
-        <span><%- msgs.email %></span>
-        <input required
-          type="email" name="email"
-          size="50" minlength="6" maxlength="50"
-          value="<%= usr.email %>"
-        >
-      </label>
-      <label>
-        <span><%- msgs.misc %></span>
-        <input
-          type="text" name="misc"
-          size="50" maxlength="264"
-          value="<%= usr.misc %>"
-        >
-      </label>
+    <% }); %>
+  </section>
 
-      <section class="boxlist">
-        <h4 class="vclose"><%- msgs.catsHead %></h4>
-        <!-- msgs.cats properties have had existing true/false values
-        appended. -->
-        <% msgs.cats.forEach(cat => { %>
-          <label>
-            <input type="checkbox" name="cats"
-              value="<%- cat[0] %>"<%= cat[3] ? " checked" : "" %>
-            >
-            <span><%= `${cat[0]}. ${cat[2]}` %></span>
-          </label>
-        <% }); %>
-      </section>
+  <button name="submit"><%- msgs.btnSubmit %></button>
 
-    <button name="submit"><%- msgs.btnSubmit %></button>
-
-  </form>
+</form>
 
 <%- include('../util/foot.ejs'); %>

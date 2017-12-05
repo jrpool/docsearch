@@ -1,15 +1,15 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.curation %></h1>
+<%- linkButtonP('/', msgs.btnHome) %>
 
-    <p><%- msgs.curateHere %></p>
+<h1><%- msgs.curation %></h1>
 
-    <%- linkButtonP('/', msgs.btnHome) %>
+<p><%- msgs.curateHere %></p>
 
-    <h3><%- msgs.curateChoose %></h3>
+<h3><%- msgs.curateChoose %></h3>
 
-    <%- linkButtonP('/curate/reg', msgs.btnCurateReg) %>
-    <%- linkButtonP('/curate/cat', msgs.btnCurateCat) %>
-    <%- linkButtonP('/curate/dir', msgs.btnCurateDir) %>
+<%- linkButtonP('/curate/reg', msgs.btnCurateReg) %>
+<%- linkButtonP('/curate/cat', msgs.btnCurateCat) %>
+<%- linkButtonP('/curate/dir', msgs.btnCurateDir) %>
 
 <%- include('../util/foot.ejs'); %>

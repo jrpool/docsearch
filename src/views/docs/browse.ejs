@@ -1,31 +1,32 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.docsBrowseTitle %></h1>
+<p>
+  <%- linkButton('/', msgs.btnHome) %>
+  <%- linkButton('/docs/search', msgs.btnDocsSearch) %>
+</p>
 
-    <p><%- msgs.docsBrowseText %></p>
+<h1><%- msgs.docsBrowseTitle %></h1>
 
-    <%- linkButtonP('/', msgs.btnHome) %>
+<p><%- msgs.docsBrowseText %></p>
 
-    <%- linkButtonP('/docs/search', msgs.btnDocsSearch) %>
-
-    <div class="dirlist">
-      <table>
-        <caption><%- head %></caption>
-        <tr>
-          <th><%- msgs.tblItem %></th>
-          <th><%- msgs.tblSize %></th>
-          <th><%- msgs.tblDate %></th>
-        </tr>
-        <% dirData.forEach(itemData => {
-          const p = `${base}${delim}${itemData.name}`;
-        %>
-          <tr>
-            <td><a href="/docs/browse?p=<%= p %>"><%= itemData.name %></a></td>
-            <td><%- itemData.size %></td>
-            <td><%- itemData.modDate %></td>
-          </tr>
-        <% }) %>
-      </table>
-    </div>
+<div class="dirlist">
+  <table>
+    <caption><%- head %></caption>
+    <tr>
+      <th><%- msgs.tblItem %></th>
+      <th><%- msgs.tblSize %></th>
+      <th><%- msgs.tblDate %></th>
+    </tr>
+    <% dirData.forEach(itemData => {
+      const p = `${base}${delim}${itemData.name}`;
+    %>
+      <tr>
+        <td><a href="/docs/browse?p=<%= p %>"><%= itemData.name %></a></td>
+        <td><%- itemData.size %></td>
+        <td><%- itemData.modDate %></td>
+      </tr>
+    <% }) %>
+  </table>
+</div>
 
 <%- include('../util/foot.ejs'); %>

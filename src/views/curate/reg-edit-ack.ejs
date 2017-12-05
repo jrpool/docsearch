@@ -1,16 +1,16 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.regEditAckTitle %></h1>
+<h1><%- msgs.regEditAckTitle %></h1>
 
-    <p><%- textParts[0] %><%= targetDeepUsr[0].name %><%- textParts[1] %></p>
+<p><%- textParts[0] %><%= targetDeepUsr[0].name %><%- textParts[1] %></p>
 
-    <div class="kvpairs">
-      <% Object.keys(targetDeepUsr[0]).forEach(key => { %>
-        <p><%- key %> = <%= targetDeepUsr[0][key] %></p>
-      <% }); %>
-      <p><%= msgs.curateCats %> = <%- targetDeepUsr[1] %></p>
-    </div>
+<div class="kvpairs">
+  <% Object.keys(targetDeepUsr[0]).forEach(key => { %>
+    <p><%- key %> = <%= targetDeepUsr[0][key] %></p>
+  <% }); %>
+  <p><%= msgs.curateCats %> = <%- targetDeepUsr[1] %></p>
+</div>
 
-    <%- linkButtonP('/', msgs.btnHome) %>
+<%- linkButtonP('/', msgs.btnHome) %>
 
 <%- include('../util/foot.ejs'); %>

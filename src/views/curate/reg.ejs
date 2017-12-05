@@ -1,38 +1,38 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.curationReg %></h1>
+<%- linkButtonP('/', msgs.btnHome) %>
 
-    <p><%- msgs.curateRegHere %></p>
+<h1><%- msgs.curationReg %></h1>
 
-    <%- linkButtonP('/', msgs.btnHome) %>
+<p><%- msgs.curateRegHere %></p>
 
-    <h3><%- msgs.choose %></h3>
+<h3><%- msgs.choose %></h3>
 
-    <table>
+<table>
 
-      <tr>
-        <th colspan="2"></th>
-        <th><%- msgs.tblID %></th>
-        <th><%- msgs.tblUID %></th>
-        <th><%- msgs.tblName %></th>
-      </tr>
+  <tr>
+    <th colspan="2"></th>
+    <th><%- msgs.tblID %></th>
+    <th><%- msgs.tblUID %></th>
+    <th><%- msgs.tblName %></th>
+  </tr>
 
-      <% usrs.forEach(usr => { %>
-        <tr>
-          <td class="open">
-            <%- linkButton(
-              `/curate/reg/${usr.id}/dereg`, msgs.btnDeregister
-            ) %>
-          </td>
-          <td class="open">
-            <%- linkButton(`/curate/reg/${usr.id}`, msgs.btnEdit) %>
-          </td>
-          <td><%= usr.id %></td>
-          <td><%= usr.uid %></td>
-          <td><%= usr.name %></td>
-        </tr>
-      <% }); %>
+  <% usrs.forEach(usr => { %>
+    <tr>
+      <td class="open">
+        <%- linkButton(
+          `/curate/reg/${usr.id}/dereg`, msgs.btnDeregister
+        ) %>
+      </td>
+      <td class="open">
+        <%- linkButton(`/curate/reg/${usr.id}`, msgs.btnEdit) %>
+      </td>
+      <td><%= usr.id %></td>
+      <td><%= usr.uid %></td>
+      <td><%= usr.name %></td>
+    </tr>
+  <% }); %>
 
-    </table>
+</table>
 
 <%- include('../util/foot.ejs'); %>

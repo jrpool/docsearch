@@ -27,6 +27,11 @@ button {
   font-style: italic;
 }
 
+button.dangerous {
+  background-color: mediumvioletred;
+  color: yellow;
+}
+
 .contact-list {
   display: flex;
   flex-direction: column;

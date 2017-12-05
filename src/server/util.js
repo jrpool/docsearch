@@ -1,4 +1,33 @@
-const linkButton = (path, msg, opts) => `<button ${typeof opts === 'object' && opts.showIf || ''}${typeof opts === 'object' && opts.tabIndex || ''}type="button" onclick="location.href='${path}'">${msg}</button>`;
+const linkButton = (path, msg, opts) => {
+  let classes = [],
+    classString = '',
+    tabIndex = '',
+    tabIndexString = '';
+  if (typeof opts === 'object') {
+    if (opts.showIf) {
+      classes.push(opts.showIf);
+    }
+    if (opts.kind) {
+      classes.push(opts.kind);
+    }
+    if (opts.tabIndex) {
+      tabIndex = tabIndex + opts.tabIndex;
+    }
+  }
+  if (classes.length) {
+    classString = `class="${classes.join(' ')}"`;
+  }
+  if (tabIndex) {
+    tabIndexString = `tabindex="${tabIndex}"`;
+  }
+  return `<button
+    ${classString}
+    ${tabIndexString}
+    type="button"
+    onclick="location.href='${path}'">
+    ${msg}
+  </button>`;
+}
 
 const linkButtonP = (path, msg, opts) => `<p>${linkButton(path, msg, opts)}</p>`;
 
@@ -9,7 +38,7 @@ const personalStatusMsg = (usr, locals) => {
       locals.linkButton(
         '/usr/logout',
         locals.msgs.btnLogout,
-        {tabIndex: 'tabindex="-1" '}
+        {tabIndex: '-1'}
       )
     )
     .replace(
@@ -17,7 +46,7 @@ const personalStatusMsg = (usr, locals) => {
       locals.linkButton(
         '/usr/deregister',
         locals.msgs.btnDeregister,
-        {tabIndex: 'tabindex="-1" '}
+        {tabIndex: '-1', kind: 'dangerous'}
       )
     );
 };

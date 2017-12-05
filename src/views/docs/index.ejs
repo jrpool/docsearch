@@ -1,15 +1,15 @@
 <%- include('../util/head.ejs'); %>
 
-    <h1><%- msgs.docsTitle %></h1>
+<%- linkButtonP('/', msgs.btnHome) %>
 
-    <p><%- msgs.docsText %></p>
+<h1><%- msgs.docsTitle %></h1>
 
-    <%- linkButtonP('/', msgs.btnHome) %>
+<p><%- msgs.docsText %></p>
 
-    <p><%- msgs.docsChoose %></p>
+<p><%- msgs.docsChoose %></p>
 
-    <%- linkButtonP('/docs/browse', msgs.btnDocsBrowse) %>
-    <%- linkButtonP('/docs/search', msgs.btnDocsSearch) %>
-    <%- linkButtonP('/docs/add', msgs.btnDocsAdd, {showIf: ifCanAdd}) %>
+<%- linkButtonP('/docs/browse', msgs.btnDocsBrowse) %>
+<%- linkButtonP('/docs/search', msgs.btnDocsSearch) %>
+<%- linkButtonP('/docs/add', msgs.btnDocsAdd, {showIf: ifCanAdd}) %>
 
 <%- include('../util/foot.ejs'); %>

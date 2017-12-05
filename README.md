@@ -155,6 +155,8 @@ URL=http://www.yourdomain.org
 
 - If you have installed a production environment and want to launch it as a daemon, so it is detached from your command-line environment and it restarts when the server reboots, execute `npm run start_daemon`. If you want to stop the application after that, execute `npm run stop_daemon`. (On some systems it is necessary to execute these commands as a superuser, namely as `sudo npm run start_dev` and `sudo npm run stop_daemon`.)
 
+- In a production environment, both start methods cannot be relied on to adapt to any changes you make in the code. So, if you have made changes and want to test them, stop the application with `CONTROL-c` or `npm run stop_daemon` and then start it again.
+
 2. To access the application while it is running, use a web browser to request the application’s port on your server, such as:
 
 ```

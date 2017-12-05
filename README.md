@@ -29,7 +29,7 @@ The use case addressed by this application is a person or organization that has 
 
 - Anybody can register as a user.
 
-- There is at least 1 “curator” (super-user). Any person automatically becomes a curator by including the `CURATOR_KEY` string in the administrative field of the registration form. This key is kept secret and is disclosed only to those who should become curators.
+- There is at least 1 “curator” (super-user). Instructions for becoming a curator are in the last paragraph of this document.
 
 - Once a user is registered, the user can log in and, if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
 
@@ -59,6 +59,8 @@ Suggestions on priorities for the further development of the project, and of cou
 ## Demonstration
 
 There is a [demonstration version of this application](http://jpdev.pro:3001), with a small directory tree of sample documents.
+
+As distributed, this application is configured to replicate that demonstration.
 
 ## Installation
 
@@ -111,6 +113,7 @@ Make that parent directory your working directory, by executing, for example:
 COOKIE_EXPIRE_DAYS=7
 CURATOR_CAT=0
 CURATOR_KEY=ASecretKey
+DOC_DIR=docs
 DOMAIN=yourdomain.org
 FROM_EMAIL=noreply@yourdomain.org
 FROM_NAME=Documents from Your Organization
@@ -135,13 +138,13 @@ URL=http://www.yourdomain.org
 
 2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in step 0.
 
-3. The `public/docs` directory is the root of your repository. Populate it with directories and files as needed. You may include symbolic links in it, and users with access to those links will also have access to the files and directories that they reference. This feature offers you the ability to grant multiple categories of users access to a particular file or directory without the need to make copies of it. But the feature requires care, because it is possible to mistakenly include a symbolic link to directories and files, anywhere in your file system, that you intend not to disclose.
+3. A directory inside the `public` directory will be the root of your repository. In the distribution of this application, it is `demodocs`, and that name appears in the `.env` and `db/config/seeddir` files. For your own installation, specify which directory that is in the `DOC_DIR` entry of the `.env` file (for example, `DOC_DIR=docs`), and name directories accordingly in the `db/config/seeddir` file described in the next paragraph. Create the specified directory and then populate it with directories and files as needed. You may include symbolic links in it, and users with access to those links will also have access to the files and directories that they reference. This feature offers you the ability to grant multiple categories of users access to a particular file or directory without the need to make copies of it. But the feature requires care, because it is possible to mistakenly include a symbolic link to directories and files, anywhere in your file system, that you intend not to disclose.
 
 4. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
 
-5. Modify the values of the properties in the `eng` object in the file `src/server/util.js`, to conform to your requirements.
+5. Modify the values of the properties in the `eng` object in the file `src/server/util.js`, to conform to your requirements. Among the properties that you will probably need to redefine are `accessText`, `cats`, `footText`, `introText`, and `usrEtc`.
 
-6. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the [ISO 639-3 alpha-3 code](http://www-01.sil.org/iso639-3/codes.asp) of that language. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LANG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization per user or browser preferences.
+6. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the [ISO 639-3 alpha-3 code](http://www-01.sil.org/iso639-3/codes.asp) of that language. Add it to the export list at the end of the file. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LANG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization per user or browser preferences.
 
 ## Execution
 

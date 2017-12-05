@@ -147,7 +147,13 @@ URL=http://www.yourdomain.org
 
 0. Once the application is installed, create and populate the database by executing `npm run revive_db`.
 
-1. To start the application, execute `npm run start_daemon` (or, if in a development environment, `npm run start_dev`). The former command will launch a daemon that keeps the application running. If you want to stop the application after that, execute `npm run stop_daemon`. (On some systems it is necessary to execute these commands as a superuser, namely as `sudo npm run start_dev` and `sudo npm run stop_daemon`.)
+1. There are 3 ways to start the application. In each case, make the project directory your working directory first.
+
+- If you have chosen to install a development environment, execute `npm run start_dev`. This will run the application under `nodemon`, automatically restarting the application when you change files or their content, to ensure that the changes are live.
+
+- If you have installed a production environment and want to test it, execute `npm start`.
+
+- If you have installed a production environment and want to launch it as a daemon, so it is detached from your command-line environment and it restarts when the server reboots, execute `npm run start_daemon`. If you want to stop the application after that, execute `npm run stop_daemon`. (On some systems it is necessary to execute these commands as a superuser, namely as `sudo npm run start_dev` and `sudo npm run stop_daemon`.)
 
 2. To access the application while it is running, use a web browser to request the application’s port on your server, such as:
 

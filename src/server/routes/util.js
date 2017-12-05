@@ -8,6 +8,18 @@ const renderError = function(error, request, response, mark) {
   );
 };
 
+// Define a function that logs the current user out.
+const anonymizeUsr = (request, response) => {
+  response.locals.msgs.status = '';
+  delete request.session.usr;
+  delete request.session.id;
+  request.session.destroy(error => {
+    if (error) {
+      renderError(error, request, response, 'anonymizeUsr');
+    }
+  });
+};
+
 // Define a function that makes a name safe for an email header.
 const emailSanitize = name => name.replace(/[,;]/g, '-');
 
@@ -43,4 +55,4 @@ const mailSend = (usrs, subject, text, msgs) => {
   .catch(error => console.log(error.toString()));
 };
 
-module.exports = {renderError, mailSend};
+module.exports = {renderError, anonymizeUsr, mailSend};

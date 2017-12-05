@@ -19,6 +19,7 @@ const usr_route = require('./server/routes/usr');
 const doc_route = require('./server/routes/docs').router;
 const curate_route = require('./server/routes/curate');
 const path = require('path');
+const util = require('./server/util');
 
 app.get('/favicon.ico', (request, response) => response.status(204));
 
@@ -33,7 +34,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const accessLogStream = fs.createWriteStream(
   path.join(process.cwd(), 'logs/access.log'), {flags: 'a'}
 );
-// Because this follows express.static, no static assets are logged.
+/*
+  This follows express.static, so static assets (e.g., style.css) are not
+  logged.
+*/
 app.use(morgan(
   ':date[iso] :status :method :remote-addr :url', {
     stream: accessLogStream,
@@ -59,32 +63,17 @@ app.use(session({
 app.use((request, response, next) => {
   request.sessionStore = store;
   response.locals.query = '';
-  response.locals.msgs = require('./server/util')[process.env.LANG];
-  response.locals.linkButton = require('./server/util').linkButton;
-  response.locals.linkButtonP = require('./server/util').linkButtonP;
+  response.locals.msgs = util[process.env.LANG];
+  response.locals.linkButton = util.linkButton;
+  response.locals.linkButtonP = util.linkButtonP;
   if (request.session && request.session.usrID) {
     DbUsr.getUsr({type: 'id', id: request.session.usrID})
     .then(deepUsr => {
+      // If user has a session and also a database record:
       if (deepUsr[0].id) {
         response.locals.usr = deepUsr;
-        response.locals.msgs.status =
-          response.locals.msgs.status.replace('{1}', deepUsr[0].name)
-            .replace(
-              '{2}',
-              response.locals.linkButton(
-                '/usr/logout',
-                response.locals.msgs.btnLogout,
-                {tabIndex: 'tabindex="-1" '}
-              )
-            )
-            .replace(
-              '{3}',
-              response.locals.linkButton(
-                '/usr/deregister',
-                response.locals.msgs.btnDeregister,
-                {tabIndex: 'tabindex="-1" '}
-              )
-            );
+        response.locals.msgs.status
+          = util.personalStatusMsg(deepUsr[0], response.locals);
       }
       else {
         response.locals.usr = [{}, []];

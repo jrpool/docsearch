@@ -36,23 +36,13 @@ router.get('/reg', (request, response) => {
   .catch(error => util.renderError(error, request, response));
 });
 
-// Page for curation of a particular user’s registration.
-router.get('/reg/:id', (request, response) => {
-  DbUsr.getUsr({type: 'id', id: Number.parseInt(request.params.id)})
-  .then(deepUsr => {
-    // Append to each msgs.cats element whether the user is in it.
-    msgs.cats.forEach(
-      cat => {cat.push(deepUsr[1].includes(Number.parseInt(cat[0])))}
-    );
-    response.render('curate/reg-edit', {usr: deepUsr[0]});
-  })
-  .catch(error => util.renderError(error, request, response));
-});
-
-// Define a function that deletes a user’s session and logs the user out.
-const deleteSession = (request, response, usrID) => {
+/*
+  Define a function that logs a specified user out and deletes all sessions
+  of the user.
+*/
+const anonymizeUsr = (usrID, request, response) => {
   if (usrID === response.locals.usr[0].id) {
-    request.session.destroy();
+    util.anonymizeUsr(request, response);
   }
   else {
     request.sessionStore.list((error, fileNames) => {
@@ -74,9 +64,30 @@ const deleteSession = (request, response, usrID) => {
   return '';
 };
 
-// Page for curator editing of a particular user’s registration.
-router.post('/reg/:id', (request, response) => {
+// Page for curator edits of a particular user’s registration.
+router.get('/reg/:id(\\d+)', (request, response) => {
+  DbUsr.getUsr({type: 'id', id: Number.parseInt(request.params.id)})
+  .then(deepUsr => {
+    // Append to each msgs.cats element whether the user is in it.
+    msgs.cats.forEach(
+      cat => {cat.push(deepUsr[1].includes(Number.parseInt(cat[0])))}
+    );
+    response.render('curate/reg-edit', {usr: deepUsr[0]});
+  })
+  .catch(error => util.renderError(error, request, response));
+});
+router.post('/reg/:id(\\d+)', (request, response) => {
   const formData = request.body;
+  if (
+    !formData.uid
+    || !formData.name
+    || !formData.email
+  ) {
+    response.render(
+      'curate/reg-edit', {formError: msgs.errNeed3RegFacts, usr: formData}
+    );
+    return '';
+  }
   if (formData.cats) {
     if (Array.isArray(formData.cats)) {
       formData.cats = formData.cats.map(idString => Number.parseInt(idString));
@@ -89,16 +100,6 @@ router.post('/reg/:id', (request, response) => {
     formData.cats = [];
   }
   msgs.cats.forEach(cat => {cat.push(formData.cats.includes(cat[0]))});
-  if (
-    !formData.uid
-    || !formData.name
-    || !formData.email
-  ) {
-    response.render(
-      'curate/reg-edit', {formError: msgs.errNeed3RegFacts, usr: formData}
-    );
-    return '';
-  }
   formData.id = Number.parseInt(request.params.id);
   /*
     Make the changes in the user’s database record and delete the user’s
@@ -108,8 +109,8 @@ router.post('/reg/:id', (request, response) => {
   .then(() => {
     return DbUsr.getUsr({type: 'id', id: formData.id})
     .then(targetDeepUsr => {
-      deleteSession(request, response, formData.id);
       delete targetDeepUsr[0].pwhash;
+      anonymizeUsr(formData.id, request, response);
       response.render(
         'curate/reg-edit-ack', {
           targetDeepUsr, textParts: msgs.regEditAckText.split('{1}')
@@ -133,17 +134,17 @@ router.post('/reg/:id', (request, response) => {
   .catch(error => util.renderError(error, request, response, 'regid2'));
 });
 
-// Page for curator deregistration of a particular user.
-router.get('/reg/:id/dereg', (request, response) => {
+// Curator deregistration button of a user also logs the user out.
+router.get('/reg/:id(\\d+)/dereg', (request, response) => {
   const targetUsrID = Number.parseInt(request.params.id);
   return DbUsr.getUsr({type: 'id', id: targetUsrID})
   .then(targetDeepUsr => {
     return DbUsr.deleteUsr(targetUsrID)
     .then(() => {
-      deleteSession(request, response, targetUsrID);
       msgs.curateDeregAckText = msgs.curateDeregAckText.replace(
         '{1}', targetDeepUsr[0].name
       );
+      anonymizeUsr(targetUsrID, request, response);
       response.render('curate/deregister-ack');
       return util.mailSend(
         [targetDeepUsr[0], response.locals.usr[0]],

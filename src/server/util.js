@@ -2,6 +2,26 @@ const linkButton = (path, msg, opts) => `<button ${typeof opts === 'object' && o
 
 const linkButtonP = (path, msg, opts) => `<p>${linkButton(path, msg, opts)}</p>`;
 
+const personalStatusMsg = (usr, locals) => {
+  return locals.msgs.statusIfKnown.replace('{1}', usr.name)
+    .replace(
+      '{2}',
+      locals.linkButton(
+        '/usr/logout',
+        locals.msgs.btnLogout,
+        {tabIndex: 'tabindex="-1" '}
+      )
+    )
+    .replace(
+      '{3}',
+      locals.linkButton(
+        '/usr/deregister',
+        locals.msgs.btnDeregister,
+        {tabIndex: 'tabindex="-1" '}
+      )
+    );
+};
+
 const eng = {
   accessText: 'You can browse and search documents here. Some of them have access limitations. If you are a member, director, or manager, you can register or log in for additional access.',
   accessTitle: 'Access',
@@ -86,7 +106,7 @@ const eng = {
   pwNew: 'Create a password:',
   regAckText: 'Thank you, {1}, for registering! You may log in with this temporary UID:<blockquote><strong>{2}</strong></blockquote>You should receive an email confirmation and be contacted later for verification.',
   regAckTitle: 'Registration in Progress',
-  regEditAckText: 'Your revisions to the registration record of user {1} have been made. The current data are:',
+  regEditAckText: 'You have revised the registration record of, and <strong>logged out</strong>, user {1}. New data:',
   regEditAckTitle: 'Registration Record Revised',
   regEditMailSubject: `Registration revision at ${process.env.DOMAIN}`,
   regEditMailText: `This confirms that the registration record of {1} at ${process.env.URL} has been updated and now contains: {2}`,
@@ -94,7 +114,7 @@ const eng = {
   registration: 'Registration',
   regMailSubject: `Registration at ${process.env.DOMAIN}`,
   regMailText: `This confirms the registration of {1} at ${process.env.URL}. You can log in with temporary UID {2}. After verification, it will be replaced with a durable UID.`,
-  status: 'You are logged in as {1}. {2} {3}',
+  statusIfKnown: 'You are logged in as {1}. {2} {3}',
   tblCat: 'Category',
   tblDate: 'Date',
   tblID: 'ID',
@@ -142,4 +162,4 @@ const eng = {
   ]
 };
 
-module.exports = {linkButton, linkButtonP, eng};
+module.exports = {linkButton, linkButtonP, personalStatusMsg, eng};

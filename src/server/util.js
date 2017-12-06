@@ -136,7 +136,7 @@ const eng = {
   pwNew: 'Create a password:',
   regAckText: 'Thank you, {1}, for registering! You may log in with this temporary UID:<blockquote><strong>{2}</strong></blockquote>You should receive an email confirmation and be contacted later for verification.',
   regAckTitle: 'Registration in Progress',
-  regEditAckText: 'You have revised the registration record of, and <strong>logged out</strong>, user {1}. New data:',
+  regEditAckText: 'You have revised the registration record of user {1}.<br><br>To ensure the integrity of the changes, the user has been <strong>logged out</strong>, and the changes will take effect when the user logs in again.<br><br>New data:',
   regEditAckTitle: 'Registration Record Revised',
   regEditMailSubject: `Registration revision at ${process.env.DOMAIN}`,
   regEditMailText: `This confirms that the registration record of {1} at ${process.env.URL} has been updated and now contains: {2}`,

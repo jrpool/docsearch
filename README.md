@@ -14,11 +14,11 @@ https://github.com/jrpool/docsearch
 
 ### General
 
-This application demonstrates the use of HTML, CSS, JavaScript, Apache `solr`, `bcrypt`, `body-parser`, `dotenv`, `ejs`, `express`, `express-session`, `session-file-store`, `PostgreSQL`, `pg` (node-postgres), the SendGrid Web API, and `PM2` to create a web server that manages, and provides selective access to, a repository of documents.
+This application demonstrates the use of HTML, CSS, JavaScript, [Apache `solr`][solr], [`bcrypt`][bcrypt], [`body-parser`][bp], [`dotenv`][dotenv], [`ejs`][ejs], [`express`][ex], [`express-session`][exs], [`session-file-store`][sfs], [`certbot`][certbot], [`letsencrypt`][le], [`PostgreSQL`][pg], [`pg`][nodepg] (node-postgres), the [SendGrid Web API][sgweb], and [`PM2`][pm2] to create a web server that manages, and provides selective access to, a repository of documents.
 
 The use case addressed by this application is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
 
-- Document formats for which the application intends to extract and analyze text content to support relevance discovery are [those supported by Apache Tika](http://tika.apache.org/1.16/formats.html).
+- Document formats for which the application intends to extract and analyze text content to support relevance discovery are those supported by [Apache Tika][tika].
 
 - Possible user actions are:
     - Browse through the directory tree.
@@ -126,6 +126,7 @@ PGHOST=localhost
 PGPASSWORD=null
 PGPORT=5432
 PGUSER=solr
+# PORT must be 1024 or greater to allow non-root process owner.
 PORT=3000
 PUBLIC_CAT=1
 REG_EMAIL=admin@yourdomain.org
@@ -171,6 +172,20 @@ http://www.yourserver.org:3000
 
 3. When you access the application with your browser, register yourself as a curator. To obtain curator status, enter the CURATOR_KEY value into the “For administrative use” text field. Then, when you log in, you will be a curator.
 
+[bcrypt]: https://www.npmjs.com/package/bcrypt
+[bp]: https://www.npmjs.com/package/body-parser
+[certbot]: https://certbot.eff.org/#ubuntuxenial-other
+[dotenv]: https://www.npmjs.com/package/dotenv
+[ejs]: https://www.npmjs.com/package/ejs
+[ex]: https://www.npmjs.com/package/express
+[exs]: https://www.npmjs.com/package/express-session
+[le]: https://letsencrypt.org/
 [lg]: https://www.learnersguild.org
+[nodepg]: https://www.npmjs.com/package/pg
 [npm]: https://www.npmjs.com/
 [pg]: https://www.postgresql.org/
+[pm2]: https://www.npmjs.com/package/pm2
+[sfs]: https://www.npmjs.com/package/session-file-store
+[sgweb]: https://sendgrid.com/docs/API_Reference/api_v3.html
+[solr]: http://lucene.apache.org/solr/
+[tika]: http://tika.apache.org/1.16/formats.html

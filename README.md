@@ -14,7 +14,7 @@ https://github.com/jrpool/docsearch
 
 ### General
 
-This application demonstrates the use of HTML, CSS, JavaScript, [Apache `solr`][solr], [`bcrypt`][bcrypt], [`body-parser`][bp], [`dotenv`][dotenv], [`ejs`][ejs], [`express`][ex], [`express-session`][exs], [`session-file-store`][sfs], [`certbot`][certbot], [`letsencrypt`][le], [`PostgreSQL`][pg], [`pg`][nodepg] (node-postgres), the [SendGrid Web API][sgweb], and [`PM2`][pm2] to create a web server that manages, and provides selective access to, a repository of documents.
+This application demonstrates the use of HTML, CSS, JavaScript, [Apache `solr`][solr], [`bcrypt`][bcrypt], [`body-parser`][bp], [`dotenv`][dotenv], [`ejs`][ejs], [`express`][ex], [`express-session`][exs], [`session-file-store`][sfs], [`PostgreSQL`][pg], [`pg`][nodepg] (node-postgres), the [SendGrid Web API][sgweb], and [`PM2`][pm2] to create a web server that manages, and provides selective access to, a repository of documents.
 
 The use case addressed by this application is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
 
@@ -110,6 +110,7 @@ Make that parent directory your working directory, by executing, for example:
 - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
 - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
 - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
+- The `PROTOCOL` value is either `http` or `https`. It is generally considered a bad practice to use `http` over the Internet, especially where passwords are transmitted. Typically you will implement `https` and a reverse proxy server that passes `https` requests for this application to the port that listens for this application. The demonstration version described above implements `https` via [`certbot`][certbot] and [`letsencrypt`][le].
 
 ```
 COOKIE_EXPIRE_DAYS=7
@@ -128,13 +129,14 @@ PGPORT=5432
 PGUSER=solr
 # PORT must be 1024 or greater to allow non-root process owner.
 PORT=3000
+PROTOCOL=https
 PUBLIC_CAT=1
 REG_EMAIL=admin@yourdomain.org
 REG_NAME=Your Administrator
 SECRET=AnAuthenticationSecret
 SENDGRID_API_KEY=wHaTeVer.SenDGriDgIvEs.YoU
 TEMP_UID_MAX=3
-URL=http://www.yourdomain.org
+URL=https://www.yourdomain.org
 ```
 
 1. Ensure that non-local users can reach the application at the port you have chosen (see below under “Execution”). If they cannot, modify the server configuration to enable this access. If you have `ufw` installed, you can execute `ufw status` to see what is allowed. If the required port is not allowed, you can add it by executing `sudo ufw allow 3000` (or such other port as you have chosen).

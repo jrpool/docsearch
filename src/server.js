@@ -9,6 +9,7 @@ Object.assign(process.env, dotenv.parse(fs.readFileSync('.env')));
 // Import required modules.
 const DbUsr = require('./db/usr');
 const express = require('express');
+const proto = require(process.env.PROTOCOL);
 const app = express();
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
@@ -108,6 +109,12 @@ app.use((request, response) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(process.env.URL);
-});
+let server;
+if (process.env.PROTOCOL === 'https') {
+  server = proto.createServer({handshakeTimeout: 30}, app);
+}
+else {
+  server = proto.createServer(app);
+}
+server.listen(port);
+console.log(process.env.URL);

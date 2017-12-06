@@ -111,7 +111,14 @@ app.use((request, response) => {
 const port = process.env.PORT || 3000;
 let server;
 if (process.env.PROTOCOL === 'https') {
-  server = proto.createServer({handshakeTimeout: 30}, app);
+  server = proto.createServer(
+    {
+      handshakeTimeout: 30,
+      cert: fs.readFileSync(process.env.HTTPS_CERT),
+      key: fs.readFileSync(process.env.HTTPS_KEY)
+    },
+    app
+  );
 }
 else {
   server = proto.createServer(app);

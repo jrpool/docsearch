@@ -59,8 +59,7 @@ const dirData = (staticPath, reqPath) => {
 
 // Page where user browses permitted directories.
 router.get('/browse', (request, response) => {
-  const cats
-    = response.locals.usr[1].length
+  const cats = response.locals.usr[1].length
     ? response.locals.usr[1]
     : [Number.parseInt(process.env.PUBLIC_CAT)];
   DbDocs.catDirRights()
@@ -71,10 +70,10 @@ router.get('/browse', (request, response) => {
     */
     const rightMap = {};
     rights = rights
-      .filter(right => cats.includes(right[0]) && right[1] === 0)
-      .map(right => right[2])
-      .sort()
-      .reverse();
+    .filter(right => cats.includes(right[0]) && right[1] === 0)
+    .map(right => right[2])
+    .sort()
+    .reverse();
     rights.forEach(right => rightMap[right] = 1);
     rights = rights.filter(right => {
       const rightParts = right.split('/');
@@ -122,7 +121,6 @@ router.get('/browse', (request, response) => {
   })
   .catch(error => {
     util.renderError(error, request, response);
-    client.end();
   });
 });
 

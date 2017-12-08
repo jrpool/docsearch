@@ -22,4 +22,4 @@ proc();
 // Delete all sessions.
 const sessionPath = path.join(__dirname, '../../../sessions');
 fs.readdirSync(sessionPath)
-  .forEach(file => fs.unlinkSync(path.join(sessionPath, file)));
+.forEach(file => fs.unlinkSync(path.join(sessionPath, file)));

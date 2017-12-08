@@ -56,7 +56,7 @@ const hasCat = (usrID, cat) => {
   return client.connect()
   .then(() => {
     return client.query({
-      text: `SELECT COUNT(cat) FROM usrcat WHERE usr = $1 AND cat = $2`,
+      text: 'SELECT COUNT(cat) FROM usrcat WHERE usr = $1 AND cat = $2',
       values: [usrID, cat],
       rowMode: 'array'
     })
@@ -121,30 +121,33 @@ const createUsr = formData => {
   const client = new Client();
   return client.connect()
   .then(() => {
-    return client.query(`
-      INSERT INTO usr (regdate, uid, pwhash, name, email, misc)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id
-    `, [
-      new Date().toISOString().slice(0, 10),
-      formData.uid,
-      formData.pwHash,
-      formData.name,
-      formData.email,
-      misc.join(' ¶ ')
-    ])
+    return client.query(
+      `
+        INSERT INTO usr (regdate, uid, pwhash, name, email, misc)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING id
+      `,
+      [
+        new Date().toISOString().slice(0, 10),
+        formData.uid,
+        formData.pwHash,
+        formData.name,
+        formData.email,
+        misc.join(' ¶ ')
+      ]
+    )
     .then(usr => usr.rows[0]);
   })
   .then(usr => {
     if (isCurator) {
       return client.query(
-        `INSERT INTO usrcat VALUES ($1, $2)`,
+        'INSERT INTO usrcat VALUES ($1, $2)',
         [usr.id, process.env.CURATOR_CAT]
       )
       .then(() => {
         client.end();
         return true;
-      })
+      });
     }
     else {
       client.end();
@@ -155,7 +158,7 @@ const createUsr = formData => {
     client.end();
     throw error;
   });
-}
+};
 
 // Define a function that revises the data on a user.
 const updateUsr = formData => {
@@ -182,7 +185,7 @@ const updateUsr = formData => {
   }))
   .then(() => client.query({
     values: [formData.id],
-    text: `DELETE FROM usrcat WHERE usr = $1`
+    text: 'DELETE FROM usrcat WHERE usr = $1'
   }))
   .then(() => {
     if (cats.length) {
@@ -213,7 +216,7 @@ const updateUsr = formData => {
 const deleteUsr = id => {
   const client = new Client();
   return client.connect()
-  .then(() => {return client.query(`DELETE FROM usr WHERE id = $1`, [id]);})
+  .then(() => {return client.query('DELETE FROM usr WHERE id = $1', [id]);})
   .then(() => {
     client.end();
     return '';
@@ -222,7 +225,7 @@ const deleteUsr = id => {
     client.end();
     throw error;
   });
-}
+};
 
 module.exports = {
   getUsr,

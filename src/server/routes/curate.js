@@ -1,7 +1,5 @@
 const DbUsr = require('../../db/usr');
 const router = require('express').Router();
-const fs = require('fs');
-const path = require('path');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const util = require('./util');
@@ -57,7 +55,7 @@ const anonymizeUsr = (usrID, request, response) => {
               }
             });
           }
-        })
+        });
       });
     });
   }
@@ -70,7 +68,9 @@ router.get('/reg/:id(\\d+)', (request, response) => {
   .then(deepUsr => {
     // Append to each msgs.cats element whether the user is in it.
     msgs.cats.forEach(
-      cat => {cat.push(deepUsr[1].includes(Number.parseInt(cat[0])))}
+      cat => {
+        cat.push(deepUsr[1].includes(Number.parseInt(cat[0])));
+      }
     );
     response.render('curate/reg-edit', {usr: deepUsr[0]});
   })
@@ -99,7 +99,9 @@ router.post('/reg/:id(\\d+)', (request, response) => {
   else {
     formData.cats = [];
   }
-  msgs.cats.forEach(cat => {cat.push(formData.cats.includes(cat[0]))});
+  msgs.cats.forEach(cat => {
+    cat.push(formData.cats.includes(cat[0]));
+  });
   formData.id = Number.parseInt(request.params.id);
   /*
     Make the changes in the user’s database record and delete the user’s

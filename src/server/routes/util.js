@@ -28,7 +28,7 @@ const emailSanitize = name => name.replace(/[,;]/g, '-');
   that all email addresses in the “to” and “cc” headers are unique. usrs is
   an array of the array elements of user records.
 */
-const mailSend = (usrs, subject, text, msgs) => {
+const mailSend = (usrs, subject, text) => {
   if(usrs.length === 2 && usrs[1].email === usrs[0].email) {
     usrs.shift();
   }

@@ -1,6 +1,6 @@
 const linkButton = (path, msg, opts) => {
-  let classes = [],
-    classString = '',
+  const classes = [];
+  let classString = '',
     tabIndex = '',
     tabIndexString = '';
   if (typeof opts === 'object') {
@@ -27,28 +27,28 @@ const linkButton = (path, msg, opts) => {
     onclick="location.href='${process.env.LINK_PREFIX}${path}'">
     ${msg}
   </button>`;
-}
+};
 
 const linkButtonP = (path, msg, opts) => `<p>${linkButton(path, msg, opts)}</p>`;
 
 const personalStatusMsg = (usr, locals) => {
   return locals.msgs.statusIfKnown.replace('{1}', usr.name)
-    .replace(
-      '{2}',
-      locals.linkButton(
-        '/usr/logout',
-        locals.msgs.btnLogout,
-        {tabIndex: '-1'}
-      )
+  .replace(
+    '{2}',
+    locals.linkButton(
+      '/usr/logout',
+      locals.msgs.btnLogout,
+      {tabIndex: '-1'}
     )
-    .replace(
-      '{3}',
-      locals.linkButton(
-        '/usr/deregister',
-        locals.msgs.btnDeregister,
-        {tabIndex: '-1', kind: 'dangerous'}
-      )
-    );
+  )
+  .replace(
+    '{3}',
+    locals.linkButton(
+      '/usr/deregister',
+      locals.msgs.btnDeregister,
+      {tabIndex: '-1', kind: 'dangerous'}
+    )
+  );
 };
 
 const eng = {

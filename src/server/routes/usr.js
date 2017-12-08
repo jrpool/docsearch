@@ -50,11 +50,11 @@ router.post('/register', (request, response) => {
       .then(() => {
         delete formData.pwHash;
         response.locals.msgs.regAckText = response.locals.msgs.regAckText
-          .replace('{1}', formData.name)
-          .replace('{2}', formData.uid);
+        .replace('{1}', formData.name)
+        .replace('{2}', formData.uid);
         response.locals.msgs.regMailText = response.locals.msgs.regMailText
-          .replace('{1}', formData.name)
-          .replace('{2}', formData.uid);
+        .replace('{1}', formData.name)
+        .replace('{2}', formData.uid);
         response.render('usr/register-ack');
         return routeUtil.mailSend(
           [formData],
@@ -83,7 +83,7 @@ router.get('/deregister', (request, response) => {
       response.locals.msgs.deregMailText.replace('{1}', usr[0].name),
       response.locals.msgs
     )
-    .catch(error => console.log(error.toString()));;
+    .catch(error => console.log(error.toString()));
   })
   .catch(error => routeUtil.renderError(error, request, response, 'dereg'));
 });

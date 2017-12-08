@@ -1,10 +1,3 @@
-// Document-management database functions.
-
-// Import required modules.
-const path = require('path');
-const router = require('express').Router();
-const fs = require('fs');
-
 // Create a client configured for connection to the “docsearch” database.
 const {Client} = require('pg');
 

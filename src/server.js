@@ -21,6 +21,7 @@ const doc_route = require('./server/routes/docs').router;
 const curate_route = require('./server/routes/curate');
 const path = require('path');
 const util = require('./server/util');
+const msgs = require(`./server/${process.env.MSGS}`)[process.env.LANG];
 
 // app.get('/favicon.ico', (request, response) => response.status(204));
 
@@ -70,7 +71,7 @@ app.use((request, response, next) => {
     personalized messages can be inherited by subsequent requests using
     the same browser, e.g., giving users other users’ data.
   */
-  response.locals.msgs = Object.assign({}, util[process.env.LANG]);
+  response.locals.msgs = Object.assign({}, msgs);
   response.locals.linkButton = util.linkButton;
   response.locals.linkButtonP = util.linkButtonP;
   if (request.session && request.session.usrID) {

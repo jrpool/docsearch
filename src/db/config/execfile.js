@@ -10,7 +10,9 @@ const client = new Client();
 // Define a function that executes the specified query file.
 const proc = () => {
   const queries = fs.readFileSync(
-    path.join(__dirname, `${process.argv[2]}.sql`), 'utf8'
+    path.join(
+      process.cwd(), 'src/db', process.env.SEED_DIR, `${process.argv[2]}.sql`
+    ), 'utf8'
   );
   client.connect()
   .then(() => {

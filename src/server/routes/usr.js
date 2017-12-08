@@ -112,21 +112,21 @@ router.get('/deregister', (request, response) => {
 });
 
 // Serve login page.
-if (response.locals.usr.id) {
-  routeUtil.redirectHome(request, response);
-}
-else {
-  router.get('/login', (request, response) => {
+router.get('/login', (request, response) => {
+  if (response.locals.usr.id) {
+    routeUtil.redirectHome(request, response);
+  }
+  else {
     response.render('usr/login', {formData: ''});
-  });
-}
+  }
+});
 
 // Process submitted login page.
-if (response.locals.usr.id) {
-  routeUtil.redirectHome(request, response);
-}
-else {
-  router.post('/login', (request, response) => {
+router.post('/login', (request, response) => {
+  if (response.locals.usr.id) {
+    routeUtil.redirectHome(request, response);
+  }
+  else {
     const formData = request.body;
     if (!formData.uid || !formData.password) {
       response.render(
@@ -165,14 +165,14 @@ else {
 });
 
 // Process requested logout.
-if (response.locals.usr.id) {
-  router.get('/logout', (request, response) => {
+router.get('/logout', (request, response) => {
+  if (response.locals.usr.id) {
     routeUtil.anonymizeUsr(request, response);
     response.render('usr/logout-ack');
-  });
-}
-else {
-  util.redirectHome(request, response);
-}
+  }
+  else {
+    util.redirectHome(request, response);
+  }
+});
 
 module.exports = router;

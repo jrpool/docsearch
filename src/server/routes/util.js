@@ -11,7 +11,7 @@ const renderError = function(error, request, response, mark) {
 // Define a function to redirect the client to the home page.
 const redirectHome = (request, response) => {
   response.redirect(`${process.env.LINK_PREFIX}/`);
-}
+};
 
 // Define a function that logs the current user out.
 const anonymizeUsr = (request, response) => {
@@ -60,4 +60,4 @@ const mailSend = (usrs, subject, text) => {
   .catch(error => console.log(error.toString()));
 };
 
-module.exports = {renderError, anonymizeUsr, mailSend};
+module.exports = {redirectHome, renderError, anonymizeUsr, mailSend};

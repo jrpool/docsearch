@@ -8,14 +8,16 @@ let msgs;
 
 // Redirect all curation queries to home page if user is not a curator.
 router.use('/', (request, response, next) => {
-  DbUsr.hasCat(request.session.usrID, Number.parseInt(process.env.CURATOR_CAT))
+  DbUsr.hasCat(
+    request.session.usrID, Number.parseInt(process.env.CURATOR_CAT)
+  )
   .then(isCurator => {
     if (isCurator) {
       msgs = response.locals.msgs;
       next();
     }
     else {
-      response.redirect('/');
+      util.redirectHome(request, response);
     }
   })
   .catch(error => util.renderError(error, request, response));

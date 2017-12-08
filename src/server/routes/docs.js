@@ -104,7 +104,9 @@ router.get('/browse', (request, response) => {
           response.sendFile(reqPath, {root: staticPath});
         }
       }
-      else (response.redirect('/'));
+      else {
+        util.redirectHome(request, response);
+      }
     }
     // If the request does not specify a path:
     else {

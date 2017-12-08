@@ -6,7 +6,7 @@
   "scripts": {
     "create_db": "node src/db/config/createdb",
     "drop_db": "node src/db/config/dropdb",
-    "init_db": "node src/db/config/execfile config/schema",
+    "init_db": "node src/db/config/execfile src/db/config/schema",
     "lint": "eslint public/*.js 'src/**/*.js'; exit 0",
     "lint_fix": "eslint --fix public/*.js src/**/*.js; exit 0",
     "revive_db": "npm run drop_db && npm run create_db && npm run init_db && npm run seedall_db",

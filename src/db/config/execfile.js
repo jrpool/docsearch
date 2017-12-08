@@ -11,7 +11,8 @@ const client = new Client();
 const proc = () => {
   const queries = fs.readFileSync(
     path.join(
-      process.cwd(), 'src/db', process.env.SEED_DIR, `${process.argv[2]}.sql`
+      process.cwd(),
+      `${process.argv[2].replace('{1}', process.env.SEED_DIR + '/')}.sql`
     ), 'utf8'
   );
   client.connect()

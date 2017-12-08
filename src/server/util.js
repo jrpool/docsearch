@@ -24,7 +24,7 @@ const linkButton = (path, msg, opts) => {
     ${classString}
     ${tabIndexString}
     type="button"
-    onclick="location.href='${path}'">
+    onclick="location.href='${process.env.LINK_PREFIX}${path}'">
     ${msg}
   </button>`;
 }

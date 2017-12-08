@@ -58,9 +58,9 @@ Suggestions on priorities for the further development of the project, and of cou
 
 ## Demonstration
 
-There is a [demonstration version of this application](http://jpdev.pro:3001), with a small directory tree of sample documents.
+There is a [demonstration version of this application](https://jpdev.pro/ds), with a small directory tree of sample documents.
 
-As distributed, this application is configured to replicate that demonstration.
+As distributed, this application is configured to replicate that demonstration, including the sample documents.
 
 To navigate back up the tree when browsing, use the browser’s back button.
 
@@ -110,8 +110,20 @@ Make that parent directory your working directory, by executing, for example:
 - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
 - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
 - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
-- The `PROTOCOL` value is either `http` or `https`. It is generally considered a bad practice to use `http` over the Internet, especially where passwords are transmitted. Typically you will implement `https` and a reverse proxy server that passes `https` requests for this application to the port that listens for this application. The demonstration version described above implements `https` via [`certbot`][certbot] and [`letsencrypt`][le], and the values of `HTTPS_CERT` and `HTTPS_KEY` shown below specify the locations of the files required by the server. If you implement `https` in this way, you may need to change the permissions on `/etc/letsencrypt/live` and `/etc/letsencrypt/archive` to make them world-readable and -executable.
-
+- Decide whether to require users to connect with the `https` protocol. The demonstration version is an example of the application with `http` chosen, but with all requests from outside the server forced to use `https` and those requests and their responses channeled through an [Nginx][nginx] reverse proxy server, using credentials from [`certbot`][certbot] and [`letsencrypt`][le], and using `http` to communicate with the application.
+    - If `https`:
+        - Set `HTTPS_CERT` to the path to your SSL/TLS certificate.
+        - Set `HTTPS_KEY` to the path to your SSL/TLS private key.
+        - Set `LINK_PREFIX` to `https://` plus your domain plus any application prefix you decide to use.
+        - Set `PROTOCOL` to `https`.
+        - Set `URL` to the same value as `LINK_PREFIX`, or to any gateway URL you wish to use as the entry into the application.
+    - If `http`:
+        - Set `HTTPS_CERT` to `''`.
+        - Set `HTTPS_KEY` to `''`.
+        - Set `LINK_PREFIX` to any application prefix you decide to use, or `''` if none. Precede it with `http://` plus your domain if you are using a reverse proxy server to handle all requests for the application.
+        - Set `PORT` to a port that the server’s firewall does not permit traffic from outside the server to address (if you are using `https` with a reverse proxy server).
+        - Set `PROTOCOL` to `http`.
+        - Set `URL` to the same value as `LINK_PREFIX`, or to any gateway URL you wish to use as the entry into the application.
 ```
 COOKIE_EXPIRE_DAYS=7
 CURATOR_CAT=0
@@ -123,13 +135,14 @@ FROM_NAME=Documents from Your Organization
 HTTPS_CERT=/etc/letsencrypt/live/yourdomain.org/fullchain.pem
 HTTPS_KEY=/etc/letsencrypt/live/yourdomain.org/privkey.pem
 LANG=eng
+LINK_PREFIX=https://yourdomain.org/ds
 NODE_ENV=production
 PGDATABASE=docsearch
 PGHOST=localhost
 PGPASSWORD=null
 PGPORT=5432
 PGUSER=solr
-# PORT must be 1024 or greater to allow non-root process owner.
+# PORT must be 1024 or greater to allow a non-root process owner.
 PORT=3000
 PROTOCOL=https
 PUBLIC_CAT=1
@@ -138,20 +151,18 @@ REG_NAME=Your Administrator
 SECRET=AnAuthenticationSecret
 SENDGRID_API_KEY=wHaTeVer.SenDGriDgIvEs.YoU
 TEMP_UID_MAX=3
-URL=https://www.yourdomain.org
+URL=https://www.yourdomain.org/ds
 ```
 
-1. Ensure that non-local users can reach the application at the port you have chosen (see below under “Execution”). If they cannot, modify the server configuration to enable this access. If you have `ufw` installed, you can execute `ufw status` to see what is allowed. If the required port is not allowed, you can add it by executing `sudo ufw allow 3000` (or such other port as you have chosen).
+1. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in step 0.
 
-2. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in step 0.
+2. A directory inside the `public` directory will be the root of your repository. In the distribution of this application, it is `demodocs`, and that name appears in the `.env` and `db/config/seeddir` files. For your own installation, specify which directory that is in the `DOC_DIR` entry of the `.env` file (for example, `DOC_DIR=docs`), and name directories accordingly in the `db/config/seeddir` file described in the next paragraph. Create the specified directory and then populate it with directories and files as needed. You may include symbolic links in it, and users with access to those links will also have access to the files and directories that they reference. This feature offers you the ability to grant multiple categories of users access to a particular file or directory without the need to make copies of it. But the feature requires care, because it is possible to mistakenly include a symbolic link to directories and files, anywhere in your file system, that you intend not to disclose.
 
-3. A directory inside the `public` directory will be the root of your repository. In the distribution of this application, it is `demodocs`, and that name appears in the `.env` and `db/config/seeddir` files. For your own installation, specify which directory that is in the `DOC_DIR` entry of the `.env` file (for example, `DOC_DIR=docs`), and name directories accordingly in the `db/config/seeddir` file described in the next paragraph. Create the specified directory and then populate it with directories and files as needed. You may include symbolic links in it, and users with access to those links will also have access to the files and directories that they reference. This feature offers you the ability to grant multiple categories of users access to a particular file or directory without the need to make copies of it. But the feature requires care, because it is possible to mistakenly include a symbolic link to directories and files, anywhere in your file system, that you intend not to disclose.
+3. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
 
-4. To customize your list of user categories and the directories that users in those categories have permission to see, add files to, or delete, edit the files `seedcat.sql` and `seeddir.sql` in the `src/db/config` directory. It is important to observe the application’s fundamental principle that permission to do something to a directory implies permission to do the same thing to all of its descendants.
+4. Modify the values of the properties in the `eng` object in the file `src/server/util.js`, to conform to your requirements. Among the properties that you will probably need to redefine are `accessText`, `cats`, `footText`, `introText`, and `usrEtc`.
 
-5. Modify the values of the properties in the `eng` object in the file `src/server/util.js`, to conform to your requirements. Among the properties that you will probably need to redefine are `accessText`, `cats`, `footText`, `introText`, and `usrEtc`.
-
-6. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the [ISO 639-3 alpha-3 code](http://www-01.sil.org/iso639-3/codes.asp) of that language. Add it to the export list at the end of the file. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LANG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization per user or browser preferences.
+5. If you wish to add an additional language, add an object like `eng` to the `src/server/util.js` file, replacing the English values of the properties with strings in the other language. Name the new object with the [ISO 639-3 alpha-3 code](http://www-01.sil.org/iso639-3/codes.asp) of that language. Add it to the export list at the end of the file. To make that language the language of the application’s user interface, replace `eng` with that code as the value of the `LANG` environment variable in the `.env` file. This version of the application does not yet support on-the-fly localization per user or browser preferences.
 
 ## Execution
 
@@ -171,7 +182,7 @@ URL=https://www.yourdomain.org
 
 ```
 http://localhost:3000
-http://www.yourserver.org:3000
+https://www.yourserver.org/ds
 ```
 
 3. When you access the application with your browser, register yourself as a curator. To obtain curator status, enter the CURATOR_KEY value into the “For administrative use” text field. Then, when you log in, you will be a curator.
@@ -185,6 +196,7 @@ http://www.yourserver.org:3000
 [exs]: https://www.npmjs.com/package/express-session
 [le]: https://letsencrypt.org/
 [lg]: https://www.learnersguild.org
+[nginx]: http://nginx.org/en/
 [nodepg]: https://www.npmjs.com/package/pg
 [npm]: https://www.npmjs.com/
 [pg]: https://www.postgresql.org/

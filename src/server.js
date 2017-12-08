@@ -22,7 +22,7 @@ const curate_route = require('./server/routes/curate');
 const path = require('path');
 const util = require('./server/util');
 
-app.get('/favicon.ico', (request, response) => response.status(204));
+// app.get('/favicon.ico', (request, response) => response.status(204));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');

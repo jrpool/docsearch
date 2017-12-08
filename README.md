@@ -110,7 +110,7 @@ Make that parent directory your working directory, by executing, for example:
 - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
 - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
 - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
-- The `PROTOCOL` value is either `http` or `https`. It is generally considered a bad practice to use `http` over the Internet, especially where passwords are transmitted. Typically you will implement `https` and a reverse proxy server that passes `https` requests for this application to the port that listens for this application. The demonstration version described above implements `https` via [`certbot`][certbot] and [`letsencrypt`][le], and the values of `HTTPS_CERT` and `HTTPS_KEY` shown below specify the locations of the files required by the server.
+- The `PROTOCOL` value is either `http` or `https`. It is generally considered a bad practice to use `http` over the Internet, especially where passwords are transmitted. Typically you will implement `https` and a reverse proxy server that passes `https` requests for this application to the port that listens for this application. The demonstration version described above implements `https` via [`certbot`][certbot] and [`letsencrypt`][le], and the values of `HTTPS_CERT` and `HTTPS_KEY` shown below specify the locations of the files required by the server. If you implement `https` in this way, you may need to change the permissions on `/etc/letsencrypt/live` and `/etc/letsencrypt/archive` to make them world-readable and -executable.
 
 ```
 COOKIE_EXPIRE_DAYS=7
@@ -120,8 +120,8 @@ DOC_DIR=docs
 DOMAIN=yourdomain.org
 FROM_EMAIL=noreply@yourdomain.org
 FROM_NAME=Documents from Your Organization
-HTTPS_CERT=/etc/letsencrypt/yourdomain.org/live/fullchain.pem
-HTTPS_KEY='/etc/letsencrypt/yourdomain.org/live/privkey.pem'
+HTTPS_CERT=/etc/letsencrypt/live/yourdomain.org/fullchain.pem
+HTTPS_KEY=/etc/letsencrypt/live/yourdomain.org/privkey.pem
 LANG=eng
 NODE_ENV=production
 PGDATABASE=docsearch

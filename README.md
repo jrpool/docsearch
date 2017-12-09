@@ -109,6 +109,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
 
   - `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
   - `DOC_DIR`, `SEED_DIR`, and `MSGS` should have the values `demodocs`, `demoseed`, and `demomsgs` while you are running the demonstration. When you add your own data and configuration, change these to match the names you give to your directories in the `public` and `src/db` directories and the file containing your messages. Updates of the application may update `demodocs`, `demoseed`, and `demomsgs`, but will not interfere with your own customizations of these, as long as you give them different names.
+  - `LINK_PREFIX` is equal to any application prefix you use with a reverse proxy server, or `''` if none. For example, if requests to `https://yourdomain.org/docs/…` are passed to the application, the value should be `/docs`.
   - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
   - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
   - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
@@ -116,16 +117,12 @@ To navigate back up the tree when browsing, use the browser’s back button.
     - If `https`:
       - Set `HTTPS_CERT` to the path to your SSL/TLS certificate.
       - Set `HTTPS_KEY` to the path to your SSL/TLS private key.
-      - Set `LINK_PREFIX` to `https://` plus your domain plus any application prefix you decide to use.
       - Set `PROTOCOL` to `https`.
-      - Set `URL` to the same value as `LINK_PREFIX`, or to any gateway URL you wish to use as the entry into the application.
     - If `http`:
       - Set `HTTPS_CERT` to `''`.
       - Set `HTTPS_KEY` to `''`.
-      - Set `LINK_PREFIX` to any application prefix you decide to use, or `''` if none. Precede it with `http://` plus your domain if you are using a reverse proxy server to handle all requests for the application.
       - Set `PORT` to a port that the server’s firewall does not permit traffic from outside the server to address (if you are using `https` with a reverse proxy server).
       - Set `PROTOCOL` to `http`.
-      - Set `URL` to the same value as `LINK_PREFIX`, or to any gateway URL you wish to use as the entry into the application.
 
   ```
   COOKIE_EXPIRE_DAYS=7
@@ -138,7 +135,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
   HTTPS_CERT=/etc/letsencrypt/live/yourdomain.org/fullchain.pem
   HTTPS_KEY=/etc/letsencrypt/live/yourdomain.org/privkey.pem
   LANG=eng
-  LINK_PREFIX=https://yourdomain.org/ds
+  LINK_PREFIX=/ds
   MSGS=msgs
   NODE_ENV=production
   PGDATABASE=docsearch

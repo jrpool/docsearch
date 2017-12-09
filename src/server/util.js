@@ -20,13 +20,16 @@ const linkButton = (path, msg, opts) => {
   if (tabIndex) {
     tabIndexString = `tabindex="${tabIndex}"`;
   }
-  return `<button
-    ${classString}
-    ${tabIndexString}
-    type="button"
-    onclick="location.href='${process.env.LINK_PREFIX}${path}'">
-    ${msg}
-  </button>`;
+  return `
+    <button
+      ${classString}
+      ${tabIndexString}
+      type="button"
+      onclick="location.href='${process.env.LINK_PREFIX}${path}'"
+    >
+      ${msg}
+    </button>
+  `;
 };
 
 const linkButtonP = (path, msg, opts) => `<p>${linkButton(path, msg, opts)}</p>`;

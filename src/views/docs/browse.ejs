@@ -21,7 +21,11 @@
       const p = `${base}${delim}${itemData.name}`;
     %>
       <tr>
-        <td><a href="/docs/browse?p=<%= p %>"><%= itemData.name %></a></td>
+        <td>
+          <a href="<%- process.env.LINK_PREFIX %>/docs/browse?p=<%= p %>">
+            <%= itemData.name %>
+          </a>
+        </td>
         <td><%- itemData.size %></td>
         <td><%- itemData.modDate %></td>
       </tr>

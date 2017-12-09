@@ -36,7 +36,7 @@ const personalStatusMsg = (usr, locals) => {
   .replace(
     '{2}',
     locals.linkButton(
-      '/usr/logout',
+      `${process.env.LINK_PREFIX}/usr/logout`,
       locals.msgs.btnLogout,
       {tabIndex: '-1'}
     )
@@ -44,7 +44,7 @@ const personalStatusMsg = (usr, locals) => {
   .replace(
     '{3}',
     locals.linkButton(
-      '/usr/deregister',
+      `${process.env.LINK_PREFIX}/usr/deregister`,
       locals.msgs.btnDeregister,
       {tabIndex: '-1', kind: 'dangerous'}
     )

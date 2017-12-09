@@ -14,7 +14,7 @@ https://github.com/jrpool/docsearch
 
 ### General
 
-This application is a web server that manager, and provides selective access to, a repository of documents.
+This application is a web server that manages, and provides selective access to, a repository of documents.
 
 The intended use case is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
 
@@ -60,16 +60,18 @@ The application is a work in progress. Its intended functionalites include the f
     - *Breadcrumb-based return to previous tree nodes.
     - Display and download specific documents.
     - *Search with query strings for documents a user is authorized to see.
-    - *Add a document to the collection.
-    - *Delete a document from the collection.
+    - Filesystem-based document addition and deletion.
+    - *Browser-based document addition and deletion.
 
   - Role-based document access:
     - Distinct permissions for reading, adding, and deleting.
-    - Multiple roles per user.
-    - Pruning of redundant entries in browsable directory trees.
+    - Directory-specific permissions.
+    - Propagation of permissions to subdirectories.
+    - Multi-role users having the union of their role permissions.
+    - Pruning of redundant entries in displayed directory trees.
 
   - Administrator (“curator”) capabilities:
-    - File-based customization of application configuration (see below).
+    - File-based customization of the application configuration (see below).
     - Registration as a curator with a secret code.
     - *Web-based definition of user roles (“categories”).
     - *Web-based assignment of permissions to categories.
@@ -107,10 +109,10 @@ To navigate back up the tree when browsing, use the browser’s back button.
 
 1. These instructions presuppose that (1) [npm][npm] and [PostgreSQL][pg] are installed, (2) there is a PostgreSQL database cluster, (3) PostgreSQL is running, (4) when you connect to the cluster you are a PostgreSQL superuser, and (5) your PostgreSQL configuration permits trusted local IPv4 connections from you and from the `solr` PostgreSQL user that this application will create. If you get authentication errors running the `revive_db` script described below, you can edit your `pg_hba.conf` file, which may be located in `/etc/postgresql/«version»/main` or `/usr/local/var/postgres`. Insert the following lines above the existing similar line of type `host`, then restart postgreSQL with the applicable command on your server, such as `sudo service postgresql restart` or `pg_ctl restart`.
 
-  ```
-  host  all  «you»  127.0.0.1/32  trust
-  host  all  solr   127.0.0.1/32  trust
-  ```
+    ```
+    host  all  «you»  127.0.0.1/32  trust
+    host  all  solr   127.0.0.1/32  trust
+    ```
 
 1. Your copy of this project will be located in its own directory, inside some other directory that you may choose or create. For example, to create that parent directory inside your own home directory’s `Documents` subdirectory and call it `projects`, you can execute:
 

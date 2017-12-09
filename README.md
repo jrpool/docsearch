@@ -152,8 +152,10 @@ To navigate back up the tree when browsing, use the browser’s back button.
     - `LINK_PREFIX` is equal to any application prefix you use with a reverse proxy server, or `''` if none. For example, if requests to `https://yourdomain.org/docs/…` are passed to the application, the value should be `/docs`.
     - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
     - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
+    - `PORT` is the port the application will listen for requests on. If users will connect directly from outside the host, make it a port that the host’s firewall permits incoming traffic to address. If users will connect via a reverse proxy server, make it a port that the host’s firewall does **not** permit incoming traffic to address. (The former is considered secure only if user clients are on the same host as the application, because otherwise unencrypted transmission of all content, including passwords and confidential documents, will occur.
     - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
-    - Decide whether to require users to connect with the `https` protocol. The demonstration version is an example of the application with `http` chosen, but with all requests from outside the server forced to use `https` and those requests and their responses channeled through an [Nginx][nginx] reverse proxy server, using credentials from [`certbot`][certbot] and [`letsencrypt`][le], and using `http` to communicate with the application.
+    - `URL` is the URL the application will tell users to use in reaching the application. Whether it specifies `http` or `https` depends on the user’s required behavior, not on the protocol used by the application itself (see the next paragraph).
+    - Decide whether to make the application require the `https` protocol. You may have it use `http` and still require users to connect with `https`, by passing all requests through a reverse proxy server that communicates with users via `https` but with the application via `http`. The demonstration version does this. It uses [Nginx][nginx] as a reverse proxy server, with credentials obtained from [`certbot`][certbot] and [`letsencrypt`][le].
       - If `https`:
         - Set `HTTPS_CERT` to the path to your SSL/TLS certificate.
         - Set `HTTPS_KEY` to the path to your SSL/TLS private key.
@@ -161,7 +163,6 @@ To navigate back up the tree when browsing, use the browser’s back button.
       - If `http`:
         - Set `HTTPS_CERT` to `''`.
         - Set `HTTPS_KEY` to `''`.
-        - Set `PORT` to a port that the server’s firewall does not permit traffic from outside the server to address (if you are using `https` with a reverse proxy server).
         - Set `PROTOCOL` to `http`.
 
     ```
@@ -171,7 +172,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
     DOC_DIR=docs
     DOMAIN=yourdomain.org
     FROM_EMAIL=noreply@yourdomain.org
-    FROM_NAME=Documents from Your Organization
+    FROM_NAME='Documents from Your Organization'
     HTTPS_CERT=/etc/letsencrypt/live/yourdomain.org/fullchain.pem
     HTTPS_KEY=/etc/letsencrypt/live/yourdomain.org/privkey.pem
     LANG=eng
@@ -188,7 +189,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
     PROTOCOL=https
     PUBLIC_CAT=1
     REG_EMAIL=admin@yourdomain.org
-    REG_NAME=Your Administrator
+    REG_NAME='Your Administrator'
     SECRET=AnAuthenticationSecret
     SEED_DIR=seed
     SENDGRID_API_KEY=wHaTeVer.SenDGriDgIvEs.YoU

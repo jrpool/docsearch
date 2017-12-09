@@ -6,7 +6,7 @@
 
 <p><%- msgs.regHere %></p>
 
-<form method="post" action="/usr/register" class="form">
+<form method="post" action="<%- process.env.LINK_PREFIX %>/usr/register" class="form">
   <pre class="form-error"><%= locals.formError || "" %></pre>
 
   <label>

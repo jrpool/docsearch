@@ -23,7 +23,7 @@ const path = require('path');
 const util = require('./server/util');
 const msgs = require(`./server/${process.env.MSGS}`)[process.env.LANG];
 
-// app.get('/favicon.ico', (request, response) => response.status(204));
+app.get('/favicon.ico', (request, response) => response.status(204));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -43,6 +43,7 @@ const accessLogStream = fs.createWriteStream(
 app.use(morgan(
   ':date[iso] :status :method :remote-addr :url', {
     stream: accessLogStream,
+    skip: (request, response) => response.statusCode === 204
   }
 ));
 

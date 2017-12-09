@@ -47,8 +47,17 @@ The tools used in the implementation include HTML, CSS, JavaScript, [Apache `sol
 
 The application is a work in progress. Its intended functionalites include the following (“*” = not yet implemented):
 
-  - User-document interactions:
+  - User identity capabilities:
+    - Registration.
+    - Login with temporary username (“UID”) issued on registration.
+    - Login.
+    - Logout.
+    - Deregistration.
+
+  - User document capabilities:
     - Browse through the directory tree.
+    - Browser-based return to previous tree nodes.
+    - *Breadcrumb-based return to previous tree nodes.
     - Display and download specific documents.
     - *Search with query strings for documents a user is authorized to see.
     - *Add a document to the collection.
@@ -59,40 +68,36 @@ The application is a work in progress. Its intended functionalites include the f
     - Multiple roles per user.
     - Pruning of redundant entries in browsable directory trees.
 
-  - 
+  - Administrator (“curator”) capabilities:
+    - File-based customization of application configuration (see below).
+    - Registration as a curator with a secret code.
+    - *Web-based definition of user roles (“categories”).
+    - *Web-based assignment of permissions to categories.
+    - Assignment of users to categories.
+    - Assignment of permanent UIDs to users.
+    - Editing of user registration records.
+    - Deregistration of users.
 
-- Anybody can register as a user.
+  - Email notices:
+    - Events triggering notices:
+      - User registration.
+      - User deregistration.
+      - Curator editing of a user registration record.
+      - Curator deregistration of a user.
+    - Parties receiving notices:
+      - Affected user.
+      - Performing curator.
+      - Application administrator.
 
-- There is at least 1 “curator” (super-user). Instructions for becoming a curator are in the last paragraph of this document.
-
-- Once a user is registered, the user can log in and, if the user accesses the site within the cookie expiration time, it will not be necessary to log in again.
-
-- Registration includes making claims as to the categories that the user belongs to. Membership in categories determines the access to the collection that a user has. A registrant’s claims are not automatically trusted. Curators decide which categories users really belong to.
-
-- Registration also includes being issued a temporary user ID (UID) to enable logins. Curators decide on permanent UIDs for users.
-
-- Users can log in and out and, once registered, can deregister themselves. Curators can amend users’ registration records and deregister users.
-
-- The repository administration gets an email notice of each registration, registration amendment, and deregistration. Normally, after receiving a registration notice, a curator amends the registration record to replace the temporary UID with a durable one. When a curator acts on a user’s registration record, email notices are sent to the curator, the repository administration, and the affected user.
-
-### Implementation notes
-
-This application is currently a “minimum viable product”. This version is missing:
-
-```
-search
-file addition
-file deletion
-category curation
-directory permission curation
-dynamic localization
-```
+  - Localization:
+    - File-based whole-application language localization.
+    - *User-based dynamic localization.
 
 Suggestions on priorities for the further development of the project, and of course bug reports, are welcome. Feel free to [file issues at the repository](https://github.com/jrpool/docsearch/issues).
 
 ## Demonstration
 
-You can try a live [demonstration version of this application](https://jpdev.pro/ds), with a small directory tree of sample documents.
+You can try a live [demonstration version of this application](http://jpdev.pro), with a small directory tree of sample documents.
 
 As distributed for installation, this application is configured to allow you to replicate that demonstration, including the sample documents.
 

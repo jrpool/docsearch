@@ -116,30 +116,30 @@ To navigate back up the tree when browsing, use the browser’s back button.
 
 1. Your copy of this project will be located in its own directory, inside some other directory that you may choose or create. For example, to create that parent directory inside your own home directory’s `Documents` subdirectory and call it `projects`, you can execute:
 
-  `mkdir ~/Documents/projects`
+    `mkdir ~/Documents/projects`
 
-  Make that parent directory your working directory, by executing, for example:
+    Make that parent directory your working directory, by executing, for example:
 
-  `cd ~/Documents/projects`
+    `cd ~/Documents/projects`
 
 1. Clone this project’s repository into it, thereby creating the project directory, named `docsearch`, by executing:
 
-  `git clone https://github.com/jrpool/auth.git docsearch`
+    `git clone https://github.com/jrpool/auth.git docsearch`
 
 1. Make the project directory your working directory by executing:
 
-  `cd docsearch`
+    `cd docsearch`
 
 1. Create a directory named `sessions` by executing:
 
-  `mkdir sessions`
+    `mkdir sessions`
 
 1. Create a log directory and a file for log entries by executing:
 
-  ```
-  mkdir logs
-  touch logs/access.logs
-  ```
+    ```
+    mkdir logs
+    touch logs/access.logs
+    ```
 
 1. Obtain an account at [SendGrid](https://sendgrid.com/). For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
 
@@ -147,54 +147,54 @@ To navigate back up the tree when browsing, use the browser’s back button.
 
 1. Create a file named `.env` at the root of your project directory and populate it with the following content, amended as you wish. This file will be protected from modification by any updates of the application. Details:
 
-  - `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
-  - `DOC_DIR`, `SEED_DIR`, and `MSGS` should have the values `demodocs`, `demoseed`, and `demomsgs` while you are running the demonstration. When you add your own data and configuration, change these to match the names you give to your directories in the `public` and `src/db` directories and the file containing your messages. Updates of the application may update `demodocs`, `demoseed`, and `demomsgs`, but will not interfere with your own customizations of these, as long as you give them different names.
-  - `LINK_PREFIX` is equal to any application prefix you use with a reverse proxy server, or `''` if none. For example, if requests to `https://yourdomain.org/docs/…` are passed to the application, the value should be `/docs`.
-  - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
-  - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
-  - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
-  - Decide whether to require users to connect with the `https` protocol. The demonstration version is an example of the application with `http` chosen, but with all requests from outside the server forced to use `https` and those requests and their responses channeled through an [Nginx][nginx] reverse proxy server, using credentials from [`certbot`][certbot] and [`letsencrypt`][le], and using `http` to communicate with the application.
-    - If `https`:
-      - Set `HTTPS_CERT` to the path to your SSL/TLS certificate.
-      - Set `HTTPS_KEY` to the path to your SSL/TLS private key.
-      - Set `PROTOCOL` to `https`.
-    - If `http`:
-      - Set `HTTPS_CERT` to `''`.
-      - Set `HTTPS_KEY` to `''`.
-      - Set `PORT` to a port that the server’s firewall does not permit traffic from outside the server to address (if you are using `https` with a reverse proxy server).
-      - Set `PROTOCOL` to `http`.
+    - `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
+    - `DOC_DIR`, `SEED_DIR`, and `MSGS` should have the values `demodocs`, `demoseed`, and `demomsgs` while you are running the demonstration. When you add your own data and configuration, change these to match the names you give to your directories in the `public` and `src/db` directories and the file containing your messages. Updates of the application may update `demodocs`, `demoseed`, and `demomsgs`, but will not interfere with your own customizations of these, as long as you give them different names.
+    - `LINK_PREFIX` is equal to any application prefix you use with a reverse proxy server, or `''` if none. For example, if requests to `https://yourdomain.org/docs/…` are passed to the application, the value should be `/docs`.
+    - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
+    - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
+    - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
+    - Decide whether to require users to connect with the `https` protocol. The demonstration version is an example of the application with `http` chosen, but with all requests from outside the server forced to use `https` and those requests and their responses channeled through an [Nginx][nginx] reverse proxy server, using credentials from [`certbot`][certbot] and [`letsencrypt`][le], and using `http` to communicate with the application.
+      - If `https`:
+        - Set `HTTPS_CERT` to the path to your SSL/TLS certificate.
+        - Set `HTTPS_KEY` to the path to your SSL/TLS private key.
+        - Set `PROTOCOL` to `https`.
+      - If `http`:
+        - Set `HTTPS_CERT` to `''`.
+        - Set `HTTPS_KEY` to `''`.
+        - Set `PORT` to a port that the server’s firewall does not permit traffic from outside the server to address (if you are using `https` with a reverse proxy server).
+        - Set `PROTOCOL` to `http`.
 
-  ```
-  COOKIE_EXPIRE_DAYS=7
-  CURATOR_CAT=0
-  CURATOR_KEY=ASecretKey
-  DOC_DIR=docs
-  DOMAIN=yourdomain.org
-  FROM_EMAIL=noreply@yourdomain.org
-  FROM_NAME=Documents from Your Organization
-  HTTPS_CERT=/etc/letsencrypt/live/yourdomain.org/fullchain.pem
-  HTTPS_KEY=/etc/letsencrypt/live/yourdomain.org/privkey.pem
-  LANG=eng
-  LINK_PREFIX=/ds
-  MSGS=msgs
-  NODE_ENV=production
-  PGDATABASE=docsearch
-  PGHOST=localhost
-  PGPASSWORD=null
-  PGPORT=5432
-  PGUSER=solr
-  # PORT must be 1024 or greater to allow a non-root process owner.
-  PORT=3000
-  PROTOCOL=https
-  PUBLIC_CAT=1
-  REG_EMAIL=admin@yourdomain.org
-  REG_NAME=Your Administrator
-  SECRET=AnAuthenticationSecret
-  SEED_DIR=seed
-  SENDGRID_API_KEY=wHaTeVer.SenDGriDgIvEs.YoU
-  TEMP_UID_MAX=3
-  URL=https://www.yourdomain.org/ds
-  ```
+    ```
+    COOKIE_EXPIRE_DAYS=7
+    CURATOR_CAT=0
+    CURATOR_KEY=ASecretKey
+    DOC_DIR=docs
+    DOMAIN=yourdomain.org
+    FROM_EMAIL=noreply@yourdomain.org
+    FROM_NAME=Documents from Your Organization
+    HTTPS_CERT=/etc/letsencrypt/live/yourdomain.org/fullchain.pem
+    HTTPS_KEY=/etc/letsencrypt/live/yourdomain.org/privkey.pem
+    LANG=eng
+    LINK_PREFIX=/ds
+    MSGS=msgs
+    NODE_ENV=production
+    PGDATABASE=docsearch
+    PGHOST=localhost
+    PGPASSWORD=null
+    PGPORT=5432
+    PGUSER=solr
+    # PORT must be 1024 or greater to allow a non-root process owner.
+    PORT=3000
+    PROTOCOL=https
+    PUBLIC_CAT=1
+    REG_EMAIL=admin@yourdomain.org
+    REG_NAME=Your Administrator
+    SECRET=AnAuthenticationSecret
+    SEED_DIR=seed
+    SENDGRID_API_KEY=wHaTeVer.SenDGriDgIvEs.YoU
+    TEMP_UID_MAX=3
+    URL=https://www.yourdomain.org/ds
+    ```
 
 1. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in step 0.
 
@@ -212,20 +212,20 @@ To navigate back up the tree when browsing, use the browser’s back button.
 
 1. There are 3 ways to start the application. In each case, make the project directory your working directory first.
 
-  - If you have chosen to install a development environment, execute `npm run start_dev`. This will run the application under `nodemon`, automatically restarting the application when you change files or their content, to ensure that the changes are live.
+    - If you have chosen to install a development environment, execute `npm run start_dev`. This will run the application under `nodemon`, automatically restarting the application when you change files or their content, to ensure that the changes are live.
 
-  - If you have installed a production environment and want to test it, execute `npm start`.
+    - If you have installed a production environment and want to test it, execute `npm start`.
 
-  - If you have installed a production environment and want to launch it as a daemon, so it is detached from your command-line environment and it restarts when the server reboots, execute `npm run start_daemon`. If you want to stop the application after that, execute `npm run stop_daemon`. (On some systems it is necessary to execute these commands as a superuser, namely as `sudo npm run start_dev` and `sudo npm run stop_daemon`.)
+    - If you have installed a production environment and want to launch it as a daemon, so it is detached from your command-line environment and it restarts when the server reboots, execute `npm run start_daemon`. If you want to stop the application after that, execute `npm run stop_daemon`. (On some systems it is necessary to execute these commands as a superuser, namely as `sudo npm run start_dev` and `sudo npm run stop_daemon`.)
 
-  - In a production environment, both start methods cannot be relied on to adapt to any changes you make in the code. So, if you have made changes and want to test them, stop the application with `CONTROL-c` or `npm run stop_daemon` and then start it again.
+    - In a production environment, both start methods cannot be relied on to adapt to any changes you make in the code. So, if you have made changes and want to test them, stop the application with `CONTROL-c` or `npm run stop_daemon` and then start it again.
 
 1. To access the application while it is running, use a web browser to request the application’s port on your server, such as:
 
-  ```
-  http://localhost:3000
-  https://www.yourserver.org/ds
-  ```
+    ```
+    http://localhost:3000
+    https://www.yourserver.org/ds
+    ```
 
 1. When you access the application with your browser, register yourself as a curator. To obtain curator status, enter the CURATOR_KEY value into the “For administrative use” text field. Then, when you log in, you will be a curator.
 

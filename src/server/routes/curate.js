@@ -49,8 +49,8 @@ const anonymizeUsr = (usrID, request, response) => {
       const sids = fileNames.map(v => v.replace(/\.json$/, ''));
       sids.forEach(sid => {
         request.sessionStore.get(sid, (error, session) => {
-          if (session.usr && (session.usr.id === usrID)) {
-            delete session.usr;
+          if (session.usrID === usrID) {
+            delete session.usrID;
             request.sessionStore.destroy(sid, error => {
               if (error) {
                 util.renderError(error, request, response);

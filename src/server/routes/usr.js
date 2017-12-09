@@ -9,7 +9,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Serve registration page.
 router.get('/register', (request, response) => {
-  if (response.locals.usr.id) {
+  if (response.locals.usr[0].id) {
     routeUtil.redirectHome(request, response);
   }
   else {
@@ -19,7 +19,7 @@ router.get('/register', (request, response) => {
 
 // Process submitted registration page.
 router.post('/register', (request, response) => {
-  if (response.locals.usr.id) {
+  if (response.locals.usr[0].id) {
     routeUtil.redirectHome(request, response);
   }
   else {
@@ -88,7 +88,7 @@ router.post('/register', (request, response) => {
 
 // Process requested deregistration by logging out and deregistering user.
 router.get('/deregister', (request, response) => {
-  if (response.locals.usr.id) {
+  if (response.locals.usr[0].id) {
     const usr = response.locals.usr;
     return DbUsr.deleteUsr(usr[0].id)
     .then(() => {
@@ -113,7 +113,7 @@ router.get('/deregister', (request, response) => {
 
 // Serve login page.
 router.get('/login', (request, response) => {
-  if (response.locals.usr.id) {
+  if (response.locals.usr[0].id) {
     routeUtil.redirectHome(request, response);
   }
   else {
@@ -123,7 +123,7 @@ router.get('/login', (request, response) => {
 
 // Process submitted login page.
 router.post('/login', (request, response) => {
-  if (response.locals.usr.id) {
+  if (response.locals.usr[0].id) {
     routeUtil.redirectHome(request, response);
   }
   else {

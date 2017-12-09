@@ -16,8 +16,7 @@ const redirectHome = (request, response) => {
 // Define a function that logs the current user out.
 const anonymizeUsr = (request, response) => {
   response.locals.msgs.status = '';
-  delete request.session.usr;
-  delete request.session.id;
+  delete request.session.usrID;
   request.session.destroy(error => {
     if (error) {
       renderError(error, request, response, 'anonymizeUsr');

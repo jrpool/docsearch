@@ -26,6 +26,7 @@ const getUsr = basis => {
       query.text = 'SELECT * FROM usr WHERE uid = $1';
     }
     else {
+      client.end();
       throw 'Error: basis.type';
     }
     return client.query(query)
@@ -40,6 +41,7 @@ const getUsr = basis => {
         .then(cats => [usr, cats.rowCount ? cats.rows.map(row => row[0]) : []]);
       }
       else {
+        client.end();
         return [{}, []];
       }
     });
@@ -60,7 +62,10 @@ const hasCat = (usrID, cat) => {
       values: [usrID, cat],
       rowMode: 'array'
     })
-    .then(result => result.rows[0][0] || false)
+    .then(result => {
+      client.end();
+      return result.rows[0][0] || false;
+    })
     .catch(error => {
       client.end();
       throw error;

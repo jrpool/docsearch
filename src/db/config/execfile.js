@@ -21,8 +21,8 @@ const proc = () => {
   })
   .then(() => client.end())
   .catch (error => {
-    console.log('Error: ' + error);
-    client.end();
+    client.end():
+    throw error;
   });
 };
 

@@ -14,19 +14,52 @@ https://github.com/jrpool/docsearch
 
 ### General
 
-This application demonstrates the use of HTML, CSS, JavaScript, [Apache `solr`][solr], [`bcrypt`][bcrypt], [`body-parser`][bp], [`dotenv`][dotenv], [`ejs`][ejs], [`express`][ex], [`express-session`][exs], [`session-file-store`][sfs], [`PostgreSQL`][pg], [`pg`][nodepg] (node-postgres), the [SendGrid Web API][sgweb], and [`PM2`][pm2] to create a web server that manages, and provides selective access to, a repository of documents.
+This application is a web server that manager, and provides selective access to, a repository of documents.
 
-The use case addressed by this application is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
+The intended use case is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
 
-- Document formats for which the application intends to extract and analyze text content to support relevance discovery are those supported by [Apache Tika][tika].
+The application classifies, indexes, and searches documents in all of the formats supported by [Apache Tika][tika].
 
-- Possible user actions are:
-  - Browse through the directory tree.
-  - Display and download specific documents.
-  - Search with query strings for documents a user is authorized to see.
-  - Add a document to the collection.
-  - Delete a document from the collection.
+### Origin
 
+This project is being developed at [Learners Guild][lg] in the course of an apprenticeship in full-stack web development. The learning objectives served by the project include:
+
+  - Encrypted server-client communication
+  - Authentication
+  - Cookie-based session persistence
+  - Role-based authorization
+  - Web-database integration
+  - Web-email integration
+  - User administration
+  - Web-filesystem integration
+  - File-access permission management
+  - Cross-format document relevance discovery
+  - Document display and delivery
+  - Controlled distributed document repository modification
+  - Security of administrative and user secrets
+  - Internationalization/localization
+  - Protection of customizations from deletion by updates
+  - Usability
+
+The tools used in the implementation include HTML, CSS, JavaScript, [Apache `solr`][solr], [`bcrypt`][bcrypt], [`body-parser`][bp], [`dotenv`][dotenv], [`ejs`][ejs], [`express`][ex], [`express-session`][exs], [`session-file-store`][sfs], [`PostgreSQL`][pg], [`pg`][nodepg] (node-postgres), the [SendGrid Web API][sgweb], and [`PM2`][pm2].
+
+### Functionalities
+
+The application is a work in progress. Its intended functionalites include the following (“*” = not yet implemented):
+
+  - User-document interactions:
+    - Browse through the directory tree.
+    - Display and download specific documents.
+    - *Search with query strings for documents a user is authorized to see.
+    - *Add a document to the collection.
+    - *Delete a document from the collection.
+
+  - Role-based document access:
+    - Distinct permissions for reading, adding, and deleting.
+    - Multiple roles per user.
+    - Pruning of redundant entries in browsable directory trees.
+
+  - 
 
 - Anybody can register as a user.
 

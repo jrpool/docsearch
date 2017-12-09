@@ -38,16 +38,12 @@ const personalStatusMsg = (usr, locals) => {
   return locals.msgs.statusIfKnown.replace('{1}', usr.name)
   .replace(
     '{2}',
-    locals.linkButton(
-      `${process.env.LINK_PREFIX}/usr/logout`,
-      locals.msgs.btnLogout,
-      {tabIndex: '-1'}
-    )
+    locals.linkButton('/usr/logout', locals.msgs.btnLogout, {tabIndex: '-1'})
   )
   .replace(
     '{3}',
     locals.linkButton(
-      `${process.env.LINK_PREFIX}/usr/deregister`,
+      '/usr/deregister',
       locals.msgs.btnDeregister,
       {tabIndex: '-1', kind: 'dangerous'}
     )

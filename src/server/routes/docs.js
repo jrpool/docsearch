@@ -111,7 +111,7 @@ router.get('/browse', (request, response) => {
     // If the request does not specify a path:
     else {
       response.render('docs/browse', {
-        base: process.env.LINK_PREFIX ? `${process.env.LINK_PREFIX}/` : '',
+        base: '',
         delim: '',
         dirData: rights.map(
           right => ({name: right, type: 'd', size: '', modDate: ''})

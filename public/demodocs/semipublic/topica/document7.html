@@ -1,52 +1,29 @@
-<!DOCTYPE html>
-<html>
+<HTML>
+<HEAD>
 
-  <head>
-    <meta charset="utf-8">
-    <title>Object-oriented JavaScript example</title>
-  </head>
+<TITLE>Electricity Conservation at Centerplex</TITLE>
 
-  <body>
-    <div>
-      <label for="jscode">Enter code:</label>
-      <input type="text" id="jscode" size="50">
-      <button>Submit code</button>
-      <p></p>
-    </div>
-  </body>
+</HEAD>
 
-  <script>
-    const input = document.querySelector('input');
-    const btn = document.querySelector('button');
-    const para = document.querySelector('p');
+<H1 ALIGN="center">Electricity Conservation at Centerplex</H1>
 
-    btn.onclick = () => {
-      const code = input.value;
-      para.textContent = eval(code);
-    };
-    function Person(first, last, age, gender, interests) {
-      this.name = {
-        first,
-        last
-      };
-      this.age = age;
-      this.gender = gender;
-      this.interests = interests;
-      this.bio = function() {
-        alert(this.name.first + ' ' + this.name.last + ' is ' + this.age + ' years old. He likes ' + this.interests[0] + ' and ' + this.interests[1] + '.');
-      };
-      this.greeting = function() {
-        alert('Hi! I’m ' + this.name.first + '.');
-      };
-    }
-    const person1 = new Person('Bob', 'Smith', 32, 'male', ['music', 'skiing']);
-    const person2 = new person1.constructor(
-      'Guido', 'Vitelli', 59, 'female', ['climate change', 'justice']
-    );
-    const person3 = Object.create(person1);
-    const person4 = Object.create(person3);
-    const person5 = person1;
-    const person6 = person1;
-  </script>
+<H3>Since the early 1990s, Centerplex has been saving electricity with:</H3>
 
-</html>
+<UL>
+<LI>Lighting fixture improvements</LI>
+<LI>Lighting control improvements</LI>
+<LI>Thermostat improvements</LI>
+<LI>Insulation improvements</LI>
+<LI>Glazing improvements</LI>
+<LI>Outside-air control improvements</LI>
+<LI>Electricity metering improvements</LI>
+<LI>Temperature monitoring improvements</LI>
+<LI>Airflow monitoring improvements</LI>
+</UL>
+
+<P>Further energy efficiencies are being introduced in 2004 with additional improvements in lighting fixtures.</P>
+
+<P>As a result of the 1990s measures, our consumption of electricity decreased by more than 50%:</P>
+
+</BODY>
+</HTML>

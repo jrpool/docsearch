@@ -166,7 +166,7 @@ router.post('/login', (request, response) => {
 
 // Process requested logout.
 router.get('/logout', (request, response) => {
-  if (response.locals.usr.id) {
+  if (response.locals.usr[0].id) {
     routeUtil.anonymizeUsr(request, response);
     response.render('usr/logout-ack');
   }

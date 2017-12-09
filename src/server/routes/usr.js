@@ -171,7 +171,7 @@ router.get('/logout', (request, response) => {
     response.render('usr/logout-ack');
   }
   else {
-    util.redirectHome(request, response);
+    routeUtil.redirectHome(request, response);
   }
 });
 

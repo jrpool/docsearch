@@ -23,7 +23,7 @@ const proc = () => {
   })
   .then(() => client.end())
   .catch (error => {
-    client.end():
+    client.end();
     throw error;
   });
 };

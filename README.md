@@ -152,6 +152,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
     - `LINK_PREFIX` is equal to any application prefix you use with a reverse proxy server, or `''` if none. For example, if requests to `https://yourdomain.org/docs/…` are passed to the application, the value should be `/docs`.
     - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
     - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
+    - `PGDATABASE` and `PGUSER` must be unique to this installation if you have multiple installations on the same host. They both are deleted and recreated in the course of installation, so `PGUSER` should exist only for this installation.
     - `PORT` is the port the application will listen for requests on. If users will connect directly from outside the host, make it a port that the host’s firewall permits incoming traffic to address. If users will connect via a reverse proxy server, make it a port that the host’s firewall does **not** permit incoming traffic to address. (The former is considered secure only if user clients are on the same host as the application, because otherwise unencrypted transmission of all content, including passwords and confidential documents, will occur.
     - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
     - `URL` is the URL the application will tell users to use in reaching the application. Whether it specifies `http` or `https` depends on the user’s required behavior, not on the protocol used by the application itself (see the next paragraph).
@@ -179,11 +180,11 @@ To navigate back up the tree when browsing, use the browser’s back button.
     LINK_PREFIX=/ds
     MSGS=msgs
     NODE_ENV=production
-    PGDATABASE=docsearch
+    PGDATABASE=docrepo
     PGHOST=localhost
     PGPASSWORD=null
     PGPORT=5432
-    PGUSER=solr
+    PGUSER=docmaster
     # PORT must be 1024 or greater to allow a non-root process owner.
     PORT=3000
     PROTOCOL=https

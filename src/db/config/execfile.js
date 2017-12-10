@@ -3,11 +3,13 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-// Create a connection to the “docsearch” database.
+// Create a connection to the database.
 const {Client} = require('pg');
 const client = new Client();
 
-// Define a function that executes the specified query file.
+/*
+  Define a function that executes the specified query file in the seed directory.
+*/
 const proc = () => {
   const queries = fs.readFileSync(
     path.join(

@@ -1,12 +1,25 @@
-// Import required environment variables.
-require('dotenv').config();
+// Import required modules.
 const fs = require('fs');
-
-// Create a database connection.
+const dotenv = require('dotenv');
 const {Client} = require('pg');
+
+/*
+  Create a database connection, before importing environment variables from
+  .env, so the connecting user is the process owner and not the value of
+  PGUSER.
+*/
 const client = new Client({database: 'postgres'});
 
-// Define a function that creates a role and a db owned by it.
+/*
+  Import confidential environment variables, overriding any conflicting
+  existing ones.
+*/
+Object.assign(process.env, dotenv.parse(fs.readFileSync('.env')));
+
+/*
+  Define a function that creates the application’s database and the role
+  that owns it.
+*/
 const proc = () => {
   client.connect()
   .then(() => client.query(`CREATE ROLE ${process.env.PGUSER} LOGIN`))

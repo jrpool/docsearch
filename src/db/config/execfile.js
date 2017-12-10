@@ -1,10 +1,16 @@
 // Import required modules.
-const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
-
-// Create a connection to the database.
+const fs = require('fs');
+const dotenv = require('dotenv');
 const {Client} = require('pg');
+
+/*
+  Import confidential environment variables, overriding any conflicting
+  existing ones.
+*/
+Object.assign(process.env, dotenv.parse(fs.readFileSync('.env')));
+
+// Create a connection to the application’s database by its owner.
 const client = new Client();
 
 /*

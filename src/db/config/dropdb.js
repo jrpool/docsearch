@@ -1,21 +1,34 @@
-// Import required environment variables.
-require('dotenv').config();
-const fs = require('fs');
-
-// Create a database connection.
-const {Client} = require('pg');
-const client = new Client({database: 'postgres'});
+// Import required modules.
 const path = require('path');
+const fs = require('fs');
+const dotenv = require('dotenv');
+const {Client} = require('pg');
 
-// Define a function that deletes the db and the role of its owner.
+/*
+  Create a database connection, before importing environment variables from
+  .env, so the connecting user is the process owner and not the value of
+  PGUSER.
+*/
+const client = new Client({database: 'postgres'});
+
+/*
+  Import confidential environment variables, overriding any conflicting
+  existing ones.
+*/
+Object.assign(process.env, dotenv.parse(fs.readFileSync('.env')));
+
+/*
+  Define a function that deletes the application’s database and the roe that
+  owns it.
+*/
 const proc = () => {
   client.connect()
   .then(() => client.query(`DROP DATABASE IF EXISTS ${process.env.PGDATABASE}`))
   .then(() => client.query(`DROP ROLE IF EXISTS ${process.env.PGUSER}`))
   .then(() => client.end())
   .catch (error => {
-    console.log('Error: ' + error);
     client.end();
+    throw error;
   });
 };
 

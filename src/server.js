@@ -29,7 +29,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // Serve static files (i.e. style.css).
-app.use(express.static('public'));
+app.use(express.static('public', {redirect: false}));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Log which IP addresses made which requests.

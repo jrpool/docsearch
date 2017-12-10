@@ -197,7 +197,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
     SENDGRID_API_KEY=wHaTeVer.SenDGriDgIvEs.YoU
     STYLESHEET=demostyle
     TEMP_UID_MAX=3
-    URL=https://www.yourdomain.org/ds
+    URL=https://www.yourdomain.org/ds/
     ```
 
 1. Install required dependencies (you can see them listed in `package.json`) by executing `npm i`. The dependencies that this installs will depend on whether you defined the Node environment as `development` or `production` in step 0.

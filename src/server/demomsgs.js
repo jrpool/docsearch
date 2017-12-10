@@ -113,7 +113,7 @@ const eng = {
       }
     },
     {
-      label: 'Your title, if you are a GIO manager:',
+      label: 'Your title, if you are a manager:',
       field: {
         name: 'etc1',
         size: '30',

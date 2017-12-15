@@ -148,6 +148,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
 1. Create a file named `.env` at the root of your project directory and populate it with the following content, amended as you wish. This file will be protected from modification by any updates of the application. Details:
 
     - `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
+    - `DAEMON` can be left as is, but, if you install two or more instances of this application on the same server, each must have a distinct value of `DAEMON`.
     - `DOC_DIR`, `SEED_DIR`, and `MSGS` should have the values `demodocs`, `demoseed`, and `demomsgs` while you are running the demonstration. When you add your own data and configuration, change these to match the names you give to your directories in the `public` and `src/db` directories and the file containing your messages. Updates of the application may update `demodocs`, `demoseed`, and `demomsgs`, but will not interfere with your own customizations of these, as long as you give them different names.
     - `LINK_PREFIX` is equal to any application prefix you use with a reverse proxy server, or `''` if none. For example, if requests to `https://yourdomain.org/docs/…` are passed to the application, the value should be `/docs`.
     - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
@@ -171,6 +172,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
     COOKIE_EXPIRE_DAYS=7
     CURATOR_CAT=0
     CURATOR_KEY=ASecretKey
+    DAEMON=demodocsearch
     DOC_DIR=docs
     DOMAIN=yourdomain.org
     FROM_EMAIL=noreply@yourdomain.org

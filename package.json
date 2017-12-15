@@ -12,10 +12,11 @@
     "revive_db": "npm run drop_db && npm run create_db && npm run init_db && npm run seedall_db",
     "seeddir_db": "node src/db/config/execfile src/db/{1}seeddir",
     "seedall_db": "node src/db/config/execfile src/db/{1}seedcat && npm run seeddir_db",
-    "start_daemon": "pm2 start npm --name 'docsearch' -- start",
+    "start_daemon":
+      "pm2 start npm --name $(sed -n s/^DAEMON=//p .env) -- start",
     "start_dev": "nodemon src/server",
     "start": "node src/server",
-    "stop_daemon": "pm2 delete docsearch",
+    "stop_daemon": "pm2 delete $(sed -n s/^DAEMON=//p .env)",
     "test": "echo 'Error: no test specified' && exit 1"
   },
   "keywords": [],

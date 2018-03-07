@@ -1,14 +1,14 @@
 <%- include('../util/head.ejs'); %>
 
-<%- linkButtonP('/', msgs.btnHome) %>
+    <%- linkButtonP('/', msgs.btnHome) %>
 
-<h1><%- msgs.docsTitle %></h1>
+    <h1><%- msgs.docsTitle %></h1>
 
-<p><%- msgs.docsText %></p>
+    <p><%- msgs.docsText %></p>
 
-<p><%- msgs.docsChoose %></p>
+    <p><%- msgs.docsChoose %></p>
 
-<%- linkButtonP('/docs/browse', msgs.btnDocsBrowse) %>
-<%- linkButtonP('/docs/add', msgs.btnDocsAdd, {showIf: ifCanAdd}) %>
+    <%- linkButtonP('/docs/browse', msgs.btnDocsBrowse) %>
+    <%- linkButtonP('/docs/add', msgs.btnDocsAdd, {showIf: ifCanAdd}) %>
 
 <%- include('../util/foot.ejs'); %>

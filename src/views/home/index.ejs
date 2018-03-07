@@ -1,21 +1,21 @@
 <%- include('../util/head.ejs'); %>
 
-<h1><%- msgs.docsTitle %></h1>
+    <h1><%- msgs.docsTitle %></h1>
 
-<h3><%- msgs.intro %></h3>
+    <h3><%- msgs.intro %></h3>
 
-<p><%- msgs.introText %></p>
+    <p><%- msgs.introText %></p>
 
-<h3><%- msgs.accessTitle %></h3>
+    <h3><%- msgs.accessTitle %></h3>
 
-<p><%- msgs.accessText %></p>
+    <p><%- msgs.accessText %></p>
 
-<h3><%- msgs.choose %></h3>
+    <h3><%- msgs.choose %></h3>
 
-<%- linkButtonP('/curate', msgs.btnCurate, {showIf: ifCurator}) %>
-<%- linkButtonP('/usr/register', msgs.btnRegister, {showIf: ifAnonymous}) %>
-<%- linkButtonP('/usr/login', msgs.btnLogin, {showIf: ifAnonymous}) %>
-<%- linkButtonP('/docs', msgs.btnDocs, {showIf: ifKnown}) %>
-<%- linkButtonP('/docs', msgs.btnSeePubDocs, {showIf: ifAnonymous}) %>
+    <%- linkButtonP('/curate', msgs.btnCurate, {showIf: ifCurator}) %>
+    <%- linkButtonP('/usr/register', msgs.btnRegister, {showIf: ifAnonymous}) %>
+    <%- linkButtonP('/usr/login', msgs.btnLogin, {showIf: ifAnonymous}) %>
+    <%- linkButtonP('/docs', msgs.btnDocs, {showIf: ifKnown}) %>
+    <%- linkButtonP('/docs', msgs.btnSeePubDocs, {showIf: ifAnonymous}) %>
 
 <%- include('../util/foot.ejs'); %>

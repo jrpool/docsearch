@@ -95,6 +95,7 @@ const eng = {
   statusIfKnown: 'You are logged in as {1}. {2} {3}',
   tblCat: 'Category',
   tblDate: 'Date',
+  tblFound: 'Found',
   tblID: 'ID',
   tblItem: 'Item',
   tblName: 'Name',

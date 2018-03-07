@@ -1,52 +1,51 @@
 <%- include('../util/head.ejs'); %>
 
-<p><%- linkButton('/', msgs.btnHome) %></p>
+    <p>
+      <%- linkButton('/', msgs.btnHome) %>
+    </p>
 
-<h1><%- msgs.docsBrowseTitle %></h1>
+    <h1><%- msgs.docsBrowseTitle %></h1>
 
-  <p>
-    <%- linkButton(
-      `/docs/search?p=${base}&q=${document.getElementById('searchText').value}`,
-      msgs.btnDocsSearch
-    ) %>
-    <label>
-      <%- msgs.search %>
-      <input
-        id="searchText"
-        type="search"
-        autofocus
-        inputmode="search"
-        maxlength="40"
-        size="40"
-      >
-    </label>
-  </p>
+    <p>
+      <%- searchButton(`/docs/search?p=${base}`, msgs.btnDocsSearch, {}) %>
+      <label>
+        <%- msgs.search %>
+        <input
+          id="searchText"
+          type="search"
+          autofocus
+          inputmode="search"
+          maxlength="40"
+          size="40"
+        >
+      </label>
+    </p>
 
-<div class="dirlist">
-  <p><- msgs.results %><%- searchText %>
-  <table>
-    <caption><%- head %></caption>
-    <tr>
-      <th><%- msgs.tblItem %></th>
-      <th><%- msgs.tblSize %></th>
-      <th><%- msgs.tblDate %></th>
-      <th><%- msgs.tblFound %></th>
-    </tr>
-    <% dirData.forEach(itemData => {
-      const p = `${base}${delim}${itemData.name}`;
-    %>
-      <tr>
-        <td>
-          <a href="<%- process.env.LINK_PREFIX %>/docs/browse?p=<%= p %>">
-            <%= itemData.name %>
-          </a>
-        </td>
-        <td><%- itemData.size %></td>
-        <td><%- itemData.modDate %></td>
-        <td><%- itemData.found ? msgs.yes : msgs.no %></td>
-      </tr>
-    <% }) %>
-  </table>
-</div>
+    <div class="dirlist">
+      <p><%- msgs.results %><%- searchText %></p>
+      <table>
+        <caption><%- head %></caption>
+        <tr>
+          <th><%- msgs.tblItem %></th>
+          <th><%- msgs.tblSize %></th>
+          <th><%- msgs.tblDate %></th>
+          <th><%- msgs.tblFound %></th>
+        </tr>
+        <% dirData.forEach(itemData => {
+          const p = `${base}${delim}${itemData.name}`;
+        %>
+          <tr>
+            <td>
+              <a href="<%- process.env.LINK_PREFIX %>/docs/browse?p=<%= p %>">
+                <%= itemData.name %>
+              </a>
+            </td>
+            <td><%- itemData.size %></td>
+            <td><%- itemData.modDate %></td>
+            <td><%- itemData.found ? msgs.yes : msgs.no %></td>
+          </tr>
+        <% }) %>
+      </table>
+    </div>
 
 <%- include('../util/foot.ejs'); %>

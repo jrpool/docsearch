@@ -31,8 +31,9 @@ const itemType = (staticPath, reqPath) => {
 };
 
 /*
-  Define a function that returns an array of fact objects describing the
-  items in a directory.
+  Define a function that returns an array of objects describing the items
+  in a directory, with properties 'name', 'type' ('f' or 'd'), 'size' (in
+  bytes), and modDate' (empty string unless type is 'f').
 */
 const dirData = (staticPath, reqPath) => {
   const names = fs.readdirSync(path.join(staticPath, reqPath));
@@ -57,28 +58,41 @@ const dirData = (staticPath, reqPath) => {
   }
 };
 
-// Page where user browses permitted directories.
+/*
+  Define a function that returns whether the objects in a directory include
+  at least 1 nondirectory file.
+*/
+const anyFileIn = data => data.some(item => item.type === 'f');
+
+// Page where user browses a permitted directory or all of them.
 router.get('/browse', (request, response) => {
+  // Identify an array of this user’s categories.
   const cats = response.locals.usr[1].length
     ? response.locals.usr[1]
     : [Number.parseInt(process.env.PUBLIC_CAT)];
+  /*
+    Identify an array of [category, act, directory] arrays describing all
+    permissions.
+  */
   DbDocs.catDirRights()
   .then(rights => {
     /*
-      Identify directories the user is permitted to see, sorted, pruned
-      of duplicates and limited to subtree tops.
+      Limit it to subtree-top directories that this user is permitted to see,
+      convert it to an array of those directories, sorted and pruned of
+      duplicates.
     */
-    const rightMap = {};
-    rights = rights
+    let seeableDirs = rights
     .filter(right => cats.includes(right[0]) && right[1] === 0)
     .map(right => right[2])
     .sort()
     .reverse();
-    rights.forEach(right => rightMap[right] = 1);
-    rights = rights.filter(right => {
-      const rightParts = right.split('/');
-      for (let i = rightParts.length - 1; i > 0; i--) {
-        if (rightMap[rightParts.slice(0, i).join('/')]) {
+    // Store them in a table for efficient search.
+    const dirMap = {};
+    seeableDirs.forEach(dir => dirMap[dir] = 1);
+    seeableDirs = seeableDirs.filter(dir => {
+      const dirParts = dir.split('/');
+      for (let i = dirParts.length - 1; i > 0; i--) {
+        if (dirMap[dirParts.slice(0, i).join('/')]) {
           return false;
         }
       }
@@ -88,15 +102,20 @@ router.get('/browse', (request, response) => {
     // If the request specifies a path:
     if (reqPath) {
       // If user is permitted to see it:
-      if (rights.some(right => reqPath.startsWith(right))) {
+      if (seeableDirs.some(dir => reqPath.startsWith(dir))) {
         const staticPath = path.join(process.cwd(), 'public');
-        // If it is a directory, display its contents.
+        /*
+          If it is a directory, display links to the items in it and, if
+          they include any nondirectory file, a search control.
+        */
         if (itemType(staticPath, reqPath) === 'd') {
+          const data = dirData(staticPath, reqPath);
           response.render('docs/browse', {
             base: reqPath,
             delim: '/',
-            dirData: dirData(staticPath, reqPath),
-            head: response.locals.msgs.itemsIn.replace('{1}', reqPath)
+            dirData: data,
+            head: response.locals.msgs.itemsIn.replace('{1}', reqPath),
+            permitSearch: anyFileIn(data)
           });
         }
         // If it is a regular file, serve it.
@@ -108,15 +127,19 @@ router.get('/browse', (request, response) => {
         util.redirectHome(request, response);
       }
     }
-    // If the request does not specify a path:
+    /*
+      Otherwise, i.e. if the request does not specify a path, display the
+      links to the directories the user is permitted to see.
+    */
     else {
       response.render('docs/browse', {
         base: '',
         delim: '',
-        dirData: rights.map(
-          right => ({name: right, type: 'd', size: '', modDate: ''})
+        dirData: seeableDirs.map(
+          dir => ({name: dir, type: 'd', size: '', modDate: ''})
         ),
-        head: ''
+        head: '',
+        permitSearch: false
       });
     }
     return '';
@@ -126,9 +149,97 @@ router.get('/browse', (request, response) => {
   });
 });
 
-// Page where user searches permitted directories.
+// Define a function that returns whether a string appears in a file.
+const foundIn = (text, path) => {
+  if (text.length && path.length) {
+    return false;
+  }
+  else {
+    return true;
+  }
+};
+
+/*
+  Page where user browses a permitted directory and, if it contains any
+  nondirectory files, the results of a search on them.
+*/
 router.get('/search', (request, response) => {
-  response.render('docs/search');
+  // Identify an array of this user’s categories.
+  const cats = response.locals.usr[1].length
+    ? response.locals.usr[1]
+    : [Number.parseInt(process.env.PUBLIC_CAT)];
+  /*
+    Identify an array of [category, act, directory] arrays describing all
+    permissions.
+  */
+  DbDocs.catDirRights()
+  .then(rights => {
+    /*
+      Limit it to subtree-top directories that this user is permitted to see,
+      convert it to an array of those directories, sorted and pruned of
+      duplicates.
+    */
+    let seeableDirs = rights
+    .filter(right => cats.includes(right[0]) && right[1] === 0)
+    .map(right => right[2])
+    .sort()
+    .reverse();
+    // Store them in a table for efficient search.
+    const dirMap = {};
+    seeableDirs.forEach(dir => dirMap[dir] = 1);
+    seeableDirs = seeableDirs.filter(dir => {
+      const dirParts = dir.split('/');
+      for (let i = dirParts.length - 1; i > 0; i--) {
+        if (dirMap[dirParts.slice(0, i).join('/')]) {
+          return false;
+        }
+      }
+      return true;
+    });
+    // Identify the directory for the search.
+    const reqPath = request.query.p;
+    // If the user is permitted to see it:
+    if (seeableDirs.some(dir => reqPath.startsWith(dir))) {
+      const staticPath = path.join(process.cwd(), 'public');
+      /*
+        Add to the object describing each of its nondirectory items a property
+        identifying whether the searched text appears in it.
+      */
+      const searchText = request.query.q;
+      data.forEach((item, index) => {
+        if (item.type === 'f') {
+          data[index].found = foundIn(searchText, item.name);
+        }
+        else {
+          data[index].found = '';
+        }
+      });
+      /*
+        Display links to the items in it and a search control.
+      */
+      if (itemType(staticPath, reqPath) === 'd') {
+        const data = dirData(staticPath, reqPath);
+        response.render('docs/search', {
+          base: reqPath,
+          delim: '/',
+          dirData: data,
+          head: response.locals.msgs.itemsIn.replace('{1}', reqPath),
+          permitSearch: true
+        });
+      }
+      // If it is a regular file, serve it.
+      else {
+        response.sendFile(reqPath, {root: staticPath});
+      }
+    }
+    else {
+      util.redirectHome(request, response);
+    }
+    return '';
+  })
+  .catch(error => {
+    util.renderError(error, request, response);
+  });
 });
 
 // Page where user adds documents to the repository.
@@ -136,4 +247,4 @@ router.get('/add', (request, response) => {
   response.render('docs/add');
 });
 
-module.exports = {router};
+module.exports = router;

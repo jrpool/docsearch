@@ -1,14 +1,52 @@
 <%- include('../util/head.ejs'); %>
 
-<p>
-  <%- linkButton('/', msgs.btnHome) %>
-  <%- linkButton('/docs/browse', msgs.btnDocsBrowse) %>
-</p>
+<p><%- linkButton('/', msgs.btnHome) %></p>
 
-<h1><%- msgs.docsSearchTitle %></h1>
+<h1><%- msgs.docsBrowseTitle %></h1>
 
-<p><%- msgs.docsSearchHere %></p>
+  <p>
+    <%- linkButton(
+      `/docs/search?p=${base}&q=${document.getElementById('searchText').value}`,
+      msgs.btnDocsSearch
+    ) %>
+    <label>
+      Search for this text in the files shown below:
+      <input
+        id="searchText"
+        type="search"
+        autofocus
+        inputmode="search"
+        maxlength="40"
+        size="40"
+      >
+    </label>
+  </p>
 
-<p>This feature is not yet implemented.</p>
+<div class="dirlist">
+  <p>Search results for: <%-
+  <table>
+    <caption><%- head %></caption>
+    <tr>
+      <th><%- msgs.tblItem %></th>
+      <th><%- msgs.tblSize %></th>
+      <th><%- msgs.tblDate %></th>
+      <th><%- msgs.tblFound %></th>
+    </tr>
+    <% dirData.forEach(itemData => {
+      const p = `${base}${delim}${itemData.name}`;
+    %>
+      <tr>
+        <td>
+          <a href="<%- process.env.LINK_PREFIX %>/docs/browse?p=<%= p %>">
+            <%= itemData.name %>
+          </a>
+        </td>
+        <td><%- itemData.size %></td>
+        <td><%- itemData.modDate %></td>
+        <td><%- itemData.found ? msgs.yes : msgs.no %></td>
+      </tr>
+    <% }) %>
+  </table>
+</div>
 
 <%- include('../util/foot.ejs'); %>

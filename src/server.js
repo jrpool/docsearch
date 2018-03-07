@@ -1,6 +1,6 @@
 /*
   Import confidential environment variables, overriding any conflicting
-  existing ones.
+  existing ones. dotenv.config does not override.
 */
 const fs = require('fs');
 const dotenv = require('dotenv');
@@ -15,11 +15,11 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const path = require('path');
 const home_route = require('./server/routes/home');
 const usr_route = require('./server/routes/usr');
-const doc_route = require('./server/routes/docs').router;
+const doc_route = require('./server/routes/docs');
 const curate_route = require('./server/routes/curate');
-const path = require('path');
 const util = require('./server/util');
 const msgs = require(`./server/${process.env.MSGS}`)[process.env.LANG];
 
@@ -28,18 +28,15 @@ app.get('/favicon.ico', (request, response) => response.status(204));
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-// Serve static files (i.e. style.css).
+// Serve static files (i.e. demostyle.css).
 app.use(express.static('public', {redirect: false}));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Log which IP addresses made which requests.
+// Define a log of which IP addresses make which requests.
 const accessLogStream = fs.createWriteStream(
   path.join(process.cwd(), 'logs/access.log'), {flags: 'a'}
 );
-/*
-  This follows express.static, so static assets (e.g., style.css) are not
-  logged.
-*/
+// Turn that log on now (thus omitting static assets (e.g., demostyle.css).
 app.use(morgan(
   ':date[iso] :status :method :remote-addr :url', {
     stream: accessLogStream,

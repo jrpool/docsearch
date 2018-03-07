@@ -1,13 +1,25 @@
 <%- include('../util/head.ejs'); %>
 
-<p>
-  <%- linkButton('/', msgs.btnHome) %>
-  <%- linkButton('/docs/search', msgs.btnDocsSearch) %>
-</p>
+<p><%- linkButton('/', msgs.btnHome) %></p>
 
 <h1><%- msgs.docsBrowseTitle %></h1>
 
-<p><%- msgs.docsBrowseText %></p>
+<% if (permitSearch) { %>
+  <p>
+    <%- linkButton(`/docs/search?p=${base}`, msgs.btnDocsSearch) %>
+    <label>
+      Search for a text in the files shown below:
+      <input
+        id="searchText"
+        type="search"
+        autofocus
+        inputmode="search"
+        maxlength="40"
+        size="40"
+      >
+    </label>
+  </p>
+<% } %>
 
 <div class="dirlist">
   <table>

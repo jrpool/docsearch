@@ -206,14 +206,17 @@ router.get('/search', (request, response) => {
         identifying whether the searched text appears in it.
       */
       const searchText = request.query.q;
-      data.forEach((item, index) => {
-        if (item.type === 'f') {
-          data[index].found = foundIn(searchText, item.name);
-        }
-        else {
-          data[index].found = '';
-        }
-      });
+      const data = dirData(staticPath, reqPath);
+      if (searchText) {
+        data.forEach((item, index) => {
+          if (item.type === 'f') {
+            data[index].found = foundIn(searchText, item.name);
+          }
+          else {
+            data[index].found = '';
+          }
+        });
+      }
       /*
         Display links to the items in it and a search control.
       */
@@ -224,7 +227,8 @@ router.get('/search', (request, response) => {
           delim: '/',
           dirData: data,
           head: response.locals.msgs.itemsIn.replace('{1}', reqPath),
-          permitSearch: true
+          permitSearch: true,
+          searchText
         });
       }
       // If it is a regular file, serve it.

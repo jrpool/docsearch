@@ -115,7 +115,7 @@ router.get('/browse', (request, response) => {
             delim: '/',
             dirData: data,
             head: response.locals.msgs.itemsIn.replace('{1}', reqPath),
-            permitSearch: anyFileIn(data)
+            ifPermitSearch: anyFileIn(data)
           });
         }
         // If it is a regular file, serve it.
@@ -139,7 +139,7 @@ router.get('/browse', (request, response) => {
           dir => ({name: dir, type: 'd', size: '', modDate: ''})
         ),
         head: '',
-        permitSearch: false
+        ifPermitSearch: false
       });
     }
     return '';
@@ -152,9 +152,11 @@ router.get('/browse', (request, response) => {
 // Define a function that returns whether a string appears in a file.
 const foundIn = (text, path) => {
   if (text.length && path.length) {
+    console.log('About to return false');
     return false;
   }
   else {
+    console.log('About to return true');
     return true;
   }
 };
@@ -206,22 +208,26 @@ router.get('/search', (request, response) => {
         identifying whether the searched text appears in it.
       */
       const searchText = request.query.q;
+      console.log('Search text is ' + searchText);
       const data = dirData(staticPath, reqPath);
-      if (searchText) {
-        data.forEach((item, index) => {
+      data.forEach((item, index) => {
+        if (searchText) {
           if (item.type === 'f') {
             data[index].found = foundIn(searchText, item.name);
           }
           else {
             data[index].found = '';
           }
-        });
-      }
+        }
+        else {
+          data[index].found = '';
+        }
+      });
+      console.log('data: ' + JSON.stringify(data));
       /*
         Display links to the items in it and a search control.
       */
       if (itemType(staticPath, reqPath) === 'd') {
-        const data = dirData(staticPath, reqPath);
         response.render('docs/search', {
           base: reqPath,
           delim: '/',

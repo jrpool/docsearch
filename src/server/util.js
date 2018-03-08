@@ -20,20 +20,13 @@ const linkButton = (path, msg, opts) => {
   if (tabIndex) {
     tabIndexString = `tabindex="${tabIndex}"`;
   }
-  return `
-      <button
+  return `      <button
         ${classString ? classString + '\n        ' : ''}${tabIndexString}
         type="button"
         onclick="location.href='${process.env.LINK_PREFIX}${path}'"
       >
         ${msg}
-      </button>
-  `;
-};
-
-const searchButton = (pathStart, msg, opts) => {
-  const path = `${pathStart}&q=${document.getElementById('searchText').value}`;
-  linkButton(path, msg, opts);
+      </button>`;
 };
 
 const linkButtonP = (path, msg, opts) => `<p>${linkButton(path, msg, opts)}</p>`;
@@ -54,4 +47,4 @@ const personalStatusMsg = (usr, locals) => {
   );
 };
 
-module.exports = {linkButton, linkButtonP, personalStatusMsg, searchButton};
+module.exports = {linkButton, linkButtonP, personalStatusMsg};

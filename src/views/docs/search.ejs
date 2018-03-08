@@ -1,13 +1,9 @@
 <%- include('../util/head.ejs'); %>
 
-    <p>
-      <%- linkButton('/', msgs.btnHome) %>
-    </p>
-
+    <p><button type="button" onclick="location.href='/'">Home</button></p>
     <h1><%- msgs.docsBrowseTitle %></h1>
-
     <p>
-      <%- searchButton(`/docs/search?p=${base}`, msgs.btnDocsSearch, {}) %>
+      <button id="searchButton" type="button"><%- msgs.btnDocsSearch %></button>
       <label>
         <%- msgs.search %>
         <input
@@ -20,9 +16,17 @@
         >
       </label>
     </p>
-
+    <script>
+      const handleSearch = event => {
+        const searchText = document.getElementById('searchText').value;
+        const path = `/docs/search?p=<%- base %>&q=${searchText}`;
+        location.href=<%- process.env.LINK_PREFIX %>`${path}`;
+      };
+      const searchButton = document.getElementById('searchButton');
+      searchButton.onclick = handleSearch;
+    </script>
     <div class="dirlist">
-      <p><%- msgs.results %><%- searchText %></p>
+      <p><%- msgs.results %><%= searchText %></p>
       <table>
         <caption><%- head %></caption>
         <tr>
@@ -42,7 +46,11 @@
             </td>
             <td><%- itemData.size %></td>
             <td><%- itemData.modDate %></td>
-            <td><%- itemData.found ? msgs.yes : msgs.no %></td>
+            <td><%-
+              itemData.found
+              ? msgs.yes
+              : (itemData.found === '' ? '' : msgs.no)
+            %></td>
           </tr>
         <% }) %>
       </table>

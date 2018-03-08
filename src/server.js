@@ -72,7 +72,6 @@ app.use((request, response, next) => {
   response.locals.msgs = Object.assign({}, msgs);
   response.locals.linkButton = util.linkButton;
   response.locals.linkButtonP = util.linkButtonP;
-  response.locals.searchButton = util.linkButtonP;
   if (request.session && request.session.usrID) {
     DbUsr.getUsr({type: 'id', id: request.session.usrID})
     .then(deepUsr => {

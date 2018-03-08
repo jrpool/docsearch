@@ -77,6 +77,7 @@ const eng = {
   logoutOKText: 'Your logout succeeded.',
   logoutOKTitle: 'Logout Successful',
   name: 'Name:',
+  no: 'no',
   pw: 'Password:',
   pwAgain: 'Reenter the password:',
   pwNew: 'Create a password:',
@@ -92,7 +93,7 @@ const eng = {
   regMailText: `This confirms the registration of {1} at ${process.env.URL}. You can log in with temporary UID {2}. After verification, it will be replaced with a durable UID.`,
   results: 'Search results for: ',
   search: 'Search for this text in the files shown below:',
-  statusIfKnown: 'You are logged in as {1}. {2} {3}',
+  statusIfKnown: 'You are logged in as {1}.\n{2}\n{3}',
   tblCat: 'Category',
   tblDate: 'Date',
   tblFound: 'Found',
@@ -138,7 +139,8 @@ const eng = {
         maxlength: '20'
       }
     }
-  ]
+  ],
+  yes: 'yes'
 };
 
 module.exports = {eng};

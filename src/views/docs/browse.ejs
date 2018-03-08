@@ -19,8 +19,10 @@
     <script>
       const handleSearch = () => {
         const searchText = document.getElementById('searchText').value;
-        const path = `/docs/search?p=<%- base %>&q=${searchText}`;
-        location.href=<%- process.env.LINK_PREFIX %>`${path}`;
+        if (searchText) {
+          const path = `/docs/search?p=<%- base %>&q=${searchText}`;
+          location.href=<%- process.env.LINK_PREFIX %>`${path}`;
+        }
       };
       const searchButton = document.getElementById('searchButton');
       searchButton.onclick = handleSearch;

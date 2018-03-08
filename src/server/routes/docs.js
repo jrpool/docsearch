@@ -152,11 +152,9 @@ router.get('/browse', (request, response) => {
 // Define a function that returns whether a string appears in a file.
 const foundIn = (text, path) => {
   if (text.length && path.length) {
-    console.log('About to return false');
     return false;
   }
   else {
-    console.log('About to return true');
     return true;
   }
 };
@@ -208,7 +206,6 @@ router.get('/search', (request, response) => {
         identifying whether the searched text appears in it.
       */
       const searchText = request.query.q;
-      console.log('Search text is ' + searchText);
       const data = dirData(staticPath, reqPath);
       data.forEach((item, index) => {
         if (searchText) {
@@ -223,7 +220,6 @@ router.get('/search', (request, response) => {
           data[index].found = '';
         }
       });
-      console.log('data: ' + JSON.stringify(data));
       /*
         Display links to the items in it and a search control.
       */

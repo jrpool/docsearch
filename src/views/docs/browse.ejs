@@ -21,7 +21,7 @@
         const searchText = document.getElementById('searchText').value;
         if (searchText) {
           const path = `/docs/search?p=<%- base %>&q=${searchText}`;
-          location.href=<%- process.env.LINK_PREFIX %>`${path}`;
+          location.href = `<%- process.env.LINK_PREFIX %>${path}`;
         }
       };
       const searchButton = document.getElementById('searchButton');

@@ -1,6 +1,7 @@
 const eng = {
   accessText: 'You can browse and search documents here. Some of them have access limitations. If you are a member, director, or manager, you can register or log in for additional access.',
   accessTitle: 'Access',
+  btnDocs: 'Documents',
   btnDocsAdd: 'Add',
   btnDocsBrowse: 'Browse',
   btnDocsSearch: 'Search',
@@ -14,7 +15,6 @@ const eng = {
   btnLogin: 'Log in',
   btnLogout: 'Log out',
   btnRegister: 'Register',
-  btnDocs: 'Documents',
   btnSeePubDocs: 'See public documents',
   btnSubmit: 'Submit',
   catHead: 'Your status:',

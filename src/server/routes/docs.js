@@ -3,6 +3,8 @@ const DbDocs = require('../../db/docs');
 const path = require('path');
 const router = require('express').Router();
 const fs = require('fs');
+const child = require('child_process');
+// const pdf = require('pdf-parse');
 const util = require('./util');
 
 // Main doc page, including an “add” button only if user has any add permission.
@@ -150,12 +152,29 @@ router.get('/browse', (request, response) => {
 });
 
 // Define a function that returns whether a string appears in a file.
-const foundIn = (text, path) => {
-  if (text.length && path.length) {
-    return false;
+const foundIn = (searchText, path) => {
+  if (searchText.length && path.length) {
+    if (
+      path.endsWith('.txt')
+      || path.endsWith('.html')
+      || path.endsWith('.htm')
+      || path.endsWith('.rtf')
+      || path.endsWith('.js')
+      || path.endsWith('.json')
+    ) {
+      const text = fs.readFileSync(path, 'utf8');
+      return text.includes(searchText);
+    }
+    else if (path.endsWith('.pdf')) {
+      const fileText = child.execSync(`pdftotext ${path} - | cat`);
+      return fileText.includes(searchText);
+    }
+    else {
+      return false;
+    }
   }
   else {
-    return true;
+    return '';
   }
 };
 
@@ -210,7 +229,8 @@ router.get('/search', (request, response) => {
       data.forEach((item, index) => {
         if (searchText) {
           if (item.type === 'f') {
-            data[index].found = foundIn(searchText, item.name);
+            const filePath = path.join(staticPath, reqPath, item.name);
+            data[index].found = foundIn(searchText, filePath);
           }
           else {
             data[index].found = '';

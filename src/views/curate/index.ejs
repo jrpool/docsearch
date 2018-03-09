@@ -1,15 +1,17 @@
 <%- include('../util/head.ejs'); %>
 
-<%- linkButtonP('/', msgs.btnHome) %>
-
-<h1><%- msgs.curation %></h1>
-
-<p><%- msgs.curateHere %></p>
-
-<h3><%- msgs.curateChoose %></h3>
-
-<%- linkButtonP('/curate/reg', msgs.btnCurateReg) %>
-<%- linkButtonP('/curate/cat', msgs.btnCurateCat) %>
-<%- linkButtonP('/curate/dir', msgs.btnCurateDir) %>
+    <%- linkButtonP('/', msgs.btnHome) %>
+    <main>
+      <section title="introduction">
+        <h1 class="tophead"><%- msgs.curation %></h1>
+        <p><%- msgs.curateHere %></p>
+      </section>
+      <section title="actions">
+        <h1 class="midhead"><%- msgs.curateChoose %></h3>
+        <%- linkButtonP('/curate/reg', msgs.btnCurateReg) %>
+        <%- linkButtonP('/curate/cat', msgs.btnCurateCat) %>
+        <%- linkButtonP('/curate/dir', msgs.btnCurateDir) %>
+      </section>
+    </main>
 
 <%- include('../util/foot.ejs'); %>

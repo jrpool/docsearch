@@ -1,9 +1,35 @@
+@media (min-width: 0) {
+  html {
+    font-size: 12px;
+  }
+}
+@media (min-width: 664px) {
+  html {
+    font-size: 1.6vw;
+  }
+}
+@media (min-width: 1300px) {
+  html {
+    font-size: 20px;
+  }
+}
+@media print {
+  html {
+    font-size: 10px;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+a {
+  overflow-wrap: break-word;
+}
 .boxlist {
   border-style: solid;
   border-width: thin;
   border-color: darkgray;
-  margin-bottom: 1em;
-  padding: 0 0.5em 0 0.5em;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem 0 0.5rem;
   width: min-content;
   white-space: nowrap;
 }
@@ -15,7 +41,7 @@ button {
   border-color: black;
   border-radius: 5px;
   padding: 1px 3px 3px 3px;
-  font-size: 16px;
+  font-size: 1.2rem;
   font-style: italic;
 }
 
@@ -32,7 +58,7 @@ input {
 }
 
 .dirlist {
-  padding: 9px;
+  padding: 1rem;
   background-color: ivory;
   font-family: monospace;
 }
@@ -43,7 +69,7 @@ input {
 }
 
 .dirlist>table {
-  margin: 9px;
+  margin: 1rem;
 }
 
 .dirlist>table,
@@ -53,7 +79,7 @@ input {
   border-color: tan;
   border-width: 1px;
   border-collapse: collapse;
-  padding: 0 9px;
+  padding: 0 0.8rem;
 }
 
 .emph {
@@ -62,22 +88,22 @@ input {
 
 .foot {
   text-align: center;
-  font-size: x-small;
-  color: slategray;
+  font-size: 0.8rem;
+  color: darkslategray;
 }
 
 .form input[type="submit"] {
-  margin-top: 1em;
+  margin-top: 1rem;
 }
 
 .form label {
   display: block;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.5rem;
 }
 
 .form label > span {
   display: inline-block;
-  min-width: 8em;
+  min-width: 8rem;
 }
 
 .form-error {
@@ -95,19 +121,27 @@ body {
   padding: 0;
   width: 88vw;
   background-color: oldlace;
-  font-size: 16px;
+}
+
+input {
+  font-size: 1rem;
 }
 
 .kvpairs {
   border-style: solid;
   border-width: thin;
   border-color: gray;
-  margin: 0 6px;
-  padding: 3px 9px;
+  margin: 0 0.5rem;
+  padding: 0.33rem 0.9rem;
 }
 
 .kvpairs>p {
   margin: 0;
+}
+
+.midhead {
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
 .open {
@@ -128,9 +162,14 @@ td {
   border-style: solid;
   border-width: thin;
   border-color: gray;
-  padding: 6px;
+  padding: 0.5rem;
+}
+
+.tophead {
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 .vclose {
-  margin: 0.5em;
+  margin: 0.5rem;
 }

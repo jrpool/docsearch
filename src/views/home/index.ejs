@@ -1,20 +1,23 @@
 <%- include('../util/head.ejs'); %>
-    <h1><%- msgs.docsTitle %></h1>
 
-    <h3><%- msgs.intro %></h3>
-
-    <p><%- msgs.introText %></p>
-
-    <h3><%- msgs.accessTitle %></h3>
-
-    <p><%- msgs.accessText %></p>
-
-    <h3><%- msgs.choose %></h3>
-
-    <%- linkButtonP('/curate', msgs.btnCurate, {showIf: ifCurator}) %>
-    <%- linkButtonP('/usr/register', msgs.btnRegister, {showIf: ifAnonymous}) %>
-    <%- linkButtonP('/usr/login', msgs.btnLogin, {showIf: ifAnonymous}) %>
-    <%- linkButtonP('/docs', msgs.btnDocs, {showIf: ifKnown}) %>
-    <%- linkButtonP('/docs', msgs.btnSeePubDocs, {showIf: ifAnonymous}) %>
+    <h1 class="tophead"><%- msgs.docsTitle %></h1>
+    <main>
+      <section title="introduction">
+        <h1 class="midhead"><%- msgs.intro %></h3>
+        <p><%- msgs.introText %></p>
+        <h1 class="midhead"><%- msgs.accessTitle %></h3>
+        <p><%- msgs.accessText %></p>
+      </section>
+      <section title="actions">
+        <h1 class="midhead"><%- msgs.choose %></h3>
+        <%- linkButtonP('/curate', msgs.btnCurate, {showIf: ifCurator}) %>
+        <%- linkButtonP(
+          '/usr/register', msgs.btnRegister, {showIf: ifAnonymous}
+        ) %>
+        <%- linkButtonP('/usr/login', msgs.btnLogin, {showIf: ifAnonymous}) %>
+        <%- linkButtonP('/docs', msgs.btnDocs, {showIf: ifKnown}) %>
+        <%- linkButtonP('/docs', msgs.btnSeePubDocs, {showIf: ifAnonymous}) %>
+      </section>
+    </main>
 
 <%- include('../util/foot.ejs'); %>

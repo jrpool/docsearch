@@ -67,6 +67,7 @@ const eng = {
   errPasswordsDiffer: 'The passwords are not identical.',
   footCredit: 'A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br><code>DocSearch</code> is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
   footText: 'DocSearch Demo.',
+  htmlLang: 'en',
   intro: 'Introduction',
   introText: 'Welcome! <strong>DocSearch Demo</strong> makes a sample archive of documents available at this site.',
   itemsIn: '<p><strong>Items in {1}</strong></p>',

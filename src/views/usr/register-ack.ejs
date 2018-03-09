@@ -1,9 +1,11 @@
 <%- include('../util/head.ejs'); %>
 
-<h1><%- msgs.regAckTitle %></h1>
-
-<p><%- msgs.regAckText %></p>
-
-<%- linkButtonP('/', msgs.btnHome) %>
+    <main>
+      <section title="acknowledgement">
+        <h1 class="tophead"><%- msgs.regAckTitle %></h1>
+        <p><%- msgs.regAckText %></p>
+      </section>
+    </main>
+    <%- linkButtonP('/', msgs.btnHome) %>
 
 <%- include('../util/foot.ejs'); %>

@@ -1,14 +1,14 @@
 <%- include('../util/head.ejs'); %>
 
     <%- linkButtonP('/', msgs.btnHome) %>
-
-    <h1><%- msgs.docsTitle %></h1>
-
-    <p><%- msgs.docsText %></p>
-
-    <p><%- msgs.docsChoose %></p>
-
-    <%- linkButtonP('/docs/browse', msgs.btnDocsBrowse) %>
-    <%- linkButtonP('/docs/add', msgs.btnDocsAdd, {showIf: ifCanAdd}) %>
+    <h1 class="tophead"><%- msgs.docsTitle %></h1>
+    <main>
+      <section title="actions">
+        <p><%- msgs.docsText %></p>
+        <p><%- msgs.docsChoose %></p>
+        <%- linkButtonP('/docs/browse', msgs.btnDocsBrowse) %>
+        <%- linkButtonP('/docs/add', msgs.btnDocsAdd, {showIf: ifCanAdd}) %>
+      </section>
+    </main>
 
 <%- include('../util/foot.ejs'); %>

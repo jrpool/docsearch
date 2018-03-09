@@ -1,61 +1,69 @@
 <%- include('../util/head.ejs'); %>
 
-    <p><button type="button" onclick="location.href='/'">Home</button></p>
-    <h1><%- msgs.docsBrowseTitle %></h1>
-    <p>
-      <button id="searchButton" type="button"><%- msgs.btnDocsSearch %></button>
-      <label>
-        <%- msgs.search %>
-        <input
-          id="searchText"
-          type="search"
-          autofocus
-          inputmode="search"
-          maxlength="40"
-          size="40"
-        >
-      </label>
-    </p>
-    <script>
-      const handleSearch = () => {
-        const searchText = document.getElementById('searchText').value;
-        if (searchText) {
-          const path = `/docs/search?p=<%- base %>&q=${searchText}`;
-          location.href = `<%- process.env.LINK_PREFIX %>${path}`;
-        }
-      };
-      const searchButton = document.getElementById('searchButton');
-      searchButton.onclick = handleSearch;
-    </script>
-    <div class="dirlist">
-      <p><%- msgs.results %><%= searchText %></p>
-      <table>
-        <caption><%- head %></caption>
-        <tr>
-          <th><%- msgs.tblItem %></th>
-          <th><%- msgs.tblSize %></th>
-          <th><%- msgs.tblDate %></th>
-          <th><%- msgs.tblFound %></th>
-        </tr>
-        <% dirData.forEach(itemData => {
-          const p = `${base}${delim}${itemData.name}`;
-        %>
-          <tr>
-            <td>
-              <a href="<%- process.env.LINK_PREFIX %>/docs/browse?p=<%= p %>">
-                <%= itemData.name %>
-              </a>
-            </td>
-            <td><%- itemData.size %></td>
-            <td><%- itemData.modDate %></td>
-            <%-
-              itemData.found
-              ? `<td class="emph">${msgs.yes}</td>`
-              : `<td>${(itemData.found === '' ? '' : msgs.no)}</td>`
+    <%- linkButtonP('/', msgs.btnHome) %>
+    <main>
+      <section title="actions">
+        <h1 class="tophead"><%- msgs.docsBrowseTitle %></h1>
+        <p>
+          <button id="searchButton" type="button"><%-
+            msgs.btnDocsSearch
+          %></button>
+          <label>
+            <%- msgs.search %>
+            <input
+              id="searchText"
+              type="search"
+              autofocus
+              inputmode="search"
+              maxlength="40"
+              size="40"
+            >
+          </label>
+        </p>
+        <script>
+          const handleSearch = () => {
+            const searchText = document.getElementById('searchText').value;
+            if (searchText) {
+              const path = `/docs/search?p=<%- base %>&q=${searchText}`;
+              location.href = `<%- process.env.LINK_PREFIX %>${path}`;
+            }
+          };
+          const searchButton = document.getElementById('searchButton');
+          searchButton.onclick = handleSearch;
+        </script>
+        <div class="dirlist">
+          <p><%- msgs.results %><%= searchText %></p>
+          <table>
+            <caption><%- head %></caption>
+            <tr>
+              <th><%- msgs.tblItem %></th>
+              <th><%- msgs.tblSize %></th>
+              <th><%- msgs.tblDate %></th>
+              <th><%- msgs.tblFound %></th>
+            </tr>
+            <% dirData.forEach(itemData => {
+              const p = `${base}${delim}${itemData.name}`;
             %>
-          </tr>
-        <% }) %>
-      </table>
-    </div>
+              <tr>
+                <td>
+                  <a
+                    href="<%- process.env.LINK_PREFIX %>/docs/browse?p=<%= p %>"
+                  >
+                    <%= itemData.name %>
+                  </a>
+                </td>
+                <td><%- itemData.size %></td>
+                <td><%- itemData.modDate %></td>
+                <%-
+                  itemData.found
+                  ? `<td class="emph">${msgs.yes}</td>`
+                  : `<td>${(itemData.found === '' ? '' : msgs.no)}</td>`
+                %>
+              </tr>
+            <% }) %>
+          </table>
+        </div>
+      </section>
+    </main>
 
 <%- include('../util/foot.ejs'); %>

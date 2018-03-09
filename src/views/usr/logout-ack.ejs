@@ -1,9 +1,11 @@
 <%- include('../util/head.ejs'); %>
 
-<h1><%- msgs.logoutOKTitle %></h1>
-
-<p><%- msgs.logoutOKText %></p>
-
-<%- linkButtonP('/', msgs.btnHome) %>
+    <main>
+      <section title="acknowledgement">
+        <h1 class="tophead"><%- msgs.logoutOKTitle %></h1>
+        <p><%- msgs.logoutOKText %></p>
+      </section>
+    </main>
+    <%- linkButtonP('/', msgs.btnHome) %>
 
 <%- include('../util/foot.ejs'); %>

@@ -1,17 +1,17 @@
 <%- include('../util/head.ejs'); %>
 
-<%- linkButtonP('/', msgs.btnHome) %>
-
-<h1><%- msgs.curationCat %></h1>
-
-<p><%- msgs.curateCatHere %></p>
-
-<h3><%- msgs.curateCatChoose %></h3>
-
-<p>This feature is not yet implemented.</p>
-
-<p>To curate user categories, edit the file <code>src/db/config/seedcat.sql</code> and then execute the <code>seedall_db</code> script. This will revise the categories and will also, necessarily, delete all assignments of users to categories. You can then assign users to categories by curating all user registrations.</p>
-
-<p>To avoid this extra effort, try to make decisions on categories before beginning user registration.</p>
+    <%- linkButtonP('/', msgs.btnHome) %>
+    <main>
+      <section title="introduction">
+        <h1 class="tophead"><%- msgs.curationCat %></h1>
+        <p><%- msgs.curateCatHere %></p>
+      </section>
+      <section title="actions">
+        <h1 class="midhead"><%- msgs.curateCatChoose %></h3>
+        <p>This feature is not yet implemented.</p>
+        <p>To curate user categories, edit the file <code>src/db/config/seedcat.sql</code> and then execute the <code>seedall_db</code> script. This will revise the categories and will also, necessarily, delete all assignments of users to categories. You can then assign users to categories by curating all user registrations.</p>
+        <p>To avoid this extra effort, try to make decisions on categories before beginning user registration.</p>
+      </section>
+    </main>
 
 <%- include('../util/foot.ejs'); %>

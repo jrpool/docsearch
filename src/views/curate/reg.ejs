@@ -1,38 +1,37 @@
 <%- include('../util/head.ejs'); %>
 
-<%- linkButtonP('/', msgs.btnHome) %>
-
-<h1><%- msgs.curationReg %></h1>
-
-<p><%- msgs.curateRegHere %></p>
-
-<h3><%- msgs.choose %></h3>
-
-<table>
-
-  <tr>
-    <th colspan="2"></th>
-    <th><%- msgs.tblID %></th>
-    <th><%- msgs.tblUID %></th>
-    <th><%- msgs.tblName %></th>
-  </tr>
-
-  <% usrs.forEach(usr => { %>
-    <tr>
-      <td class="open">
-        <%- linkButton(
-          `/curate/reg/${usr.id}/dereg`, msgs.btnDeregister
-        ) %>
-      </td>
-      <td class="open">
-        <%- linkButton(`/curate/reg/${usr.id}`, msgs.btnEdit) %>
-      </td>
-      <td><%= usr.id %></td>
-      <td><%= usr.uid %></td>
-      <td><%= usr.name %></td>
-    </tr>
-  <% }); %>
-
-</table>
+    <%- linkButtonP('/', msgs.btnHome) %>
+    <main>
+      <section title="introduction">
+        <h1 class="tophead"><%- msgs.curationReg %></h1>
+        <p><%- msgs.curateRegHere %></p>
+      </section>
+      <section title="actions">
+        <h1 class="midhead"><%- msgs.choose %></h3>
+        <table>
+          <tr>
+            <th colspan="2"></th>
+            <th><%- msgs.tblID %></th>
+            <th><%- msgs.tblUID %></th>
+            <th><%- msgs.tblName %></th>
+          </tr>
+          <% usrs.forEach(usr => { %>
+            <tr>
+              <td class="open">
+                <%- linkButton(
+                  `/curate/reg/${usr.id}/dereg`, msgs.btnDeregister
+                ) %>
+              </td>
+              <td class="open">
+                <%- linkButton(`/curate/reg/${usr.id}`, msgs.btnEdit) %>
+              </td>
+              <td><%= usr.id %></td>
+              <td><%= usr.uid %></td>
+              <td><%= usr.name %></td>
+            </tr>
+          <% }); %>
+        </table>
+      </section>
+    </main>
 
 <%- include('../util/foot.ejs'); %>

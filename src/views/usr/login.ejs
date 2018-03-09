@@ -1,36 +1,38 @@
 <%- include('../util/head.ejs'); %>
 
-<%- linkButtonP('/', msgs.btnHome) %>
-
-<h1><%- msgs.login %></h1>
-
-<p><%- msgs.loginHere %></p>
-
-<form
-  method="post"
-  action="<%- process.env.LINK_PREFIX %>/usr/login"
-  class="form"
->
-  <pre class="form-error"><%- locals.formError || "" %></pre>
-
-  <label>
-    <span><%- msgs.uid %></span><br>
-    <input required autofocus
-      type="text" name="uid"
-      size="15" minlength="2" maxlength="15"
-      value="<%= formData.uid %>"
-    >
-  </label>
-  <label>
-    <span><%- msgs.pw %></span><br>
-    <input required
-      type="password" name="password"
-      size="40" minlength="5" maxlength="40"
-      value="<%= formData.password %>"
-      autocomplete="current-password"
-    >
-  </label>
-  <button name="submit"><%- msgs.btnLogin %></button>
-</form>
+    <%- linkButtonP('/', msgs.btnHome) %>
+    <main>
+      <section title="introduction">
+        <h1 class="tophead"><%- msgs.login %></h1>
+        <p><%- msgs.loginHere %></p>
+      </section>
+      <section title="actions">
+        <form
+          method="post"
+          action="<%- process.env.LINK_PREFIX %>/usr/login"
+          class="form"
+        >
+          <pre class="form-error"><%- locals.formError || "" %></pre>
+          <label>
+            <span><%- msgs.uid %></span><br>
+            <input required autofocus
+              type="text" name="uid"
+              size="15" minlength="2" maxlength="15"
+              value="<%= formData.uid %>"
+            >
+          </label>
+          <label>
+            <span><%- msgs.pw %></span><br>
+            <input required
+              type="password" name="password"
+              size="40" minlength="5" maxlength="40"
+              value="<%= formData.password %>"
+              autocomplete="current-password"
+            >
+          </label>
+          <button name="submit"><%- msgs.btnLogin %></button>
+        </form>
+      </section>
+    </main>
 
 <%- include('../util/foot.ejs'); %>

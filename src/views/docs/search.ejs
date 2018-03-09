@@ -48,11 +48,11 @@
             </td>
             <td><%- itemData.size %></td>
             <td><%- itemData.modDate %></td>
-            <td><%-
+            <%-
               itemData.found
-              ? msgs.yes
-              : (itemData.found === '' ? '' : msgs.no)
-            %></td>
+              ? `<td class="emph">${msgs.yes}</td>`
+              : `<td>${(itemData.found === '' ? '' : msgs.no)}</td>`
+            %>
           </tr>
         <% }) %>
       </table>

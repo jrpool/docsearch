@@ -1,12 +1,3 @@
-html,
-body {
-  margin: 3%;
-  padding: 0;
-  width: 88vw;
-  background-color: oldlace;
-  font-size: 16px;
-}
-
 .boxlist {
   border-style: solid;
   border-width: thin;
@@ -24,10 +15,12 @@ button {
   border-color: black;
   border-radius: 5px;
   padding: 1px 3px 3px 3px;
+  font-size: 16px;
   font-style: italic;
 }
 
 button.dangerous {
+  font-weight: bold;
   background-color: mediumvioletred;
   color: yellow;
 }
@@ -63,6 +56,10 @@ input {
   padding: 0 9px;
 }
 
+.emph {
+  background-color: yellow;
+}
+
 .foot {
   text-align: center;
   font-size: x-small;
@@ -90,6 +87,15 @@ input {
 
 .gone {
   display: none;
+}
+
+html,
+body {
+  margin: 3%;
+  padding: 0;
+  width: 88vw;
+  background-color: oldlace;
+  font-size: 16px;
 }
 
 .kvpairs {

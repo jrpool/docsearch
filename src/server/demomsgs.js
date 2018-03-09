@@ -92,7 +92,7 @@ const eng = {
   regMailSubject: `Registration at ${process.env.DOMAIN}`,
   regMailText: `This confirms the registration of {1} at ${process.env.URL}. You can log in with temporary UID {2}. After verification, it will be replaced with a durable UID.`,
   results: 'Search results for: ',
-  search: 'Search for this text in the files shown below:',
+  search: 'Search for this text in the files listed below:',
   statusIfKnown: 'You are logged in as {1}.\n{2}\n{3}',
   tblCat: 'Category',
   tblDate: 'Date',

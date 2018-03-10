@@ -65,7 +65,7 @@ const eng = {
   errNeed3RegFacts: 'A name, UID, and email address are required.',
   errNeed4RegFacts: 'A name, an email address, and duplicate passwords are required.',
   errPasswordsDiffer: 'The passwords are not identical.',
-  footCredit: 'A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.<br><code>DocSearch</code> is under development by <a href="https://github.com/jrpool">Jonathan Pool</a> at <a href="http://learnersguild.org">Learners Guild</a>.',
+  footCredit: 'A <code><a href="https://github.com/jrpool/docsearch">DocSearch</a></code> site.',
   footText: 'DocSearch Demo.',
   htmlLang: 'en',
   intro: 'Introduction',

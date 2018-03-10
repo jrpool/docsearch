@@ -10,8 +10,5 @@ node_modules/
 # Session-store files
 sessions/
 
-# Logs
-logs/
-
 # Drafts and notes
 drafts/

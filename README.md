@@ -1,6 +1,6 @@
 # docsearch
 
-Web application offering browsing, search, and retrieval of documents from a repository, with user registration, authentication, and directory-specific authorization.
+Web application offering browsing, search, retrieval, addition, and deletion of documents in a repository, with user registration, authentication, and directory-specific authorization.
 
 ## Project Members
 
@@ -10,6 +10,16 @@ Web application offering browsing, search, and retrieval of documents from a rep
 
 https://github.com/jrpool/docsearch
 
+## Deployments
+
+### Demonstration
+
+https://jpdev.pro/ds/
+
+### Live Application
+
+https://berkhouse.us/ds/
+
 ## Discussion
 
 ### General
@@ -18,11 +28,9 @@ This application is a web server that manages, and provides selective access to,
 
 The intended use case is a person or organization that has possession, on its own server, of a collection of documents in various formats and wants to make various parts of the collection accessible for various actions by various categories of users using web browsers.
 
-The application classifies, indexes, and searches documents in all of the formats supported by [Apache Tika][tika].
-
 ### Origin
 
-This project is being developed at [Learners Guild][lg] in the course of an apprenticeship in full-stack web development. The learning objectives served by the project include:
+This project was initially developed at [Learners Guild][lg] in the course of an apprenticeship in full-stack web development. The learning objectives served by the project included:
 
   - Encrypted server-client communication
   - Authentication
@@ -41,7 +49,9 @@ This project is being developed at [Learners Guild][lg] in the course of an appr
   - Protection of customizations from deletion by updates
   - Usability
 
-The tools used in the implementation include HTML, CSS, JavaScript, [Apache `solr`][solr], [`bcrypt`][bcrypt], [`body-parser`][bp], [`dotenv`][dotenv], [`ejs`][ejs], [`express`][ex], [`express-session`][exs], [`session-file-store`][sfs], [`PostgreSQL`][pg], [`pg`][nodepg] (node-postgres), the [SendGrid Web API][sgweb], and [`PM2`][pm2].
+The tools used in the implementation include HTML, CSS, JavaScript, [`bcrypt`][bcrypt], [`body-parser`][bp], [`dotenv`][dotenv], [`ejs`][ejs], [`express`][ex], [`express-session`][exs], [`session-file-store`][sfs], [`PostgreSQL`][pg], [`pg`][nodepg] (node-postgres), the [SendGrid Web API][sgweb], and [`PM2`][pm2].
+
+Originally [Apache `solr`][solr] was included in the planned tool set for indexing and searching. Subsequently, [Elasticsearch](elastic) replaced it in the plan. After that, the approach to search was made incremental, starting with operations available in [Node][node] and JavaScript plus `pdftotext`, a utility available in the [`poppler-utils` package][poppler]. Searching is currently based on those operations.
 
 ### Functionalities
 
@@ -59,7 +69,7 @@ The application is a work in progress. Its intended functionalites include the f
     - Browser-based return to previous tree nodes.
     - *Breadcrumb-based return to previous tree nodes.
     - Display and download specific documents.
-    - *Search with query strings for documents a user is authorized to see.
+    - Search with query strings for documents a user is authorized to see.
     - Filesystem-based document addition and deletion.
     - *Browser-based document addition and deletion.
 
@@ -97,17 +107,35 @@ The application is a work in progress. Its intended functionalites include the f
 
 Suggestions on priorities for the further development of the project, and of course bug reports, are welcome. Feel free to [file issues at the repository](https://github.com/jrpool/docsearch/issues).
 
+### Accessibility
+
+Efforts have been made, and are continuing, to make the user interface comply with level AAA of [WCAG 2.1][wcag] so that the application is reasonably accessible to persons with disabilities.
+
+Accessibility features include:
+
+- Natural navigation order
+- Explicit main and sectional region structure
+- Visible focus
+- Mouse-free operability
+- Semantic headings
+- Descriptive titling
+- Contrastive colors
+- Purpose-labeled controls
+- Declared page language
+
+### Internationalization
+
+The application is designed so that the texts in its interface can exist in multiple, linguistically distinct, versions, and choices among the versions can be made. This feature is described in the configuration instructions.
+
 ## Demonstration
 
-You can try a live [demonstration version of this application](http://jpdev.pro), with a small directory tree of sample documents.
+As distributed for installation, the application is configured to allow you to replicate the demonstration cited above, including the sample documents.
 
-As distributed for installation, this application is configured to allow you to replicate that demonstration, including the sample documents.
-
-To navigate back up the tree when browsing, use the browser’s back button.
+To navigate back up the document tree when browsing, use the browser’s back button.
 
 ## Installation
 
-1. These instructions presuppose that (1) [npm][npm] and [PostgreSQL][pg] are installed, (2) there is a PostgreSQL database cluster, (3) PostgreSQL is running, (4) when you connect to the cluster you are a PostgreSQL superuser, and (5) your PostgreSQL configuration permits trusted local IPv4 connections from you and from the `solr` PostgreSQL user that this application will create. If you get authentication errors running the `revive_db` script described below, you can edit your `pg_hba.conf` file, which may be located in `/etc/postgresql/«version»/main` or `/usr/local/var/postgres`. Insert the following lines above the existing similar line of type `host`, then restart postgreSQL with the applicable command on your server, such as `sudo service postgresql restart` or `pg_ctl restart`. You will replace «docsearchowner» with the value of `PGUSER` that you choose (see below).
+1. These instructions presuppose that (1) [npm][npm], [PostgreSQL][pg], and [pdftotext][poppler] are installed, (2) there is a PostgreSQL database cluster, (3) PostgreSQL is running, (4) when you connect to the cluster you are a PostgreSQL superuser, and (5) your PostgreSQL configuration permits trusted local IPv4 connections from you and from the PostgreSQL user that this application will create. If you get authentication errors running the `revive_db` script described below, you can edit your `pg_hba.conf` file, which may be located in `/etc/postgresql/«version»/main` or `/usr/local/var/postgres`. Insert the following lines above the existing similar line of type `host`, then restart postgreSQL with the applicable command on your server, such as `sudo service postgresql restart` or `pg_ctl restart`. You will replace «docsearchowner» with the value of `PGUSER` that you choose (see below).
 
     ```
     host  all  «you»              127.0.0.1/32  trust
@@ -124,7 +152,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
 
 1. Clone this project’s repository into it, thereby creating the project directory, named `docsearch`, by executing:
 
-    `git clone https://github.com/jrpool/auth.git docsearch`
+    `git clone https://github.com/jrpool/docsearch.git docsearch`
 
 1. Make the project directory your working directory by executing:
 
@@ -134,12 +162,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
 
     `mkdir sessions`
 
-1. Create a log directory and a file for log entries by executing:
-
-    ```
-    mkdir logs
-    touch logs/access.logs
-    ```
+1. If there is no `access.log` file in the `logs` directory, rename the `access-init.log` file there to `access.log`.
 
 1. Obtain an account at [SendGrid](https://sendgrid.com/). For development or light production use, the free plan with a limit of 100 messages per day will suffice. (Each complete user registration entails sending 4 messages.) Note the API key that SendGrid issues to you.
 
@@ -147,23 +170,23 @@ To navigate back up the tree when browsing, use the browser’s back button.
 
 1. Create a file named `.env` at the root of your project directory and populate it with the following content, amended as you wish. This file will be protected from modification by any updates of the application. Details:
 
-    - `CURATOR_CAT` and `PUBLIC_CAT` are the categories the users in which are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
+    - `CURATOR_CAT` and `PUBLIC_CAT` are the categories whose users are to have the access rights of curators (maximum rights) and of the general public (minimum rights), respectively.
     - `DAEMON` can be left as is, but, if you install two or more instances of this application on the same server, each must have a distinct value of `DAEMON`.
     - `DOC_DIR`, `SEED_DIR`, and `MSGS` should have the values `demodocs`, `demoseed`, and `demomsgs` while you are running the demonstration. When you add your own data and configuration, change these to match the names you give to your directories in the `public` and `src/db` directories and the file containing your messages. Updates of the application may update `demodocs`, `demoseed`, and `demomsgs`, but will not interfere with your own customizations of these, as long as you give them different names.
     - `LINK_PREFIX` is equal to any application prefix you use with a reverse proxy server, or `''` if none. For example, if requests to `https://yourdomain.org/docs/…` are passed to the application, the value should be `/docs`.
     - If you are doing development on the application, change the value of `NODE_ENV` from `production` to `development`.
     - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
-    - `PGDATABASE` and `PGUSER` must be unique to this installation if you have multiple installations on the same host. They both are deleted and recreated in the course of installation, so `PGUSER` should exist only for this installation.
-    - `PORT` is the port the application will listen for requests on. If users will connect directly from outside the host, make it a port that the host’s firewall permits incoming traffic to address. If users will connect via a reverse proxy server, make it a port that the host’s firewall does **not** permit incoming traffic to address. (The former is considered secure only if user clients are on the same host as the application, because otherwise unencrypted transmission of all content, including passwords and confidential documents, will occur.
-    - `STYLESHEET` is the base of the name of your stylesheet file in `public`. You can leave it as `demostyle`. If you want to customize any styles, copy `demostyle.css` and reference the name of your copy in `STYLESHEET`.
+    - `PGDATABASE` and `PGUSER` must be unique to this installation if you have multiple installations on the same host. They both are deleted and recreated in the course of installation, so `PGUSER` should exist only for this installation. `PGUSER` is a PostgreSQL user, but not necessarily an operating-system user.
+    - `PORT` is the port the application will listen for requests on. If users will connect via a reverse proxy server, make it a port that the host’s firewall does **not** permit incoming traffic to address. (Letting users connect directly to the port is considered secure only if user clients are on the same host as the application, because otherwise unencrypted transmission of all content, including passwords and confidential documents, will occur.)
+    - `STYLESHEET` is the base of the name of your stylesheet file in `public`. You can leave it as `demostyle`. If you want to customize any styles, copy `demostyle.css`, customize the copy, and reference its filename in `STYLESHEET`.
     - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
     - `URL` is the URL the application will tell users to use in reaching the application. Whether it specifies `http` or `https` depends on the user’s required behavior, not on the protocol used by the application itself (see the next paragraph).
-    - Decide whether to make the application require the `https` protocol. You may have it use `http` and still require users to connect with `https`, by passing all requests through a reverse proxy server that communicates with users via `https` but with the application via `http`. The demonstration version does this. It uses [Nginx][nginx] as a reverse proxy server, with credentials obtained from [`certbot`][certbot] and [`letsencrypt`][le].
-      - If `https`:
+    - Decide whether to make the application require the `https` protocol. You may have it use `http` and still require users to connect with `https`, by passing all requests through a reverse proxy server that communicates with users via `https` but with the application via `http`. The deployed live demonstration does this. It uses [Nginx][nginx] as a reverse proxy server, with credentials obtained from [`certbot`][certbot] and [`letsencrypt`][le].
+      - If users connect with `https`:
         - Set `HTTPS_CERT` to the path to your SSL/TLS certificate.
         - Set `HTTPS_KEY` to the path to your SSL/TLS private key.
         - Set `PROTOCOL` to `https`.
-      - If `http`:
+      - If users connect with `http`:
         - Set `HTTPS_CERT` to `''`.
         - Set `HTTPS_KEY` to `''`.
         - Set `PROTOCOL` to `http`.
@@ -187,7 +210,7 @@ To navigate back up the tree when browsing, use the browser’s back button.
     PGHOST=localhost
     PGPASSWORD=null
     PGPORT=5432
-    PGUSER=docmaster
+    PGUSER=demodocmaster
     # PORT must be 1024 or greater to allow a non-root process owner.
     PORT=3000
     PROTOCOL=https
@@ -240,13 +263,16 @@ To navigate back up the tree when browsing, use the browser’s back button.
 [certbot]: https://certbot.eff.org/#ubuntuxenial-other
 [dotenv]: https://www.npmjs.com/package/dotenv
 [ejs]: https://www.npmjs.com/package/ejs
+[elastic]: https://www.elastic.co/products/elasticsearch
 [ex]: https://www.npmjs.com/package/express
 [exs]: https://www.npmjs.com/package/express-session
 [le]: https://letsencrypt.org/
 [lg]: https://www.learnersguild.org
 [nginx]: http://nginx.org/en/
+[node]: https://nodejs.org/dist/latest-v9.x/docs/api/
 [nodepg]: https://www.npmjs.com/package/pg
 [npm]: https://www.npmjs.com/
+[poppler]: https://packages.debian.org/sid/poppler-utils
 [pg]: https://www.postgresql.org/
 [pm2]: https://www.npmjs.com/package/pm2
 [sfs]: https://www.npmjs.com/package/session-file-store

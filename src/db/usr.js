@@ -65,7 +65,7 @@ const hasCat = (usrID, cat) => {
 
 // Define a function that returns selected database data on all users.
 const getUsrs = () => {
-  return pool.query('SELECT id, uid, name FROM usr ORDER BY id DESC')
+  return db.query('SELECT id, uid, name FROM usr ORDER BY id DESC')
   .then(usrs => usrs.rowCount ? usrs.rows : [])
   .catch(error => {
     throw error;

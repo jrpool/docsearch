@@ -12,3 +12,6 @@ sessions/
 
 # Drafts and notes
 drafts/
+
+# Non-initializing access log
+logs/access.log

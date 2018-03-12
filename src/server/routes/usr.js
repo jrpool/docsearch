@@ -43,7 +43,9 @@ router.post('/register', (request, response) => {
       );
       return '';
     }
-    formData.pwHash = bcrypt.hashSync(formData.password1, bcrypt.genSaltSync(10));
+    formData.pwHash = bcrypt.hashSync(
+      formData.password1, bcrypt.genSaltSync(10)
+    );
     delete formData.password1;
     delete formData.password2;
     DbUsr.getUsr({type: 'nat', data: formData})

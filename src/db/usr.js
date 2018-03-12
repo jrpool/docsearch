@@ -101,13 +101,13 @@ const createUsr = formData => {
       misc.push(`${key}=${formData[key]}`);
     }
   }
-  return db.query(
-    `
+  return db.query({
+    text: `
       INSERT INTO usr (regdate, uid, pwhash, name, email, misc)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING id
     `,
-    [
+    values: [
       new Date().toISOString().slice(0, 10),
       formData.uid,
       formData.pwHash,
@@ -115,14 +115,14 @@ const createUsr = formData => {
       formData.email,
       misc.join(' ¶ ')
     ]
-  )
+  })
   .then(usrArray => {
     const usr = usrArray.rows[0];
     if (isCurator) {
-      return db.query(
-        'INSERT INTO usrcat VALUES ($1, $2)',
-        [usr.id, process.env.CURATOR_CAT]
-      )
+      return db.query({
+        text: 'INSERT INTO usrcat VALUES ($1, $2)',
+        values: [usr.id, process.env.CURATOR_CAT]
+      })
       .then(() => true);
     }
     else {
@@ -140,13 +140,6 @@ const updateUsr = formData => {
   const cats = formData.cats;
   delete formData.cats;
   return db.query({
-    values: [
-      Number.parseInt(formData.id),
-      formData.uid,
-      formData.name,
-      formData.email,
-      formData.misc
-    ],
     text: `
       UPDATE usr SET
         uid = $2,
@@ -154,18 +147,25 @@ const updateUsr = formData => {
         email = $4,
         misc = $5
       WHERE id = $1
-    `
+    `,
+    values: [
+      Number.parseInt(formData.id),
+      formData.uid,
+      formData.name,
+      formData.email,
+      formData.misc
+    ]
   })
   .then(() => db.query({
-    values: [formData.id],
-    text: 'DELETE FROM usrcat WHERE usr = $1'
+    text: 'DELETE FROM usrcat WHERE usr = $1',
+    values: [formData.id]
   }))
   .then(() => {
     if (cats.length) {
       const assignments = cats.map(cat => `($1, ${cat})`).join(', ');
       db.query({
-        values: [formData.id],
-        text: `INSERT INTO usrcat VALUES ${assignments}`
+        text: `INSERT INTO usrcat VALUES ${assignments}`,
+        values: [formData.id]
       });
     }
   })
@@ -180,7 +180,10 @@ const updateUsr = formData => {
   deletion from table usr propagates to the user’s records in usrcat.
 */
 const deleteUsr = id => {
-  return db.query('DELETE FROM usr WHERE id = $1', [id])
+  return db.query({
+    text: 'DELETE FROM usr WHERE id = $1',
+    values: [id]
+  })
   .then(() => '')
   .catch(error => setImmediate(() => {
     throw error;

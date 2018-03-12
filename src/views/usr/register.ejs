@@ -8,7 +8,6 @@
       </section>
       <section title="actions">
         <form method="post" action="<%- process.env.LINK_PREFIX %>/usr/register" class="form">
-          <pre class="form-error"><%= locals.formError || "" %></pre>
           <label>
             <span><%- msgs.name %></span><br>
             <input required autofocus
@@ -68,6 +67,7 @@
             </label>
           <% }) %>
           <button name="submit"><%- msgs.btnSubmit %></button>
+          <pre class="form-error"><%= locals.formError || "" %></pre>
         </form>
       </section>
     </main>

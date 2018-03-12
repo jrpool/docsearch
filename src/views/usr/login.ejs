@@ -12,7 +12,6 @@
           action="<%- process.env.LINK_PREFIX %>/usr/login"
           class="form"
         >
-          <pre class="form-error"><%- locals.formError || "" %></pre>
           <label>
             <span><%- msgs.uid %></span><br>
             <input required autofocus
@@ -31,6 +30,7 @@
             >
           </label>
           <button name="submit"><%- msgs.btnLogin %></button>
+          <pre class="form-error"><%- locals.formError || "" %></pre>
         </form>
       </section>
     </main>

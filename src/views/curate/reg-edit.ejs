@@ -12,7 +12,6 @@
           action="<%- process.env.LINK_PREFIX %>/curate/reg/<%= usr.id %>"
           class="form"
         >
-          <pre class="form-error"><%- locals.formError || "" %></pre>
           <label>
             <span><%- msgs.uid %></span>
             <input required autofocus
@@ -59,6 +58,7 @@
             <% }); %>
           </section>
           <button name="submit"><%- msgs.btnSubmit %></button>
+          <pre class="form-error"><%- locals.formError || "" %></pre>
         </form>
       </section>
     </main>

@@ -47,6 +47,7 @@ This project was initially developed at [Learners Guild][lg] in the course of an
   - Security of administrative and user secrets
   - Internationalization/localization
   - Protection of customizations from deletion by updates
+  - Accessibility
   - Usability
 
 The tools used in the implementation include HTML, CSS, JavaScript, [`bcrypt`][bcrypt], [`body-parser`][bp], [`dotenv`][dotenv], [`ejs`][ejs], [`express`][ex], [`express-session`][exs], [`session-file-store`][sfs], [`PostgreSQL`][pg], [`pg`][nodepg] (node-postgres), the [SendGrid Web API][sgweb], and [`PM2`][pm2].
@@ -121,6 +122,7 @@ Accessibility features include:
 - Descriptive titling
 - Contrastive colors
 - Purpose-labeled controls
+- Appearance of form-error messages **after** the offending elements
 - Declared page language
 
 ### Internationalization

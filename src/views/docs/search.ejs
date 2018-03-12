@@ -21,8 +21,9 @@
           </label>
         </p>
         <script>
+          const searchField = document.getElementById('searchText');
           const handleSearch = () => {
-            const searchText = document.getElementById('searchText').value;
+            const searchText = searchField.value;
             if (searchText) {
               const path = `/docs/search?p=<%- base %>&q=${searchText}`;
               location.href = `<%- process.env.LINK_PREFIX %>${path}`;
@@ -30,6 +31,7 @@
           };
           const searchButton = document.getElementById('searchButton');
           searchButton.onclick = handleSearch;
+          searchField.onchange = handleSearch;
         </script>
         <div class="dirlist">
           <p><%- msgs.results %><%= searchText %></p>

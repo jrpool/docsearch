@@ -34,10 +34,10 @@ const proc = () => {
     'admin data for docsearch app'
   `))
   .then(() => client.end())
-  .catch (error => {
-    console.log('Error: ' + error);
+  .catch (error => setImmediate(() => {
     client.end();
-  });
+    throw error;
+  }));
 };
 
 // Execute the function.

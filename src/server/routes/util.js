@@ -56,7 +56,9 @@ const mailSend = (usrs, subject, text) => {
   }
   return sgMail.send(options)
   .then(() => '')
-  .catch(error => console.log(error.toString()));
+  .catch(error => setImmediate(() => {
+    throw error;
+  }));
 };
 
 module.exports = {redirectHome, renderError, anonymizeUsr, mailSend};

@@ -73,7 +73,9 @@ router.post('/register', (request, response) => {
             response.locals.msgs.regMailText,
             response.locals.msgs
           )
-          .catch(error => console.log(error.toString()));
+          .catch(error => setImmediate(() => {
+            throw error;
+          }));
         })
         .catch(
           error => routeUtil.renderError(error, request, response, 'reg0')
@@ -100,7 +102,9 @@ router.get('/deregister', (request, response) => {
         response.locals.msgs.deregMailText.replace('{1}', usr[0].name),
         response.locals.msgs
       )
-      .catch(error => console.log(error.toString()));
+      .catch(error => setImmediate(() => {
+        throw error;
+      }));
     })
     .catch(
       error => routeUtil.renderError(error, request, response, 'dereg')

@@ -131,7 +131,9 @@ router.post('/reg/:id(\\d+)', (request, response) => {
         ),
         msgs
       )
-      .catch(error => console.log(error.toString()));
+      .catch(error => setImmediate(() => {
+        throw error;
+      }));
     })
     .catch(error => util.renderError(error, request, response, 'regid1'));
   })
@@ -156,7 +158,9 @@ router.get('/reg/:id(\\d+)/dereg', (request, response) => {
         msgs.curateDeregMailText.replace('{1}', targetDeepUsr[0].name),
         msgs
       )
-      .catch(error => console.log(error.toString()));
+      .catch(error => setImmediate(() => {
+        throw error;
+      }));
     })
     .catch(error => util.renderError(error, request, response, 'iddereg0'));
   })

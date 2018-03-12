@@ -1,5 +1,4 @@
-// Create a client configured for connection to the “docsearch” database.
-const {Client} = require('pg');
+const db = require('./');
 
 /*
   Define a function that returns an array of arrays with elements 0 =
@@ -8,20 +7,14 @@ const {Client} = require('pg');
   i.e. with 'demodocs' being the top-level directory).
 */
 const catDirRights = () => {
-  const client = new Client();
-  return client.connect()
-  .then(() => client.query({
+  return db.query({
     text: 'SELECT * from permit',
     rowMode: 'array'
-  }))
-  .then(result => {
-    client.end();
-    return result.rows;
   })
-  .catch(error => {
-    client.end();
+  .then(result => result.rows)
+  .catch(error => setImmediate(() => {
     throw error;
-  });
+  }));
 };
 
 module.exports = {catDirRights};

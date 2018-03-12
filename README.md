@@ -178,7 +178,7 @@ To navigate back up the document tree when browsing, use the browser’s back bu
     - See below for information about the `LANG` variable, and above for information about the `SENDGRID_API_KEY` variable.
     - `PGDATABASE` and `PGUSER` must be unique to this installation if you have multiple installations on the same host. They both are deleted and recreated in the course of installation, so `PGUSER` should exist only for this installation. `PGUSER` is a PostgreSQL user, but not necessarily an operating-system user.
     - `PORT` is the port the application will listen for requests on. If users will connect via a reverse proxy server, make it a port that the host’s firewall does **not** permit incoming traffic to address. (Letting users connect directly to the port is considered secure only if user clients are on the same host as the application, because otherwise unencrypted transmission of all content, including passwords and confidential documents, will occur.)
-    - `STYLESHEET` is the base of the name of your stylesheet file in `public`. You can leave it as `demostyle`. If you want to customize any styles, copy `demostyle.css`, customize the copy, and reference its filename in `STYLESHEET`.
+    - `STYLESHEET` is the base of the name of your stylesheet file in `public`. You can leave it as `demostyle`. If you want to customize any styles, copy `demostyle.css` to a differently named file, customize the copy, and reference its filename in `STYLESHEET`.
     - The `TEMP_UID_MAX` value is the largest number of registrants you expect to still have temporary UIDs at the same time, before curators assign permanent UIDs to them.
     - `URL` is the URL the application will tell users to use in reaching the application. Whether it specifies `http` or `https` depends on the user’s required behavior, not on the protocol used by the application itself (see the next paragraph).
     - Decide whether to make the application require the `https` protocol. You may have it use `http` and still require users to connect with `https`, by passing all requests through a reverse proxy server that communicates with users via `https` but with the application via `http`. The deployed live demonstration does this. It uses [Nginx][nginx] as a reverse proxy server, with credentials obtained from [`certbot`][certbot] and [`letsencrypt`][le].
@@ -206,7 +206,7 @@ To navigate back up the document tree when browsing, use the browser’s back bu
     LINK_PREFIX=/ds
     MSGS=msgs
     NODE_ENV=production
-    PGDATABASE=docrepo
+    PGDATABASE=demodocs
     PGHOST=localhost
     PGPASSWORD=null
     PGPORT=5432
